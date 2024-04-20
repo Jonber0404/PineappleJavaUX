@@ -1,0 +1,9 @@
+.record{
+    display: flex;
+    flex-direction: column;
+    border-style: dotted;
+}
+.record>div{
+    display: flex;
+    flex-direction: row;
+}
