@@ -1,0 +1,22 @@
+.playbutton{
+    font-size: 50px;
+    padding: 10px 80px;
+    margin-left: 12em;
+    margin-top: 4em;
+    border-radius: 25px;
+    background-color: gray;
+}
+
+.scoreboardbutton{
+    font-size: 22px;
+    padding: 6px 20px;
+    margin-left: 27em;
+    border-radius: 25px;
+    background-color: gray;
+}
+.gamerulesbutton{
+    font-size: 22px;
+    padding: 6px 20px;
+    border-radius: 25px;
+    background-color: gray;
+}
