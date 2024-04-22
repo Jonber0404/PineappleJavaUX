@@ -4,19 +4,19 @@ const vueApp = Vue.createApp(app)
 
 const playbutton ={
     name: "PlayButton",
-    template: `<button class='playbutton'>Spela</button>`
+    template: `<a href="playerselection.html"><button class='playbutton'>Spela</button></a>`
 }
 vueApp.component("play-button", playbutton)
 
 const scoreboardbutton ={
     name: "ScoreboardButton",
-    template: `<button class='scoreboardbutton'>Scoreboard</button>`
+    template: `<a href="scoreboard.html"><button class='scoreboardbutton'>Scoreboard</button></a>`
 }
 vueApp.component("scoreboard-button", scoreboardbutton)
 
 const gamerulesbutton ={
     name: "GamerulesButton",
-    template: `<button class='gamerulesbutton'>Spelregler</button>`
+    template: `<a href="gamerules.html"><button class='gamerulesbutton'>Spelregler</button></a>`
 }
 vueApp.component("gamerules-button", gamerulesbutton)
 
