@@ -16,8 +16,10 @@
 <div id="app">
     <input type="button" value="nästa" @click="getObjekt"><br>
     <img :src="objektBild" alt="">
-    <p>{{objektDatum}}</p>
-    <pre>{{ objekt }}</pre>
+    <p> Bildtext: {{objektDesc}}</p>
+    <p>Fotograferad: {{objektDatum}}</p>
+    <a :href="objektUrl" target="_blank">Mer info</a>
+<!--    <pre>{{ objekt }}</pre>-->
 </div>
 </body>
 </html>
