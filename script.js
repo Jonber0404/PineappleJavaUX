@@ -55,8 +55,7 @@ const app = {
                 const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j+AND+contextLabel=Fotografering`, {
                     headers: {'Accept': 'application/json'}
                 });
-                const json = await response.json()
-                this.objekt = json;
+                this.objekt = await response.json();
 
                 const currentRecord = this.objekt.result.records[0].record['@graph']
 
