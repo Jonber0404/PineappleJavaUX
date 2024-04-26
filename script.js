@@ -52,7 +52,10 @@ const app = {
 
             let randomObjekt = Math.floor((Math.random() * totalAmount) + 1)
             try {
-                const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j+AND+contextLabel=Fotografering`, {
+                const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?` +
+                    `method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}` +
+                    `+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j` +
+                    `+AND+contextLabel=Fotografering`, {
                     headers: {'Accept': 'application/json'}
                 });
                 this.objekt = await response.json();
