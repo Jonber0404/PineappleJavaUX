@@ -1,3 +1,8 @@
+.fetchedImage {
+    height: 200px;
+    width: auto;
+}
+
 .playbutton{
     font-size: 50px;
     padding: 10px 80px;

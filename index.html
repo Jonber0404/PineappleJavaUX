@@ -9,13 +9,13 @@
                         mgp1hnBYcnmsGPH4Gggyec1hk0SHNDFRiPziZ9r5ZfLLV9nr5uLprnqdOCR5sQHQ"
             crossorigin="anonymous"></script>
     <script defer src="script.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 <div id="app">
     <input type="button" value="nästa" @click="getObjekt"><br>
-    <img :src="objektBild" alt="">
+    <img :src="objektBild" alt="" class="fetchedImage">
     <p> Bildtext: {{objektDesc}}</p>
     <p>Fotograferad: {{objektDatum}}</p>
     <a :href="objektUrl" target="_blank">Mer info</a>
