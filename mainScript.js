@@ -40,6 +40,9 @@ const onePlayerGame = {
     created() {
         this.extractData()
     },
+    mounted() {
+        this.startTimer()
+    },
     data() {
         return {
             points: 10,
@@ -68,6 +71,15 @@ const onePlayerGame = {
                     }
                 }
             }
+        },
+        startTimer() {
+            this.timer = setInterval(() => {
+                this.count--;
+                if (this.count === 0 || this.count < 0) {
+                    this.points = this.points - 2
+                    this.count = 60
+                }
+            }, 1000)
         },
         stopTimer() {
             clearInterval(this.timer)
