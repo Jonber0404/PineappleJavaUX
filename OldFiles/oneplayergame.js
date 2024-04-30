@@ -1,4 +1,4 @@
-let decadeStart, decadeEnd, totalAmount
+let decadeStart, decadeEnd, totalAmount, points
 
 const gameApp = {
     data() {
@@ -122,3 +122,6 @@ const stopButton = {
 vueApp.component("stop-button", stopButton);
 
 vueApp.mount('#gameApp')
+
+// Vart kommer spelaren skriva ner sitt user name?
+export { points };

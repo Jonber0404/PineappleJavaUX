@@ -137,3 +137,43 @@ a {
     transform: scale(0.95);
 }
 
+.oneplayer, .twoplayer, .stopButton {
+    display: block;
+    text-align: center;
+    padding: 0.5rem;
+    margin: 3rem;
+    font-size: 150%;
+    background-color: burlywood;
+    font-family: fantasy;
+    cursor:pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0,0,0,0.6);
+
+}
+
+/*Feel free to delete this, it's just for ease of testing*/
+
+.beta-nav{
+    display: flex;
+    flex-direction: row;
+}
+
+.beta-nav a:last-child {
+    margin-left: auto;
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 992px) {
+
+}
+
+@media screen and (min-width: 1200px) {
+
+}
