@@ -1,0 +1,138 @@
+.fetchedImage {
+    height: 200px;
+    width: auto;
+}
+
+/*MOBILEN*/
+/*Huvudmeny*/
+.startmenubutton {
+    background-color: gray;
+    border-radius: 25px;
+    padding: 0.5rem;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 30px;
+}
+
+.playbutton {
+    width: 20rem;
+    margin-top: -7rem;
+}
+
+.scoreboardbutton {
+    width: 20rem;
+    margin-top: 0rem;
+}
+
+.gamerulesbutton {
+    width: 20rem;
+    margin-top: 7rem;
+}
+
+
+/*Playerselection*/
+.oneplayer,
+.twoplayer,
+.stopButton {
+    display: block;
+    text-align: center;
+    padding: 0.5rem;
+    margin: 5rem;
+    font-size: 300%;
+    background-color: burlywood;
+    font-family: fantasy;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+}
+
+.selection {
+    flex-direction: column;
+}
+
+
+@media screen and (min-width: 576px) {
+
+    /*DESKTOPPEN*/
+    /*Huvudmeny*/
+    body {
+        background-color: White;
+    }
+
+    .startmenubutton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .playbutton {
+        font-size: 50px;
+        width: 20rem;
+        margin-top: 0rem;
+    }
+
+    .scoreboardbutton {
+        font-size: 22px;
+        width: 10rem;
+        margin-left: -5rem;
+        margin-top: 4rem;
+    }
+
+    .gamerulesbutton {
+        font-size: 22px;
+        width: 10rem;
+        margin-left: 5rem;
+        margin-top: 4rem;
+    }
+
+
+
+    /*Playerselection*/
+
+
+    .selection {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .oneplayer,
+    .twoplayer,
+    .stopButton {
+        margin: 3rem;
+        font-size: 150%;
+    }
+
+}
+
+
+
+.main-flex {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    font-family: fantasy;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+.oneplayer:hover,
+.twoplayer:hover {
+    font-size: 175%;
+}
+
+
+.oneplayer:active,
+.twoplayer.active {
+    font-size: 175%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transform: scale(0.95);
+}
