@@ -14,7 +14,10 @@
 
 <body>
 <div id="app">
-    <input type="button" value="nästa" @click="getObjekt"><br>
+    <div class="beta-nav">
+        <input type="button" value="nästa" @click="getObjekt"><br>
+        <a href="scoreboard.html">Scoreboard</a>
+    </div>
     <img :src="objektBild" alt="" class="fetchedImage">
     <p> Bildtext: {{objektDesc}}</p>
     <p>Fotograferad: {{objektDatum}}</p>
