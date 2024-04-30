@@ -1,3 +1,4 @@
+let decadeStart, decadeEnd, totalAmount
 
 const gameApp = {
     data() {
@@ -15,12 +16,10 @@ const gameApp = {
     },
     methods: {
         stopTimer() {
-            clearInterval(this.timer);
-            this.isVisible = true;
+            clearInterval(this.timer)
+            this.isVisible = true
         },
-        async getData() {
-            let decadeStart;
-            // Att göra: lägg till totalAmount från totalHits när vi begränsat resultaten lite mer
+        generateDecade() {
             switch (Math.floor(Math.random() * 10)) {
                 case 0:
                     decadeStart = 1900
@@ -53,10 +52,12 @@ const gameApp = {
                     decadeStart = 1990
                     break
             }
-            const decadeEnd = decadeStart + 9;
-
+            decadeEnd = decadeStart + 9
+        },
+        async getData() {
+            // Att göra: lägg till totalAmount från totalHits när vi begränsat resultaten lite mer
             // Man kan ersätta totalAmount med elementet "totalHits" från K-samsök
-            const totalAmount = 6407;
+            totalAmount = 6407;
 
             let randomObjekt = Math.floor((Math.random() * totalAmount) + 1)
             try {
@@ -66,7 +67,7 @@ const gameApp = {
                     `+AND+contextLabel=Fotografering`, {
                     headers: { 'Accept': 'application/json' }
                 });
-                this.objekt = await response.json();
+                this.objekt = await response.json()
 
                 const currentRecord = this.objekt.result.records[0].record['@graph']
 
@@ -99,16 +100,16 @@ const gameApp = {
             this.timer = setInterval(() => {
                 this.count--;
                 if (this.count === 0 || this.count < 0) {
-                    this.points = this.points - 2;
-                    this.count = 60;
+                    this.points = this.points - 2
+                    this.count = 60
                 }
-            }, 1000);
+            }, 1000)
         }
     },
     mounted() {
-        this.getData();
-        this.startTimer();
-
+        this.generateDecade()
+        this.getData()
+        this.startTimer()
     }
 
 }
@@ -120,4 +121,4 @@ const stopButton = {
 }
 vueApp.component("stop-button", stopButton);
 
-vueApp.mount('#gameApp');
+vueApp.mount('#gameApp')
