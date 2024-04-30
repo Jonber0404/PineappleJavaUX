@@ -4,12 +4,6 @@
 }
 
 /*MOBILEN*/
-
-body {
-    background-color: red;
-    /* test, röd så man fattar det är mobilskärm*/
-}
-
 /*Huvudmeny*/
 .startmenubutton {
     background-color: gray;
