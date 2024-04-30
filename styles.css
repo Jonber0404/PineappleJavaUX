@@ -1,0 +1,81 @@
+.fetchedImage {
+    height: 200px;
+    width: auto;
+}
+
+.playbutton{
+    font-size: 50px;
+    padding: 10px 80px;
+    margin-left: 12em;
+    margin-top: 4em;
+    border-radius: 25px;
+    background-color: gray;
+}
+
+.scoreboardbutton{
+    font-size: 22px;
+    padding: 6px 20px;
+    margin-left: 27em;
+    border-radius: 25px;
+    background-color: gray;
+}
+.gamerulesbutton{
+    font-size: 22px;
+    padding: 6px 20px;
+    border-radius: 25px;
+    background-color: gray;
+}
+.main-flex {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    font-family: fantasy;
+   
+}
+a {
+    text-decoration: none;
+}
+.selection{
+    display: flex;
+    flex-direction: row;
+}
+.oneplayer:hover, .twoplayer:hover{
+    font-size: 175%;
+
+}
+.oneplayer:active, .twoplayer.active{
+    font-size: 175%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transform: scale(0.95);
+}
+
+.oneplayer, .twoplayer, .stopButton {
+    display: block;
+    text-align: center;
+    padding: 0.5rem;
+    margin: 3rem;
+    font-size: 150%;
+    background-color: burlywood;
+    font-family: fantasy;
+    cursor:pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0,0,0,0.6);
+
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 992px) {
+
+}
+
+@media screen and (min-width: 1200px) {
+
+}

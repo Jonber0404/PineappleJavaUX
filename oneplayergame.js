@@ -1,19 +1,26 @@
-const app = {
+let decadeStart, decadeEnd, totalAmount
+
+const gameApp = {
     data() {
         return {
+            points: 10,
+            count: 60,
             objekt: {},
             objektBild: "",
             objektDatum: "",
             objektDesc: "",
-            objektUrl: ""
-        }
+            objektUrl: "",
+            timer: null,
+            isVisible: false
+        };
     },
     methods: {
-        async getObjekt() {
-
-            let decadeStart;
-            // Att göra: lägg till totalAmount från totalHits när vi begränsat resultaten lite mer
-            switch(Math.floor(Math.random() * 10)) {
+        stopTimer() {
+            clearInterval(this.timer)
+            this.isVisible = true
+        },
+        generateDecade() {
+            switch (Math.floor(Math.random() * 10)) {
                 case 0:
                     decadeStart = 1900
                     break
@@ -45,10 +52,12 @@ const app = {
                     decadeStart = 1990
                     break
             }
-            const decadeEnd = decadeStart + 9;
-
+            decadeEnd = decadeStart + 9
+        },
+        async getData() {
+            // Att göra: lägg till totalAmount från totalHits när vi begränsat resultaten lite mer
             // Man kan ersätta totalAmount med elementet "totalHits" från K-samsök
-            const totalAmount = 6407;
+            totalAmount = 6407;
 
             let randomObjekt = Math.floor((Math.random() * totalAmount) + 1)
             try {
@@ -56,9 +65,9 @@ const app = {
                     `method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}` +
                     `+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j` +
                     `+AND+contextLabel=Fotografering`, {
-                    headers: {'Accept': 'application/json'}
+                    headers: { 'Accept': 'application/json' }
                 });
-                this.objekt = await response.json();
+                this.objekt = await response.json()
 
                 const currentRecord = this.objekt.result.records[0].record['@graph']
 
@@ -82,10 +91,34 @@ const app = {
             } catch (error) {
                 console.error('Error fetching data:', error)
             }
+
+
+
+        },
+
+        startTimer() {
+            this.timer = setInterval(() => {
+                this.count--;
+                if (this.count === 0 || this.count < 0) {
+                    this.points = this.points - 2
+                    this.count = 60
+                }
+            }, 1000)
         }
     },
     mounted() {
-        this.getObjekt()
+        this.generateDecade()
+        this.getData()
+        this.startTimer()
     }
+
 }
-Vue.createApp(app).mount("#app")
+const vueApp = Vue.createApp(gameApp);
+
+const stopButton = {
+    name: "stopButton",
+    template: `<button class="stopButton">NÖDBROMS</button>`
+}
+vueApp.component("stop-button", stopButton);
+
+vueApp.mount('#gameApp')
