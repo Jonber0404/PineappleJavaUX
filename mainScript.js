@@ -15,7 +15,7 @@ const playerSelection = {
             <h1>ANTAL SPELARE</h1>
                 <div class="selection">
                     <router-link to="/onePlayerGame"><button class="oneplayer">1 SPELARE</button></router-link>
-                    <router-link to="/onePlayerGame"><button class="oneplayer">2 SPELARE</button></router-link>
+                    <router-link to="/twoPlayerGame"><button class="oneplayer">2 SPELARE</button></router-link>
                 </div>
             </div>`
 }
@@ -23,8 +23,18 @@ const playerSelection = {
 // scoreboard
 const scoreboard = {
     name: "scoreboard",
-    template: `<p>lägg till scoreboard här</p>`
-}
+    data(){
+        return{
+            pointsEarned: 0
+        }
+    },
+        created(){
+            const storedPointsEarned = localStorage.getItem('pointsEarned');
+            this.pointsEarned = storedPointsEarned;
+        },
+        template: `<p>POÄNG: {{pointsEarned}}</p>`
+    }
+
 
 // spelregler
 const gameRules = {
@@ -54,9 +64,16 @@ const onePlayerGame = {
             objektUrl: "",
             timer: null,
             decadeS: decadeStart,
-            decadeE: decadeEnd
+            decadeE: decadeEnd,
+            selectYear: "",
+            pointsEarned: 0,
+            rounds: 0,
+            visibleForm: false,
+            timeStop: false,
+            visibleButtons: true
         }
     },
+    
     methods: {
         async extractData() {
             let fetchRes = await this.getObjectData()
@@ -75,15 +92,72 @@ const onePlayerGame = {
         startTimer() {
             this.timer = setInterval(() => {
                 this.count--;
-                if (this.count === 0 || this.count < 0) {
+                if (this.count < 1 ) {
                     this.points = this.points - 2
                     this.count = 60
+                    this.extractData();
                 }
             }, 1000)
         },
         stopTimer() {
             clearInterval(this.timer)
+            this.visibleForm = true;
+            this.timeStop = true;
+            this.visibleButtons = false;
+        },
+        nextPicture(){
+            this.count = 0;
+            if(this.timeStop){
+                this.count = 60;
+                this.startTimer();
+                this.timeStop = false;
+            }
+            if(this.points === 2){
+                this.rounds++;
+                this.points = 12;
+                if(this.point>=10){
+                    this.points = 10
+                }
+                this.generateDecade();
+            }
+            if(this.rounds > 5){
+                this.stopTimer();
+                localStorage.setItem('pointsEarned', this.pointsEarned);
+                this.$router.push('/scoreboard');
+            }
+        },
+        submitYear(){
+            const correctYear = String(decadeStart);
+            const yearInput = this.selectYear;
+            this.visibleButtons = true;
+            if(this.timeStop){
+                this.count = 60;
+                this.startTimer();
+                this.timeStop = false;
+            }
+            if(yearInput === correctYear){
+                this.pointsEarned += this.points;
+                this.rounds++;
+                this.points = 10;
+                this.generateDecade();
+                this.extractData();
+                         
+            }
+            else if (yearInput !== correctYear){
+                this.rounds++;
+                this.points = 10;
+                this.generateDecade();
+                this.extractData();
+             
+            }
+            if(this.rounds > 5){
+                this.stopTimer();
+                localStorage.setItem('pointsEarned', this.pointsEarned);
+                this.$router.push('/scoreboard');
+            }
+            
         }
+
     },
     template: `<div class="main-flex">
             <h1>Vilket årtioende söker vi?</h1>
@@ -92,8 +166,13 @@ const onePlayerGame = {
             <img :src="objektBild" alt="" class="fetchedImage">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
-            <button class="stopButton" @click="stopTimer">NÖDBROMS</button>
-            <input type="date" class="date" value ="1900-01-01">
+            <button class="stopButton" v-show="visibleButtons" @click="stopTimer">NÖDBROMS</button>
+            <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
+            <form v-show="visibleForm">
+            <input type="text" class="date" v-model="selectYear">
+            <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
+            </form>
+            <h3> DU HAR {{pointsEarned}} POÄNG - RUNDA: {{rounds}}/5</h3>
             </div>`
 }
 
