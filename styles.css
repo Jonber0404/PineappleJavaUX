@@ -16,11 +16,16 @@
     transform: translate(-50%, -50%);
 
     font-size: 30px;
+    background-color: burlywood;
+    border-radius: 3px;
+    font-family: fantasy;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
 .playbutton {
     width: 20rem;
     margin-top: -7rem;
+    
 }
 
 .scoreboardbutton {

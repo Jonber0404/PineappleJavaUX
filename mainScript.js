@@ -3,9 +3,9 @@ let decadeEnd, decadeStart, totalAmount
 // Main meny
 const homePage = {
     name: "homePage",
-    template: `<router-link to="/playerSelection"><button class='playbutton'>Spela</button></router-link>
-                <router-link to="/scoreboard"><button class='scoreboardbutton'>Scoreboard</button></router-link>
-                <router-link to="/gameRules"><button class='gamerulesbutton'>Spelregler</button></router-link>`
+    template: `<router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
+                <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
+                <router-link to="/gameRules"><button class='gamerulesbutton startmenubutton'>Spelregler</button></router-link>`
 }
 
 // Single player eller two player
