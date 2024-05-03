@@ -38,6 +38,49 @@
     margin-top: 7rem;
 }
 
+.easy {
+    width: 5rem;
+    margin-top: 0rem;
+    margin-right: 5rem;
+    background-color: burlywood;
+    font-family: fantasy;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+}
+
+.medium {
+    width: 5rem;
+    margin-top: 0rem;
+    margin-right: 5rem;
+    background-color: burlywood;
+    font-family: fantasy;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+}
+
+.hard {
+    width: 5rem;
+    margin-top: 0rem;
+    margin-right: 5rem;
+    background-color: burlywood;
+    font-family: fantasy;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+}
+
+.startGameArrow{
+    width: 5rem;
+    margin-top: 0rem;
+    background-color: burlywood;
+    font-family: fantasy;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+}
+
 
 /*Playerselection*/
 .oneplayer,

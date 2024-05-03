@@ -11,29 +11,70 @@ const homePage = {
 // Single player eller two player
 const playerSelection = {
     name: "playerSelection",
+    data() {
+        return {
+            numPlayers: 0
+        }
+    }, methods: {
+        setPlayers(num) {
+            this.$root.numPlayers = num;
+        }
+    },
+
     template: `<div class="main-flex">
             <h1>ANTAL SPELARE</h1>
                 <div class="selection">
-                    <router-link to="/onePlayerGame"><button class="oneplayer">1 SPELARE</button></router-link>
-                    <router-link to="/twoPlayerGame"><button class="oneplayer">2 SPELARE</button></router-link>
+                    <router-link to="/difficultySelection" @click="setPlayers(1)"><button class="oneplayer">1 SPELARE</button></router-link>
+                    <router-link to="/difficultySelection" @click="setPlayers(2)"><button class="oneplayer">2 SPELARE</button></router-link>
                 </div>
             </div>`
 }
 
+//Välj svårighetsgrad, som ska vara efter man valt antalet spelare
+const difficultySelection = {
+    name: "difficultySelection",
+    data() {
+        return {
+            difficulty: 0
+        }
+    }, methods: {
+        setDifficulty(n) {
+            this.difficulty = n;
+        }
+    },
+    template: `<div class="main-flex">
+    <h1>VÄLJ SVÅRIGHETSGRAD</h1>
+        <div class="selection">
+
+
+            <button class="easy" @click="setDifficulty(1)">LÅG</button>
+            <button class="medium" @click="setDifficulty(2)">MEDIUM</button>
+            <button class="hard" @click="setDifficulty(3)">HÖG</button>
+
+            <p>Selected difficulty: {{ difficulty }}</p>
+
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+            
+        </div>
+    </div>`
+}
+
+
 // scoreboard
 const scoreboard = {
     name: "scoreboard",
-    data(){
-        return{
+    data() {
+        return {
             pointsEarned: 0
         }
     },
-        created(){
-            const storedPointsEarned = localStorage.getItem('pointsEarned');
-            this.pointsEarned = storedPointsEarned;
-        },
-        template: `<p>POÄNG: {{pointsEarned}}</p>`
-    }
+    created() {
+        const storedPointsEarned = localStorage.getItem('pointsEarned');
+        this.pointsEarned = storedPointsEarned;
+    },
+    template: `<p>POÄNG: {{pointsEarned}}</p>`
+}
 
 
 // spelregler
@@ -73,7 +114,7 @@ const onePlayerGame = {
             visibleButtons: true
         }
     },
-    
+
     methods: {
         async extractData() {
             let fetchRes = await this.getObjectData()
@@ -92,7 +133,7 @@ const onePlayerGame = {
         startTimer() {
             this.timer = setInterval(() => {
                 this.count--;
-                if (this.count < 1 ) {
+                if (this.count < 1) {
                     this.points = this.points - 2
                     this.count = 60
                     this.extractData();
@@ -105,57 +146,57 @@ const onePlayerGame = {
             this.timeStop = true;
             this.visibleButtons = false;
         },
-        nextPicture(){
+        nextPicture() {
             this.count = 0;
-            if(this.timeStop){
+            if (this.timeStop) {
                 this.count = 60;
                 this.startTimer();
                 this.timeStop = false;
             }
-            if(this.points === 2){
+            if (this.points === 2) {
                 this.rounds++;
                 this.points = 12;
-                if(this.point>=10){
+                if (this.point >= 10) {
                     this.points = 10
                 }
                 this.generateDecade();
             }
-            if(this.rounds > 5){
+            if (this.rounds > 5) {
                 this.stopTimer();
                 localStorage.setItem('pointsEarned', this.pointsEarned);
                 this.$router.push('/scoreboard');
             }
         },
-        submitYear(){
+        submitYear() {
             const correctYear = String(decadeStart);
             const yearInput = this.selectYear;
             this.visibleButtons = true;
-            if(this.timeStop){
+            if (this.timeStop) {
                 this.count = 60;
                 this.startTimer();
                 this.timeStop = false;
             }
-            if(yearInput === correctYear){
+            if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
                 this.rounds++;
                 this.points = 10;
                 this.generateDecade();
                 this.extractData();
-                         
+
             }
-            else if (yearInput !== correctYear){
+            else if (yearInput !== correctYear) {
                 this.rounds++;
                 this.points = 10;
                 this.generateDecade();
                 this.extractData();
-             
+
             }
-            if(this.rounds > 5){
+            if (this.rounds > 5) {
                 this.stopTimer();
                 localStorage.setItem('pointsEarned', this.pointsEarned);
                 this.$router.push('/scoreboard');
             }
-            
+
         }
 
     },
@@ -182,9 +223,10 @@ const router = VueRouter.createRouter({
     routes: [
         { path: '/', component: homePage },
         { path: '/playerSelection', component: playerSelection },
-        { path: '/scoreboard', component: scoreboard},
-        { path: '/gameRules', component: gameRules},
-        { path: '/onePlayerGame', component: onePlayerGame}
+        { path: '/scoreboard', component: scoreboard },
+        { path: '/gameRules', component: gameRules },
+        { path: '/onePlayerGame', component: onePlayerGame },
+        { path: '/difficultySelection', component: difficultySelection }
     ]
 })
 
@@ -194,40 +236,40 @@ const vueApp = Vue.createApp(app)
 
 // Här nedanför kan man lägga globala metoder
 vueApp.config.globalProperties.generateDecade = function () {
-        switch (Math.floor(Math.random() * 10)) {
-            case 0:
-                decadeStart = 1900
-                break
-            case 1:
-                decadeStart = 1910
-                break
-            case 2:
-                decadeStart = 1920
-                break
-            case 3:
-                decadeStart = 1930
-                break
-            case 4:
-                decadeStart = 1940
-                break
-            case 5:
-                decadeStart = 1950
-                break
-            case 6:
-                decadeStart = 1960
-                break
-            case 7:
-                decadeStart = 1970
-                break
-            case 8:
-                decadeStart = 1980
-                break
-            case 9:
-                decadeStart = 1990
-                break
-        }
-        decadeEnd = decadeStart + 9
-        totalAmount = 6407;
+    switch (Math.floor(Math.random() * 10)) {
+        case 0:
+            decadeStart = 1900
+            break
+        case 1:
+            decadeStart = 1910
+            break
+        case 2:
+            decadeStart = 1920
+            break
+        case 3:
+            decadeStart = 1930
+            break
+        case 4:
+            decadeStart = 1940
+            break
+        case 5:
+            decadeStart = 1950
+            break
+        case 6:
+            decadeStart = 1960
+            break
+        case 7:
+            decadeStart = 1970
+            break
+        case 8:
+            decadeStart = 1980
+            break
+        case 9:
+            decadeStart = 1990
+            break
+    }
+    decadeEnd = decadeStart + 9
+    totalAmount = 6407;
 }
 
 vueApp.config.globalProperties.getObjectData = async function () {
