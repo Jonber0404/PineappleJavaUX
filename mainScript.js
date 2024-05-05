@@ -171,6 +171,7 @@ const onePlayerGame = {
             const correctYear = String(decadeStart);
             const yearInput = this.selectYear;
             this.visibleButtons = true;
+            this.visibleForm = false;
             if (this.timeStop) {
                 this.count = 60;
                 this.startTimer();
