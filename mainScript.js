@@ -97,20 +97,19 @@ const onePlayerGame = {
     data() {
         return {
             points: 10,
-            count: 60,
+            count: 10,
             objekt: {},
             objektBild: "",
             objektDatum: "",
             objektDesc: "",
             objektUrl: "",
             timer: null,
+            timeStop: false,
             decadeS: decadeStart,
             decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
-            rounds: 0,
             visibleForm: false,
-            timeStop: false,
             visibleButtons: true
         }
     },
@@ -134,37 +133,27 @@ const onePlayerGame = {
             this.timer = setInterval(() => {
                 this.count--;
                 if (this.count < 1) {
-                    this.points = this.points - 2
-                    this.count = 60
-                    this.extractData();
+                    this.nextPicture()
                 }
             }, 1000)
         },
         stopTimer() {
             clearInterval(this.timer)
             this.visibleForm = true;
-            this.timeStop = true;
             this.visibleButtons = false;
+            this.timeStop = true
         },
         nextPicture() {
-            this.count = 0;
-            if (this.timeStop) {
-                this.count = 60;
-                this.startTimer();
-                this.timeStop = false;
-            }
-            if (this.points === 2) {
-                this.rounds++;
-                this.points = 12;
-                if (this.point >= 10) {
-                    this.points = 10
+            if (this.points > 2) {
+                this.extractData()
+                this.count = 10
+                this.points = this.points - 2
+                if (this.timeStop) {
+                    this.startTimer()
                 }
-                this.generateDecade();
-            }
-            if (this.rounds > 5) {
-                this.stopTimer();
-                localStorage.setItem('pointsEarned', this.pointsEarned);
-                this.$router.push('/scoreboard');
+            } else {
+                this.points = 0
+                this.endGame()
             }
         },
         submitYear() {
@@ -172,32 +161,17 @@ const onePlayerGame = {
             const yearInput = this.selectYear;
             this.visibleButtons = true;
             this.visibleForm = false;
-            if (this.timeStop) {
-                this.count = 60;
-                this.startTimer();
-                this.timeStop = false;
-            }
             if (yearInput === correctYear) {
-                this.pointsEarned += this.points;
-                this.rounds++;
-                this.points = 10;
-                this.generateDecade();
-                this.extractData();
-
+                this.endGame()
             }
             else if (yearInput !== correctYear) {
-                this.rounds++;
-                this.points = 10;
-                this.generateDecade();
-                this.extractData();
-
+                this.nextPicture()
             }
-            if (this.rounds > 5) {
-                this.stopTimer();
-                localStorage.setItem('pointsEarned', this.pointsEarned);
-                this.$router.push('/scoreboard');
-            }
-
+        },
+        endGame() {
+            this.pointsEarned += this.points
+            localStorage.setItem('pointsEarned', this.pointsEarned)
+            this.$router.push('/scoreboard')
         }
 
     },
@@ -214,7 +188,6 @@ const onePlayerGame = {
             <input type="text" class="date" v-model="selectYear">
             <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
             </form>
-            <h3> DU HAR {{pointsEarned}} POÄNG - RUNDA: {{rounds}}/5</h3>
             </div>`
 }
 
