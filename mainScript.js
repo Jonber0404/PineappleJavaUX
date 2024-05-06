@@ -191,8 +191,7 @@ const onePlayerGame = {
             if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
                 this.rounds++;
-                this.points = 10;
-                this.visibleForm = false;
+                this.points = 10;    
                 this.generateDecade();
                 this.extractData();
 
@@ -200,7 +199,6 @@ const onePlayerGame = {
             else if (yearInput !== correctYear) {
                 this.rounds++;
                 this.points = 10;
-                this.visibleForm = false;
                 this.generateDecade();
                 this.extractData();
 
