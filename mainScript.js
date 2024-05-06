@@ -1,4 +1,5 @@
-let decadeEnd, decadeStart, totalAmount
+let decadeEnd, decadeStart, totalAmount;
+
 
 // Main meny
 const homePage = {
@@ -66,14 +67,22 @@ const scoreboard = {
     name: "scoreboard",
     data() {
         return {
-            pointsEarned: 0
+            playerInfo: []
         }
     },
+
     created() {
-        const storedPointsEarned = localStorage.getItem('pointsEarned');
-        this.pointsEarned = storedPointsEarned;
+        let playerData = localStorage.getItem('playerData');
+        this.playerInfo = JSON.parse(playerData) || [];
+        this.sortedArrays();
+
     },
-    template: `<p>POÄNG: {{pointsEarned}}</p>`
+    methods: {
+        sortedArrays() {
+            return this.playerInfo.sort((a, b) => b.pointsEarned - a.pointsEarned)
+        }
+    },
+    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>`
 }
 
 
@@ -89,7 +98,9 @@ const onePlayerGame = {
         this.generateDecade()
     },
     created() {
-        this.extractData()
+        this.extractData();
+        this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
+
     },
     mounted() {
         this.startTimer()
@@ -108,10 +119,12 @@ const onePlayerGame = {
             decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
-            rounds: 0,
+            rounds: 1,
             visibleForm: false,
             timeStop: false,
-            visibleButtons: true
+            visibleButtons: true,
+            playerData: []
+
         }
     },
 
@@ -156,9 +169,7 @@ const onePlayerGame = {
             if (this.points === 2) {
                 this.rounds++;
                 this.points = 12;
-                if (this.point >= 10) {
-                    this.points = 10
-                }
+
                 this.generateDecade();
             }
             if (this.rounds > 5) {
@@ -180,6 +191,7 @@ const onePlayerGame = {
                 this.pointsEarned += this.points;
                 this.rounds++;
                 this.points = 10;
+                this.visibleForm = false;
                 this.generateDecade();
                 this.extractData();
 
@@ -187,13 +199,18 @@ const onePlayerGame = {
             else if (yearInput !== correctYear) {
                 this.rounds++;
                 this.points = 10;
+                this.visibleForm = false;
                 this.generateDecade();
                 this.extractData();
 
             }
+
             if (this.rounds > 5) {
                 this.stopTimer();
-                localStorage.setItem('pointsEarned', this.pointsEarned);
+                let playerName = prompt("Fyll i ditt namn: ");
+
+                this.playerData.push({ playerName, pointsEarned: this.pointsEarned });
+                localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
             }
 
