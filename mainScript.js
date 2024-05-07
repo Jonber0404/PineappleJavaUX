@@ -259,49 +259,17 @@ const vueApp = Vue.createApp(app)
 
 // Här nedanför kan man lägga globala metoder
 vueApp.config.globalProperties.generateDecade = function () {
-    switch (Math.floor(Math.random() * 10)) {
-        case 0:
-            decadeStart = 1900
-            break
-        case 1:
-            decadeStart = 1910
-            break
-        case 2:
-            decadeStart = 1920
-            break
-        case 3:
-            decadeStart = 1930
-            break
-        case 4:
-            decadeStart = 1940
-            break
-        case 5:
-            decadeStart = 1950
-            break
-        case 6:
-            decadeStart = 1960
-            break
-        case 7:
-            decadeStart = 1970
-            break
-        case 8:
-            decadeStart = 1980
-            break
-        case 9:
-            decadeStart = 1990
-            break
-    }
+    decadeStart = (Math.floor(Math.random() * 10) * 10) + 1900
     decadeEnd = decadeStart + 9
-    totalAmount = 6407;
 }
 
 vueApp.config.globalProperties.getObjectData = async function () {
-    let randomObjekt = Math.floor((Math.random() * totalAmount) + 1)
+    let randomObjekt = Math.floor((Math.random() * 665) + 1)
     try {
         const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?` +
             `method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}` +
             `+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j` +
-            `+AND+contextLabel=Fotografering`, {
+            `+AND+contextLabel=Fotografering+AND+(item=fordon+OR+item=person)`, {
             headers: { 'Accept': 'application/json' }
         });
         return await response.json()
