@@ -152,7 +152,14 @@ const onePlayerGame = {
                     this.count = 60
                     this.extractData();
                 }
+                else if (this.points < 2) {
+                    this.generateDecade();
+                    this.extractData();
+                    this.points = 10;
+                }
             }, 1000)
+
+
         },
         stopTimer() {
             clearInterval(this.timer)
@@ -163,14 +170,12 @@ const onePlayerGame = {
         nextPicture() {
             this.count = 0;
             if (this.timeStop) {
-                this.count = 60;
                 this.startTimer();
                 this.timeStop = false;
             }
             if (this.points === 2) {
                 this.rounds++;
                 this.points = 12;
-
                 this.generateDecade();
             }
             if (this.rounds > 5) {
@@ -185,14 +190,14 @@ const onePlayerGame = {
             this.visibleButtons = true;
             this.visibleForm = false;
             if (this.timeStop) {
-                this.count = 60;
                 this.startTimer();
                 this.timeStop = false;
             }
             if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
                 this.rounds++;
-                this.points = 10;    
+                this.points = 10;
+                this.count = 60;
                 this.generateDecade();
                 this.extractData();
 
@@ -200,6 +205,7 @@ const onePlayerGame = {
             else if (yearInput !== correctYear) {
                 this.rounds++;
                 this.points = 10;
+                this.count = 60;
                 this.generateDecade();
                 this.extractData();
 
