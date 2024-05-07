@@ -1,4 +1,4 @@
-let decadeEnd, decadeStart, totalAmount;
+let decadeEnd, decadeStart
 
 
 // Main meny
