@@ -82,7 +82,8 @@ const scoreboard = {
             return this.playerInfo.sort((a, b) => b.pointsEarned - a.pointsEarned)
         }
     },
-    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>`
+    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>
+    <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
 }
 
 
