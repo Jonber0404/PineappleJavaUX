@@ -41,6 +41,21 @@ const difficultySelection = {
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
+        },
+        getDifficulty(n) {
+            return this.difficulty(n)
+        },
+        getSelectedDifficulty(dif) {
+            switch (dif) {
+                case 'easy':
+                    return this.difficulty.getDifficulty(1)
+                case 'normal':
+                    return this.difficulty.getDifficulty(2)
+                case 'hard':
+                    return this.difficulty.getDifficulty(3)
+                default:
+                    return 'Unknown'
+            }
         }
     },
     template: `<div class="main-flex">
@@ -65,25 +80,69 @@ const difficultySelection = {
 // scoreboard
 const scoreboard = {
     name: "scoreboard",
+    template: `<div>
+                    <div class="playerScoreSelector">
+                        <router-link to="/"><button class='scoreboardnavbutton'>Huvudmeny</button></router-link>
+                        <router-link to="/scoreboardEasy"><button class='scoreboardnavbutton'>Easy Mode</button></router-link>
+                        <router-link to="/scoreboardMedium"><button class="scoreboardnavbutton">Normal Mode</button></router-link>
+                        <router-link to="/scoreboardHard"><button class="scoreboardnavbutton">Hard Mode</button></router-link>
+                    </div>
+                    <div class="playerScoreViewer">
+                        
+                    </div>
+                </div>`
+}
+
+const scoreboardEasy = {
+    name: "scoreboardEasy",
     data() {
         return {
             playerInfo: []
         }
     },
+    created() {
+        let playerData = JSON.parse(localStorage.getItem('playerData')) || [];
+        this.playerInfo = playerData.filter(player => player.difficulty === 1);
+        this.sortedArrays();
+    },
+    methods: {
+        sortedArrays() {
+            this.playerInfo.sort((a, b) => b.pointsEarned - a.pointsEarned)
+            // This bit limits it to the top 20 players for easy mode.
+            this.playerInfo = this.playerInfo.slice(0,20);
+        }
+    },
+    template: `<div>
+                    <div class="playerScoreSelector">
+                        <router-link to="/"><button class='scoreboardnavbutton'>Huvudmeny</button></router-link>
+                        <router-link to="/scoreboardEasy"><button class='scoreboardnavdifbutton'>Easy Mode</button></router-link>
+                        <router-link to="/scoreboardMedium"><button class='scoreboardnavdifbutton'>Normal Mode</button></router-link>
+                        <router-link to="/scoreboardHard"><button class='scoreboardnavdifbutton'>Hard Mode</button></router-link>
+                    </div>
+                    <div class="playerScoreViewer">
+                        <p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>
+                    </div>
+                </div>`
+}
 
+const scoreboardMedium = {
+    name: "scoreboardMedium",
+    data() {
+        return {
+            playerInfo: []
+        }
+    },
     created() {
         let playerData = localStorage.getItem('playerData');
         this.playerInfo = JSON.parse(playerData) || [];
         this.sortedArrays();
-
     },
     methods: {
         sortedArrays() {
             return this.playerInfo.sort((a, b) => b.pointsEarned - a.pointsEarned)
         }
     },
-    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>
-    <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
+    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>`
 }
 
 

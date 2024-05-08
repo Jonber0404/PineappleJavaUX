@@ -109,6 +109,37 @@
     flex-direction: column;
 }
 
+/****************Scoreboard Things****************/
+.playerScoreSelector {
+    flex-direction: column;
+    text-align: center;
+    position: absolute;
+}
+
+.playerScoreViewer {
+
+}
+
+.scoreboardnavbutton {
+    border-radius: 25px;
+    padding: 0.5rem;
+
+    text-align: center;
+    margin-top: 3rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+
+    font-size: 30px;
+    background-color: burlywood;
+    border-radius: 3px;
+    font-family: fantasy;
+    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+}
+
+.scoreboardnavdifbutton {
+
+}
+
 
 @media screen and (min-width: 576px) {
 
@@ -205,6 +236,7 @@ a {
 .beta-nav a:last-child {
     margin-left: auto;
 }
+
 
 @media screen and (min-width: 576px) {
 
