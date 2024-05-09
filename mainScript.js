@@ -1,6 +1,5 @@
 let decadeEnd, decadeStart
 
-
 // Main meny
 const homePage = {
     name: "homePage",
@@ -36,11 +35,12 @@ const difficultySelection = {
     name: "difficultySelection",
     data() {
         return {
-            difficulty: 0
+            difficulty: ""
         }
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
+            localStorage.setItem("difficulty", this.difficulty);
         }
     },
     template: `<div class="main-flex">
@@ -48,9 +48,9 @@ const difficultySelection = {
         <div class="selection">
 
 
-            <button class="easy" @click="setDifficulty(1)">LÅG</button>
-            <button class="medium" @click="setDifficulty(2)">MEDIUM</button>
-            <button class="hard" @click="setDifficulty(3)">HÖG</button>
+            <button class="easy" @click="setDifficulty('ENKEL')">LÅG</button>
+            <button class="medium" @click="setDifficulty('MELLAN')">MEDIUM</button>
+            <button class="hard" @click="setDifficulty('SVÅR')">HÖG</button>
 
             <p>Selected difficulty: {{ difficulty }}</p>
 
@@ -70,19 +70,19 @@ const scoreboard = {
             playerInfo: []
         }
     },
-
     created() {
         let playerData = localStorage.getItem('playerData');
         this.playerInfo = JSON.parse(playerData) || [];
         this.sortedArrays();
-
+   
     },
     methods: {
         sortedArrays() {
             return this.playerInfo.sort((a, b) => b.pointsEarned - a.pointsEarned)
         }
     },
-    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>
+    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}}
+   - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
     <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
 }
 
@@ -101,10 +101,131 @@ const onePlayerGame = {
     created() {
         this.extractData();
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
+        this.difficulty = localStorage.getItem("difficulty");
 
     },
     mounted() {
-        this.startTimer()
+        this.startTimer();
+        this.playerName = prompt("Vad heter du?");
+    },
+    data() {
+        return {
+            points: 10,
+            difficulty: 0,
+            count: 60,
+            objekt: {},
+            objektBild: "",
+            objektDatum: "",
+            objektDesc: "",
+            objektUrl: "",
+            timer: null,
+            decadeS: decadeStart,
+            decadeE: decadeEnd,
+            selectYear: "",
+            pointsEarned: 0,
+            playerName: "",
+            visibleForm: false,
+            timeStop: false,
+            visibleButtons: true,
+            playerData: []
+
+        }
+    },
+
+    methods: {
+        async extractData() {
+            let fetchRes = await this.getObjectData()
+            let currentRecord = fetchRes.result.records[0].record['@graph']
+            this.objektBild = currentRecord.find(obj => obj.lowresSource).lowresSource
+            this.objektDesc = currentRecord.find(obj => obj.desc).desc
+            this.objektUrl = currentRecord.find(obj => obj.url).url
+            for (obj of currentRecord) {
+                if (Object.keys(obj).includes("contextLabel")) {
+                    if (obj.contextLabel.includes("Fotografering") && obj.contextType.includes("produce")) {
+                        this.objektDatum = obj.fromTime
+                    }
+                }
+            }
+        },
+        startTimer() {
+            this.timer = setInterval(() => {
+                this.count--;
+                this.timeStop = false;
+                if (this.count < 1) {
+                    this.points = this.points - 2
+                    this.count = 60
+                    this.extractData();
+                }
+            }, 1000)
+        },
+        stopTimer() {
+            clearInterval(this.timer)
+            this.visibleForm = true;
+            this.timeStop = true;
+            this.visibleButtons = false;
+        },
+        nextPicture() {
+            this.count = 0;
+            if (this.timeStop) {
+                this.startTimer();
+            }
+        },
+        submitYear() {
+            const correctYear = String(decadeStart);
+            const yearInput = this.selectYear;
+            this.visibleButtons = true;
+            this.visibleForm = false;
+        
+            if (yearInput === correctYear) {
+                this.pointsEarned += this.points;
+                let playerName = this.playerName;
+                const currentDate = new Date().toLocaleDateString();
+                let difficulty = this.difficulty;
+          
+                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty });
+                localStorage.setItem('playerData', JSON.stringify(this.playerData));
+                this.$router.push('/scoreboard');
+
+            }
+            else if (yearInput !== correctYear) {
+                this.points = this.points - 2;
+                this.count = 60;
+                this.startTimer();
+                this.extractData();
+            }
+  
+
+        }
+
+    },
+    template: `<div class="main-flex">
+            <h1>Vilket årtioende söker vi?</h1>
+            <h2>{{points}} POÄNG</h2>
+            <h3>Timer: {{count}}</h3>
+            <img :src="objektBild" alt="" class="fetchedImage">
+            <p> Bildtext: {{objektDesc}}</p>
+            <p>Fotograferad: {{objektDatum}}</p>
+            <button class="stopButton" v-show="visibleButtons" @click="stopTimer">NÖDBROMS</button>
+            <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
+            <form v-show="visibleForm">
+            <input type="text" class="date" v-model="selectYear">
+            <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
+            </form>
+            <h3> DU HAR {{pointsEarned}} POÄNG</h3>
+            </div>`
+}
+
+/* const twoPlayerGame = {
+    name: "twoPlayerGame",
+    beforeCreate() {
+        this.generateDecade()
+    },
+    created() {
+        this.extractData();
+
+    },
+    mounted() {
+        this.startTimer();
     },
     data() {
         return {
@@ -120,6 +241,7 @@ const onePlayerGame = {
             decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
+            playerName: "",
             rounds: 1,
             visibleForm: false,
             timeStop: false,
@@ -158,8 +280,6 @@ const onePlayerGame = {
                     this.points = 10;
                 }
             }, 1000)
-
-
         },
         stopTimer() {
             clearInterval(this.timer)
@@ -173,15 +293,10 @@ const onePlayerGame = {
                 this.startTimer();
                 this.timeStop = false;
             }
-            if (this.points === 2) {
-                this.rounds++;
-                this.points = 12;
-                this.generateDecade();
-            }
-            if (this.rounds > 5) {
+
+            if (this.rounds > 3) {
                 this.stopTimer();
-                localStorage.setItem('pointsEarned', this.pointsEarned);
-                this.$router.push('/scoreboard');
+                
             }
         },
         submitYear() {
@@ -203,18 +318,13 @@ const onePlayerGame = {
 
             }
             else if (yearInput !== correctYear) {
-                this.rounds++;
-                this.points = 10;
+                this.points = this.points - 2;
                 this.count = 60;
-                this.generateDecade();
                 this.extractData();
-
             }
-
-            if (this.rounds > 5) {
+            if (this.rounds > 3) {
                 this.stopTimer();
-                let playerName = prompt("Fyll i ditt namn: ");
-
+                let playerName = this.playerName;
                 this.playerData.push({ playerName, pointsEarned: this.pointsEarned });
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
@@ -236,9 +346,9 @@ const onePlayerGame = {
             <input type="text" class="date" v-model="selectYear">
             <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
             </form>
-            <h3> DU HAR {{pointsEarned}} POÄNG - RUNDA: {{rounds}}/5</h3>
+            <h3> DU HAR {{pointsEarned}} POÄNG - RUNDA: {{rounds}}/3</h3>
             </div>`
-}
+} */
 
 // skapa router
 const router = VueRouter.createRouter({
@@ -249,6 +359,7 @@ const router = VueRouter.createRouter({
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
         { path: '/onePlayerGame', component: onePlayerGame },
+    //    { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection }
     ]
 })
