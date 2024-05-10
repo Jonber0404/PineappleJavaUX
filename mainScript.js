@@ -78,14 +78,17 @@ const scoreboard = {
     },
     methods: {
         sortedArrays() { 
-            return this.playerInfo.sort((a, b)=> {
-                if(a.pointsEarned - b.pointsEarned === 0){
-                    this.playerInfo.sort((a,b  => b.currentDate - a.currentDate));
-                }
-                else{
-                    this.playerInfo.sort((a, b => b.pointsEarned - a.pointsEarned));
-                }
-            })
+                 this.playerInfo.sort((a, b) => {
+                    if(b.pointsEarned - a.pointsEarned === 0){
+                        return b.currentDate - a.currentDate;
+                    }
+                    else{
+                      return b.pointsEarned - a.pointsEarned
+                    }
+                 })
+                 
+                
+          
         }
     },
     template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}}
