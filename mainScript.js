@@ -219,7 +219,7 @@ const onePlayerGame = {
             <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
             <input type="text" class="date" v-model="selectYear">
-            <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
+            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
             </form>
             <h3> DU HAR {{pointsEarned}} POÄNG</h3>
             </div>`
