@@ -1,4 +1,4 @@
-let decadeEnd, decadeStart
+let decadeEnd, decadeStart, currentRoundPictures
 
 // Main meny
 const homePage = {
@@ -70,7 +70,7 @@ const scoreboard = {
             playerInfo: []
         }
     },
-    created() {
+    mounted() {
         let playerData = localStorage.getItem('playerData');
         this.playerInfo = JSON.parse(playerData) || [];
         this.sortedArrays();
@@ -93,6 +93,7 @@ const scoreboard = {
     },
     template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}}
    - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
+<!--    <pre>{{ playerInfo }}</pre>-->
     <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
 }
 
@@ -109,12 +110,13 @@ const onePlayerGame = {
         this.generateDecade()
     },
     created() {
-        this.extractData();
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
 
     },
     mounted() {
+        currentRoundPictures = []
+        this.extractData();
         this.startTimer();
         this.playerName = prompt("Vad heter du?");
     },
@@ -156,6 +158,7 @@ const onePlayerGame = {
                     }
                 }
             }
+            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl})
         },
         startTimer() {
             this.timer = setInterval(() => {
@@ -192,7 +195,7 @@ const onePlayerGame = {
                 const currentDate = new Date().toLocaleDateString();
                 let difficulty = this.difficulty;
           
-                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty });
+                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty, correctYear, currentRoundPictures });
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
 
