@@ -403,7 +403,7 @@ const twoPlayerGame = {
             <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
             <input type="text" class="date" v-model="selectYear">
-            <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
+            <input type="submit" class="submitButton" @click.prevent="submitYear"  value="GISSA ÅR" />
             </form>
             <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3>           
             </div>`
