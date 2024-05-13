@@ -31,21 +31,30 @@ const playerSelection = {
             </div>`
 }
 
+
+
 //Välj svårighetsgrad, som ska vara efter man valt antalet spelare
 const difficultySelection = {
     name: "difficultySelection",
     data() {
         return {
-            difficulty: ""
+            difficulty: "",
+            playerOneName: "",
+            playerTwoName:""
         }
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
             localStorage.setItem("difficulty", this.difficulty);
+        },
+        storeNames(){
+            localStorage.setItem('playerOneName', this.playerOneName);
+            localStorage.setItem('playerTwoName', this.playerTwoName);
         }
     },
     template: `<div class="main-flex">
     <h1>VÄLJ SVÅRIGHETSGRAD</h1>
+    
         <div class="selection">
 
 
@@ -54,10 +63,23 @@ const difficultySelection = {
             <button class="hard" @click="setDifficulty('SVÅR')">HÖG</button>
 
             <p>Selected difficulty: {{ difficulty }}</p>
-
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+   
+       
             
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
+            
+            
+        </div>
+
+        <div v-if="$root.numPlayers === 1">
+        <input type="text" v-model="playerOneName">
+        </div>
+
+        <div v-else-if="$root.numPlayers === 2">
+        <input type="text" v-model="playerOneName">
+        <input type="text" v-model="playerTwoName">
+       
         </div>
     </div>`
 }
@@ -113,6 +135,7 @@ const onePlayerGame = {
     created() {
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
+       this.playerOneName = localStorage.getItem('playerOneName');
 
     },
     mounted() {
@@ -136,13 +159,14 @@ const onePlayerGame = {
             decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
-            playerName: "",
             visibleForm: false,
             timeStop: false,
             visibleButtons: true,
-            playerData: []
+            playerData: [],
+      
         }
     },
+
 
     methods: {
         async extractData() {
@@ -191,7 +215,7 @@ const onePlayerGame = {
 
             if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
-                let playerName = this.playerName;
+                let playerName = this.playerOneName;
                 const currentDate = new Date().toLocaleDateString();
                 let difficulty = this.difficulty;
                 this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty, correctYear, currentRoundPictures });
@@ -235,12 +259,11 @@ const twoPlayerGame = {
     },
     created() {
         this.extractData();
-
+        this.playerOneName = localStorage.getItem('playerOneName');
+        this.playerTwoName = localStorage.getItem('playerTwoName');
     },
     mounted() {
         this.startTimer();
-        this.playerOneName = prompt("Vad heter spelare 1?");
-        this.playerTwoName = prompt("Vad heter spelare 2?");
     },
     data() {
         return {
@@ -268,7 +291,8 @@ const twoPlayerGame = {
             playerData: [],
             playerOneCorrect: false,
             playerTwoCorrect: false,
-            showMain: true
+            showMain: true,
+            roundOver: false
 
 
         }
@@ -383,8 +407,9 @@ const twoPlayerGame = {
                 this.visibleForm = false;
                 this.visibleButton1 = false;
                 this.visibleButton2 = false;
-                this.stopTimer();
                 this.showMain = false;
+                this.roundOver = true;
+                this.stopTimer();
                 
             }
         }
@@ -406,7 +431,11 @@ const twoPlayerGame = {
             <input type="text" class="date" v-model="selectYear">
             <input type="submit" class="submitButton" @click.prevent="submitYear"  value="GISSA ÅR" />
             </form>
-            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3>           
+            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
+            <div v-show="roundOver">    
+            <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
+            <h2 v-else>GRATTIS {{playerTwoName}} </h2>
+            </div>    
             </div>`
 }
 
@@ -418,7 +447,7 @@ const router = VueRouter.createRouter({
         { path: '/playerSelection', component: playerSelection },
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
-        { path: '/onePlayerGame', component: onePlayerGame },
+        { path: '/onePlayerGame', component: onePlayerGame},
         { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection }
     ]
