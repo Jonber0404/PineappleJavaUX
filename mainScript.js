@@ -138,12 +138,17 @@ const museum = {
             this.selectedImage = image;
         }
     },
-    template: `<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
+    template: `<!--<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>-->
                 <div class="museum-image-container">
                     <!-- Stor bild -->
-                    <img :src="selectedImage.imgUrl" class="museum-big-image">
-                    <pre>{{ selectedImage.description }}</pre>
+                    <div class="museum-big-image-div">
+                        <img :src="selectedImage.imgUrl" class="museum-big-image">
+                    </div>
+                    <div class="museum-text-container">
+                    <p>{{ selectedImage.date }}</p>
+                    <p>{{ selectedImage.description }}</p>
                     <a :href="selectedImage.infoUrl" target="_blank">Mer info</a>
+                    </div>
                     <!-- Lista med små bilder -->
                     <div class="museum-small-images">
                         <img v-for="(image, i) in images" :src="image.imgUrl" @click="selectImage(image)"
@@ -212,7 +217,7 @@ const onePlayerGame = {
                     }
                 }
             }
-            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc})
+            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum})
         },
         startTimer() {
             this.timer = setInterval(() => {
