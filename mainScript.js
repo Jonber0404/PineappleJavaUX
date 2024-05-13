@@ -323,7 +323,11 @@ const twoPlayerGame = {
             playerOneCorrect: false,
             playerTwoCorrect: false,
             showMain: true,
-            roundOver: false
+            roundOver: false,
+            playerOneWrongGuess: false,
+            playerTwoWrongGuess: false,
+            p1TimeStop: false,
+            p2TimeStop: false
 
 
         }
@@ -366,11 +370,16 @@ const twoPlayerGame = {
             this.timeStop = true;
             if (n === 1) {
                 this.visibleButton2 = false;
+                this.p1TimeStop = true;
+                console.log("1: "+this.p1TimeStop);
             }
             else {
                 this.visibleButton1 = false;
+                this.p2TimeStop = true;
+                console.log("2: "+this.p2TimeStop);
+          
             }
-
+            
         },
 
         nextPicture() {
@@ -389,6 +398,17 @@ const twoPlayerGame = {
                 this.startTimer();
                 this.timeStop = false;
             }
+            if(yearInput !== correctYear){
+                console.log(yearInput !== correctYear)
+                if(this.p1TimeStop){
+                    this.visibleButton1 = false;
+                    this.visibleButton2 = true;
+                }
+                else{
+                    this.visibleButton2 = false;
+                    this.visibleButton1 = true;
+                }
+            }
             if (yearInput === correctYear) {
                 if (this.visibleButton1 && !this.visibleButton2) {
                     this.playerOnePoints += this.points;
@@ -406,15 +426,14 @@ const twoPlayerGame = {
                 this.points -= 2;
                 this.count = 60;
                 this.extractData();
-            } else {
+            }  
+            else {
+             
                 this.points -= 2;
                 this.count = 60;
+                
             }
-            if (this.visibleButton1) {
-                this.visibleButton2 = true;
-            } else if (this.visibleButton2) {
-                this.visibleButton1 = true;
-            }
+     
             this.extractData();
             if(this.playerOneCorrect){
                 this.visibleButton1 = false;
@@ -422,13 +441,15 @@ const twoPlayerGame = {
             else if(this.playerTwoCorrect){
                 this.visibleButton2 = false;
             }
-            if (this.playerOneCorrect && this.playerTwoCorrect) {
+            if ((this.playerOneCorrect && this.playerTwoCorrect) || this.p1TimeStop && this.p2TimeStop) {
                 this.rounds++;
                 this.points = 10;
                 this.visibleButton1 = true;
                 this.visibleButton2 = true;
                 this.playerOneCorrect = false;
                 this.playerTwoCorrect = false;
+                this.p1TimeStop = false;
+                this.p2TimeStop = false;
                 this.generateDecade();
                 this.extractData();
             }
@@ -465,7 +486,7 @@ const twoPlayerGame = {
             <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
             <div v-show="roundOver">    
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
-            <h2 v-else>GRATTIS {{playerTwoName}} </h2>
+            <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
             </div>    
             </div>`
 }
