@@ -1,4 +1,4 @@
-let decadeEnd, decadeStart
+let decadeEnd, decadeStart, currentRoundPictures
 
 // Main meny
 const homePage = {
@@ -71,29 +71,30 @@ const scoreboard = {
             playerInfo: []
         }
     },
-    created() {
+    mounted() {
         let playerData = localStorage.getItem('playerData');
         this.playerInfo = JSON.parse(playerData) || [];
         this.sortedArrays();
-   
+
     },
     methods: {
-        sortedArrays() { 
-                 this.playerInfo.sort((a, b) => {
-                    if(b.pointsEarned - a.pointsEarned === 0){
-                        return b.currentDate - a.currentDate;
-                    }
-                    else{
-                      return b.pointsEarned - a.pointsEarned
-                    }
-                 })
-                 
-                
-          
+        sortedArrays() {
+            this.playerInfo.sort((a, b) => {
+                if (b.pointsEarned - a.pointsEarned === 0) {
+                    return b.currentDate - a.currentDate;
+                }
+                else {
+                    return b.pointsEarned - a.pointsEarned
+                }
+            })
+
+
+
         }
     },
     template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}}
    - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
+<!--    <pre>{{ playerInfo }}</pre>-->
     <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
 }
 
@@ -110,14 +111,15 @@ const onePlayerGame = {
         this.generateDecade()
     },
     created() {
-        this.extractData();
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
 
     },
     mounted() {
+        currentRoundPictures = []
+        this.extractData();
         this.startTimer();
-        this.playerName = prompt("Vad heter du?");
+
     },
     data() {
         return {
@@ -139,7 +141,6 @@ const onePlayerGame = {
             timeStop: false,
             visibleButtons: true,
             playerData: []
-
         }
     },
 
@@ -157,6 +158,7 @@ const onePlayerGame = {
                     }
                 }
             }
+            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl})
         },
         startTimer() {
             this.timer = setInterval(() => {
@@ -186,14 +188,14 @@ const onePlayerGame = {
             const yearInput = this.selectYear;
             this.visibleButtons = true;
             this.visibleForm = false;
-        
+
             if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
                 let playerName = this.playerName;
                 const currentDate = new Date().toLocaleDateString();
                 let difficulty = this.difficulty;
-          
-                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty });
+                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty, correctYear, currentRoundPictures });
+
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
 
@@ -204,7 +206,7 @@ const onePlayerGame = {
                 this.startTimer();
                 this.extractData();
             }
-  
+
 
         }
 
@@ -220,13 +222,13 @@ const onePlayerGame = {
             <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
             <input type="text" class="date" v-model="selectYear">
-            <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
+            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
             </form>
             <h3> DU HAR {{pointsEarned}} POÄNG</h3>
             </div>`
 }
 
-/* const twoPlayerGame = {
+const twoPlayerGame = {
     name: "twoPlayerGame",
     beforeCreate() {
         this.generateDecade()
@@ -237,6 +239,8 @@ const onePlayerGame = {
     },
     mounted() {
         this.startTimer();
+        this.playerOneName = prompt("Vad heter spelare 1?");
+        this.playerTwoName = prompt("Vad heter spelare 2?");
     },
     data() {
         return {
@@ -251,13 +255,21 @@ const onePlayerGame = {
             decadeS: decadeStart,
             decadeE: decadeEnd,
             selectYear: "",
-            pointsEarned: 0,
-            playerName: "",
+            playerOnePoints: 0,
+            playerTwoPoints: 0,
+            playerOneName: "",
+            playerTwoName: "",
             rounds: 1,
             visibleForm: false,
             timeStop: false,
-            visibleButtons: true,
-            playerData: []
+            visibleButton1: true,
+            visibleButton2: true,
+            visibleNextButton: true,
+            playerData: [],
+            playerOneCorrect: false,
+            playerTwoCorrect: false,
+            showMain: true
+
 
         }
     },
@@ -292,74 +304,111 @@ const onePlayerGame = {
                 }
             }, 1000)
         },
-        stopTimer() {
+        stopTimer(n) {
             clearInterval(this.timer)
+            this.visibleNextButton = false;
             this.visibleForm = true;
             this.timeStop = true;
-            this.visibleButtons = false;
+            if (n === 1) {
+                this.visibleButton2 = false;
+            }
+            else {
+                this.visibleButton1 = false;
+            }
+
         },
+
         nextPicture() {
             this.count = 0;
             if (this.timeStop) {
                 this.startTimer();
                 this.timeStop = false;
             }
-
-            if (this.rounds > 3) {
-                this.stopTimer();
-                
-            }
         },
         submitYear() {
             const correctYear = String(decadeStart);
             const yearInput = this.selectYear;
-            this.visibleButtons = true;
+            this.visibleNextButton = true;
             this.visibleForm = false;
             if (this.timeStop) {
                 this.startTimer();
                 this.timeStop = false;
             }
             if (yearInput === correctYear) {
-                this.pointsEarned += this.points;
+                if (this.visibleButton1 && !this.visibleButton2) {
+                    this.playerOnePoints += this.points;
+                    this.visibleButton2 = true;
+                    this.playerOneCorrect = true;
+                    this.visibleButton1 = false;
+
+                }
+                else if (this.visibleButton2 && !this.visibleButton1) {
+                    this.playerTwoPoints += this.points;
+                    this.visibleButton1 = true;
+                    this.playerTwoCorrect = true;
+                    this.visibleButton2 = false;
+                }
+                this.points -= 2;
+                this.count = 60;
+                this.extractData();
+            } else {
+                this.points -= 2;
+                this.count = 60;
+            }
+            if (this.visibleButton1) {
+                this.visibleButton2 = true;
+            } else if (this.visibleButton2) {
+                this.visibleButton1 = true;
+            }
+            this.extractData();
+            if(this.playerOneCorrect){
+                this.visibleButton1 = false;
+            }
+            else if(this.playerTwoCorrect){
+                this.visibleButton2 = false;
+            }
+            if (this.playerOneCorrect && this.playerTwoCorrect) {
                 this.rounds++;
                 this.points = 10;
-                this.count = 60;
+                this.visibleButton1 = true;
+                this.visibleButton2 = true;
+                this.playerOneCorrect = false;
+                this.playerTwoCorrect = false;
                 this.generateDecade();
                 this.extractData();
+            }
 
-            }
-            else if (yearInput !== correctYear) {
-                this.points = this.points - 2;
-                this.count = 60;
-                this.extractData();
-            }
             if (this.rounds > 3) {
+                this.rounds = 3;
+                this.visibleForm = false;
+                this.visibleButton1 = false;
+                this.visibleButton2 = false;
                 this.stopTimer();
-                let playerName = this.playerName;
-                this.playerData.push({ playerName, pointsEarned: this.pointsEarned });
-                localStorage.setItem('playerData', JSON.stringify(this.playerData));
-                this.$router.push('/scoreboard');
+                this.showMain = false;
+                
             }
-
         }
 
     },
     template: `<div class="main-flex">
+            <div v-show="showMain"> 
             <h1>Vilket årtioende söker vi?</h1>
             <h2>{{points}} POÄNG</h2>
             <h3>Timer: {{count}}</h3>
             <img :src="objektBild" alt="" class="fetchedImage">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
-            <button class="stopButton" v-show="visibleButtons" @click="stopTimer">NÖDBROMS</button>
-            <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
+            </div>
+            <button class="stopButton" v-show="visibleButton1" @click="stopTimer(1)">NÖDBROMS 1</button>
+            <button class="stopButton" v-show="visibleButton2" @click="stopTimer(2)">NÖDBROMS 2</button>
+            <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
             <input type="text" class="date" v-model="selectYear">
-            <input type="submit" class="submitButton" @click="submitYear" value="GISSA ÅR" />
+            <input type="submit" class="submitButton" @click.prevent="submitYear"  value="GISSA ÅR" />
             </form>
-            <h3> DU HAR {{pointsEarned}} POÄNG - RUNDA: {{rounds}}/3</h3>
+            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3>           
             </div>`
-} */
+}
 
 // skapa router
 const router = VueRouter.createRouter({
@@ -370,7 +419,7 @@ const router = VueRouter.createRouter({
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
         { path: '/onePlayerGame', component: onePlayerGame },
-    //    { path: '/twoPlayerGame', component: twoPlayerGame },
+        { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection }
     ]
 })
