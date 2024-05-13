@@ -200,7 +200,32 @@ body {
     background-image: url('assets/Vector.svg');
 }
 
+/* MUSEUM */
+.museum-big-image {
+    width: 100%;
+    max-width: 600px; /* Justera storlek efter behov */
+}
 
+/* Stil för de små bilderna */
+.museum-small-images {
+    display: flex;
+    justify-content: space-between; /* Justera layout efter behov */
+    width: 100%; /* Sätt bredden till 100% för att anpassa sig till storleken på den stora bilden */
+    padding: 0 20px; /* Justera mellanrummet mellan bilderna */
+    box-sizing: border-box; /* Inkludera padding i totalbredden */
+}
+
+.museum-small-image {
+    width: 80px; /* Justera storlek efter behov */
+    cursor: pointer;
+}
+
+/* Stil för behållaren för den stora bilden och små bilderna */
+.museum-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrera innehållet vertikalt */
+}
 
 
 

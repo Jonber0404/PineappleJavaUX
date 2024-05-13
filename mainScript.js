@@ -87,17 +87,48 @@ const scoreboard = {
                     return b.pointsEarned - a.pointsEarned
                 }
             })
-
-
-
+        },
+        toMuseum(gameToShow) {
+            currentRoundPictures = gameToShow.currentRoundPictures
+            this.$router.push('/museum')
         }
     },
-    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}}
-   - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
+    template: `<p v-for="(player, i) in playerInfo" :key="i" @click="toMuseum(player)">
+                Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
 <!--    <pre>{{ playerInfo }}</pre>-->
     <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
 }
 
+const museum = {
+    name: "museum",
+    data() {
+        return {
+            images: [],
+            selectedImage: {}
+        }
+    },
+    mounted() {
+        this.images = currentRoundPictures
+        this.selectedImage = currentRoundPictures[0]
+    },
+    methods: {
+        selectImage(image) {
+            this.selectedImage = image;
+        }
+    },
+    template: `<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
+                <div class="museum-image-container">
+                    <!-- Stor bild -->
+                    <img :src="selectedImage.imgUrl" class="museum-big-image">
+                    <pre>{{ selectedImage.description }}</pre>
+                    <a :href="selectedImage.infoUrl" target="_blank">Mer info</a>
+                    <!-- Lista med små bilder -->
+                    <div class="museum-small-images">
+                        <img v-for="(image, i) in images" :src="image.imgUrl" @click="selectImage(image)"
+                             class="museum-small-image">
+                    </div>
+                </div>`
+}
 
 // spelregler
 const gameRules = {
@@ -113,7 +144,6 @@ const onePlayerGame = {
     created() {
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
-
     },
     mounted() {
         currentRoundPictures = []
@@ -158,7 +188,7 @@ const onePlayerGame = {
                     }
                 }
             }
-            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl})
+            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc})
         },
         startTimer() {
             this.timer = setInterval(() => {
@@ -194,7 +224,8 @@ const onePlayerGame = {
                 let playerName = this.playerName;
                 const currentDate = new Date().toLocaleDateString();
                 let difficulty = this.difficulty;
-                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty, correctYear, currentRoundPictures });
+                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty,
+                                    correctYear, currentRoundPictures });
 
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
@@ -420,7 +451,8 @@ const router = VueRouter.createRouter({
         { path: '/gameRules', component: gameRules },
         { path: '/onePlayerGame', component: onePlayerGame },
         { path: '/twoPlayerGame', component: twoPlayerGame },
-        { path: '/difficultySelection', component: difficultySelection }
+        { path: '/difficultySelection', component: difficultySelection },
+        { path: '/museum', component: museum }
     ]
 })
 
