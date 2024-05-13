@@ -24,8 +24,8 @@
 
 .playbutton {
     width: 20rem;
-    margin-top: -7rem;
-    
+    margin-top: -6rem;
+
 }
 
 .scoreboardbutton {
@@ -35,7 +35,7 @@
 
 .gamerulesbutton {
     width: 20rem;
-    margin-top: 7rem;
+    margin-top: 6rem;
 }
 
 .easy {
@@ -71,7 +71,7 @@
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
-.startGameArrow{
+.startGameArrow {
     width: 5rem;
     margin-top: 0rem;
     background-color: burlywood;
@@ -83,7 +83,7 @@
 
 
 /*Playerselection*/
-.oneplayer,
+/*.oneplayer,
 .twoplayer,
 .stopButton {
     display: block;
@@ -95,8 +95,9 @@
     cursor: pointer;
     border-radius: 3px;
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-}
-.nextButton{
+} */
+
+.nextButton {
     display: block;
     font-size: 150%;
     background-color: burlywood;
@@ -105,9 +106,105 @@
     border-radius: 3px;
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
+
 .selection {
     flex-direction: column;
 }
+
+/*NEW CSS*/
+body {
+    height: 100vh;
+    background-image: url('assets/bakgrund2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0;
+    padding: 0;
+}
+
+.startmenubutton {
+    display: flex;
+    width: 350px;
+    height: 72px;
+    padding: 10px 40px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+
+    color: var(--Beige, #F5DFBD);
+    text-align: center;
+    /* Mobile_H3 */
+    font-family: Inconsolata;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 32px;
+    /* 114.286% */
+}
+
+.playbutton {
+    border-radius: 10px;
+    background: var(--Turkos-200, #1A7475);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.scoreboardbutton {
+    border-radius: 10px;
+    background: var(--Brun, #552C2D);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.gamerulesbutton {
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: none;
+
+    color: var(--Brun, #552C2D);
+    /* Desktop_H4 */
+    font-family: Inconsolata;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 23px;
+    /* 104.545% */
+}
+
+.oneplayer {
+    border-radius: 10px;
+    background: var(--Orange, #F05537);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    width: 20rem;
+    margin-top: -6rem;
+}
+
+.twoplayer {
+    border-radius: 10px;
+    background: var(--Turkos-100, #1D9594);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    width: 20rem;
+    margin-top: -0rem;
+}
+
+.backtomenu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 30px;
+    height: 25px;
+    background-image: url('assets/Vector.svg');
+}
+
+
+
+
+
+
 
 
 @media screen and (min-width: 576px) {
@@ -197,7 +294,7 @@ a {
 
 /*Feel free to delete this, it's just for ease of testing*/
 
-.beta-nav{
+.beta-nav {
     display: flex;
     flex-direction: row;
 }
@@ -206,18 +303,10 @@ a {
     margin-left: auto;
 }
 
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 576px) {}
 
-}
+@media screen and (min-width: 768px) {}
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {}
 
-}
-
-@media screen and (min-width: 992px) {
-
-}
-
-@media screen and (min-width: 1200px) {
-
-}
+@media screen and (min-width: 1200px) {}

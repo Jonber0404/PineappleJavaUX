@@ -5,7 +5,7 @@ const homePage = {
     name: "homePage",
     template: `<router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
                 <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
-                <router-link to="/gameRules"><button class='gamerulesbutton startmenubutton'>Spelregler</button></router-link>`
+                <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>`
 }
 
 // Single player eller two player
@@ -24,8 +24,9 @@ const playerSelection = {
     template: `<div class="main-flex">
             <h1>ANTAL SPELARE</h1>
                 <div class="selection">
-                    <router-link to="/difficultySelection" @click="setPlayers(1)"><button class="oneplayer">1 SPELARE</button></router-link>
-                    <router-link to="/difficultySelection" @click="setPlayers(2)"><button class="oneplayer">2 SPELARE</button></router-link>
+                    <router-link to="/"><button class='backtomenu'> </button></router-link>
+                    <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
+                    <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
                 </div>
             </div>`
 }
