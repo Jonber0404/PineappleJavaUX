@@ -427,7 +427,6 @@ const twoPlayerGame = {
                 }
                 this.points -= 2;
                 this.count = 60;
-                this.extractData();
             }  
             else {
              
@@ -435,8 +434,7 @@ const twoPlayerGame = {
                 this.count = 60;
                 
             }
-     
-            this.extractData();
+
             if(this.playerOneCorrect){
                 this.visibleButton1 = false;
             }
@@ -454,9 +452,8 @@ const twoPlayerGame = {
                 this.playerOneWrongGuess = false;
                 this.p1TimeStop = false;
                 this.p2TimeStop = false;
-                
+
                 this.generateDecade();
-                this.extractData();
             }
 
             if (this.rounds > 3) {
@@ -469,6 +466,7 @@ const twoPlayerGame = {
                 this.stopTimer();
 
             }
+            this.extractData();
         }
 
     },
