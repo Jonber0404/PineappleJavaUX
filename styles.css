@@ -238,7 +238,7 @@ body {
 }
 
 .museum-small-image {
-    width: 60px; /* Justera storlek efter behov */
+    width: 18%; /* Justera storlek efter behov */
     aspect-ratio: 1 / 1;
     cursor: pointer;
     border-radius: 5px;
@@ -310,6 +310,9 @@ body {
         font-size: 150%;
     }
 
+    .museum-big-image-div, .museum-text-container, .museum-small-images {
+        width: 25%;
+    }
 }
 
 
