@@ -516,8 +516,15 @@ const app = {}
 const vueApp = Vue.createApp(app)
 
 // Här nedanför kan man lägga globala metoder
+
+let decadeUrn = []
 vueApp.config.globalProperties.generateDecade = function () {
-    decadeStart = (Math.floor(Math.random() * 10) * 10) + 1900
+    if (decadeUrn.length === 0) {
+        decadeUrn = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990]
+    }
+    let randomIdx = Math.floor(Math.random() * (decadeUrn.length - 1))
+    decadeStart = decadeUrn[randomIdx]
+    decadeUrn.splice(randomIdx, 1)
     decadeEnd = decadeStart + 9
 }
 
