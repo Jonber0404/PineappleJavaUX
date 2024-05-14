@@ -329,8 +329,6 @@ const twoPlayerGame = {
             playerTwoCorrect: false,
             showMain: true,
             roundOver: false,
-            playerOneWrongGuess: false,
-            playerTwoWrongGuess: false,
             p1TimeStop: false,
             p2TimeStop: false
 
@@ -376,12 +374,11 @@ const twoPlayerGame = {
             if (n === 1) {
                 this.visibleButton2 = false;
                 this.p1TimeStop = true;
-                console.log("1: "+this.p1TimeStop);
             }
             else {
                 this.visibleButton1 = false;
                 this.p2TimeStop = true;
-                console.log("2: "+this.p2TimeStop);
+              
           
             }
             
@@ -399,15 +396,15 @@ const twoPlayerGame = {
             const yearInput = this.selectYear;
             this.visibleNextButton = true;
             this.visibleForm = false;
+            this.selectYear = "";
             if (this.timeStop) {
                 this.startTimer();
                 this.timeStop = false;
             }
             if(yearInput !== correctYear){
-                console.log(yearInput !== correctYear)
                 if(this.p1TimeStop){
                     this.visibleButton1 = false;
-                    this.visibleButton2 = true;
+                    this.visibleButton2 = true;            
                 }
                 else{
                     this.visibleButton2 = false;
@@ -446,15 +443,18 @@ const twoPlayerGame = {
             else if(this.playerTwoCorrect){
                 this.visibleButton2 = false;
             }
-            if ((this.playerOneCorrect && this.playerTwoCorrect) || this.p1TimeStop && this.p2TimeStop) {
+            if ((this.playerOneCorrect && this.playerTwoCorrect) || (this.p1TimeStop && this.p2TimeStop)) {
                 this.rounds++;
                 this.points = 10;
                 this.visibleButton1 = true;
                 this.visibleButton2 = true;
                 this.playerOneCorrect = false;
                 this.playerTwoCorrect = false;
+                this.playerTwoWrongGuess = false;
+                this.playerOneWrongGuess = false;
                 this.p1TimeStop = false;
                 this.p2TimeStop = false;
+                
                 this.generateDecade();
                 this.extractData();
             }
