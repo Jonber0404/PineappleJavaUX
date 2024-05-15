@@ -60,6 +60,16 @@
     margin-top: 0.6em;
 }
 
+.scoreboard_entries {
+    background-color: rgba(26, 116, 117, 1);
+    color: rgba(245, 223, 189, 1);
+    font-family: Inconsolata, sans-serif;
+    font-size: 25px;
+    font-weight: 700;
+    padding: 0.5em;
+    border-radius: 0.5em;
+}
+
 /*Playerselection*/
 /*.oneplayer,
 .twoplayer,
