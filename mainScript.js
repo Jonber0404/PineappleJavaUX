@@ -168,11 +168,9 @@ const gameRules = {
                 <router-link to="/"><button class='backtomenu'> </button></router-link><br><br>
                 <h1>SPELREGLER</h1>
                 <p>Spelet går ut på att gissa vilket årtal man befinner sig i.</p>
-                <ul>
-                    <li>Varje spelrunda har 5 foton från samma årtionde.</li>
-                    <li>Spelaren gissar med ledtrådar från bilderna och får poäng beroende på vilken bild hen gissar rätt på.</li>
-                    <li>Poängen minskar ju fler bilder som visas i rundan.</li>
-                </ul>
+                <p>&bull; Varje spelrunda har 5 foton från samma årtionde.</p>
+                <p>&bull; Spelaren gissar med ledtrådar från bilderna och får poäng beroende på vilken bild hen gissar rätt på.</p>
+                <p>&bull; Poängen minskar ju fler bilder som visas i rundan.</p><br>
                 <p>Om två spelare är med och en gissar rätt måste den vänta till nästa runda medan den andra fortsätter gissa. 
                 Spelaren med flest poäng efter tre rundor vinner.</p>
                 <p>För att gissa trycker man på handbromsen och väljer ett årtal.</p>
