@@ -40,14 +40,14 @@ const difficultySelection = {
         return {
             difficulty: "",
             playerOneName: "",
-            playerTwoName:""
+            playerTwoName: ""
         }
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
             localStorage.setItem("difficulty", this.difficulty);
         },
-        storeNames(){
+        storeNames() {
             localStorage.setItem('playerOneName', this.playerOneName);
             localStorage.setItem('playerTwoName', this.playerTwoName);
         }
@@ -171,7 +171,7 @@ const onePlayerGame = {
     created() {
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
-       this.playerOneName = localStorage.getItem('playerOneName');
+        this.playerOneName = localStorage.getItem('playerOneName');
 
     },
     mounted() {
@@ -198,7 +198,9 @@ const onePlayerGame = {
             visibleForm: false,
             timeStop: false,
             visibleButtons: true,
-            playerData: []
+            playerData: [],
+            gameOver: false,
+            mainDiv: true
         }
     },
 
@@ -217,7 +219,7 @@ const onePlayerGame = {
                     }
                 }
             }
-            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum})
+            currentRoundPictures.push({ imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum })
         },
         startTimer() {
             this.timer = setInterval(() => {
@@ -227,8 +229,14 @@ const onePlayerGame = {
                     this.points = this.points - 2
                     this.count = 60
                     this.extractData();
+                } else if (this.points === 0) {
+                //    this.points = 0;
+                    this.gameOver = true;
+                    this.mainDiv = false;
+
                 }
             }, 1000)
+
         },
         stopTimer() {
             clearInterval(this.timer)
@@ -253,8 +261,10 @@ const onePlayerGame = {
                 let playerName = this.playerOneName;
                 const currentDate = new Date().toLocaleDateString();
                 let difficulty = this.difficulty;
-                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty,
-                                    correctYear, currentRoundPictures });
+                this.playerData.push({
+                    playerName, pointsEarned: this.pointsEarned, currentDate, difficulty,
+                    correctYear, currentRoundPictures
+                });
 
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
@@ -266,12 +276,15 @@ const onePlayerGame = {
                 this.startTimer();
                 this.extractData();
             }
-
-
         }
 
     },
     template: `<div class="main-flex">
+             <div v-show="gameOver" v-if="points === 0">
+             <h1> HOPPSAN, DU FICK 0 POÄNG </h1>
+             <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
+              </div>
+              <div v-show="mainDiv">
             <h1>Vilket årtioende söker vi?</h1>
             <h2>{{points}} POÄNG</h2>
             <h3>Timer: {{count}}</h3>
@@ -281,10 +294,22 @@ const onePlayerGame = {
             <button class="stopButton" v-show="visibleButtons" @click="stopTimer">NÖDBROMS</button>
             <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
-            <input type="text" class="date" v-model="selectYear">
+            <select class="date" v-model="selectYear">
+            <option value="1900">1900</option>
+            <option value="1910">1910</option>
+            <option value="1920">1920</option>
+            <option value="1930">1930</option>
+            <option value="1940">1940</option>
+            <option value="1950">1950</option>
+            <option value="1960">1960</option>
+            <option value="1970">1970</option>
+            <option value="1980">1980</option>
+            <option value="1990">1990</option>
+            </select>
             <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
             </form>
             <h3> DU HAR {{pointsEarned}} POÄNG</h3>
+            </div>
             </div>`
 }
 
@@ -330,7 +355,8 @@ const twoPlayerGame = {
             showMain: true,
             roundOver: false,
             p1TimeStop: false,
-            p2TimeStop: false
+            p2TimeStop: false,
+            lookAway: false
 
 
         }
@@ -371,17 +397,18 @@ const twoPlayerGame = {
             this.visibleNextButton = false;
             this.visibleForm = true;
             this.timeStop = true;
+            this.lookAway = true;
             if (n === 1) {
                 this.visibleButton2 = false;
                 this.p1TimeStop = true;
+
             }
             else {
                 this.visibleButton1 = false;
                 this.p2TimeStop = true;
-              
-          
+
             }
-            
+
         },
 
         nextPicture() {
@@ -397,16 +424,17 @@ const twoPlayerGame = {
             this.visibleNextButton = true;
             this.visibleForm = false;
             this.selectYear = "";
+            this.lookAway = false;
             if (this.timeStop) {
                 this.startTimer();
                 this.timeStop = false;
             }
-            if(yearInput !== correctYear){
-                if(this.p1TimeStop){
+            if (yearInput !== correctYear) {
+                if (this.p1TimeStop) {
                     this.visibleButton1 = false;
-                    this.visibleButton2 = true;            
+                    this.visibleButton2 = true;
                 }
-                else{
+                else {
                     this.visibleButton2 = false;
                     this.visibleButton1 = true;
                 }
@@ -427,18 +455,18 @@ const twoPlayerGame = {
                 }
                 this.points -= 2;
                 this.count = 60;
-            }  
+            }
             else {
-             
+
                 this.points -= 2;
                 this.count = 60;
-                
+
             }
 
-            if(this.playerOneCorrect){
+            if (this.playerOneCorrect) {
                 this.visibleButton1 = false;
             }
-            else if(this.playerTwoCorrect){
+            else if (this.playerTwoCorrect) {
                 this.visibleButton2 = false;
             }
             if ((this.playerOneCorrect && this.playerTwoCorrect) || (this.p1TimeStop && this.p2TimeStop)) {
@@ -463,6 +491,7 @@ const twoPlayerGame = {
                 this.visibleButton2 = false;
                 this.showMain = false;
                 this.roundOver = true;
+                this.lookAway = false;
                 this.stopTimer();
 
             }
@@ -479,17 +508,34 @@ const twoPlayerGame = {
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
             </div>
+            <div v-show="lookAway">
+            <h3 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h3>
+            <h3 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h3>
+            </div>
             <button class="stopButton" v-show="visibleButton1" @click="stopTimer(1)">NÖDBROMS 1</button>
             <button class="stopButton" v-show="visibleButton2" @click="stopTimer(2)">NÖDBROMS 2</button>
+            
             <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
-            <input type="text" class="date" v-model="selectYear">
-            <input type="submit" class="submitButton" @click.prevent="submitYear"  value="GISSA ÅR" />
+            <select class="date" v-model="selectYear">
+            <option value="1900">1900</option>
+            <option value="1910">1910</option>
+            <option value="1920">1920</option>
+            <option value="1930">1930</option>
+            <option value="1940">1940</option>
+            <option value="1950">1950</option>
+            <option value="1960">1960</option>
+            <option value="1970">1970</option>
+            <option value="1980">1980</option>
+            <option value="1990">1990</option>
+            </select>
+            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
             </form>
             <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
             <div v-show="roundOver">    
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
             <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
+            <h2 v-else> OAVGJORT! </h2>
             </div>    
             </div>`
 }
@@ -502,7 +548,7 @@ const router = VueRouter.createRouter({
         { path: '/playerSelection', component: playerSelection },
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
-        { path: '/onePlayerGame', component: onePlayerGame},
+        { path: '/onePlayerGame', component: onePlayerGame },
         { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection },
         { path: '/museum', component: museum }
