@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 .fetchedImage {
     height: 200px;
     width: auto;
@@ -110,34 +114,65 @@
 }
 
 /****************Scoreboard Things****************/
-.playerScoreSelector {
-    flex-direction: column;
-    text-align: center;
-    position: absolute;
+.scoreboardNavbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+
+    top: 0rem;
+    width: 100%;
+
+    background-color: blueviolet;
+    padding: 0.2rem;
+    margin-bottom: 2rem;
+
+    row-gap: 10px;
 }
 
-.playerScoreViewer {
+nav ul {
+    width: 80%;
+    list-style: none;
+    display: flex;
+}
 
+nav ul li {
+    gap: 10px;
+    padding: 0.3rem;
 }
 
 .scoreboardnavbutton {
-    border-radius: 25px;
-    padding: 0.5rem;
 
-    text-align: center;
-    margin-top: 3rem;
-    margin-left: 5rem;
-    margin-right: 5rem;
-
-    font-size: 30px;
-    background-color: burlywood;
-    border-radius: 3px;
-    font-family: fantasy;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
-.scoreboardnavdifbutton {
+.scoreboardHeader {
+    text-align: center;
+}
 
+.scoreboardTableContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    background-color: red;
+}
+
+.scoreboardHeadRow {
+    width: 90%;
+    list-style: none;
+    display: flex;
+}
+
+.scoreboardInfoRow {
+    width: 90%;
+    list-style: none;
+    display: flex;
+}
+
+.p-cont {
+    width: 80%;
+    list-style: none;
+    display: flex;
 }
 
 

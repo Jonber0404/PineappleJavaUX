@@ -42,8 +42,8 @@ const difficultySelection = {
         setDifficulty(n) {
             this.difficulty = n;
         },
-        getDifficulty(n) {
-            return this.difficulty(n)
+        getDifficulty() {
+            return this.difficulty()
         },
         getSelectedDifficulty(dif) {
             switch (dif) {
@@ -80,15 +80,46 @@ const difficultySelection = {
 // scoreboard
 const scoreboard = {
     name: "scoreboard",
-    template: `<div>
-                    <div class="playerScoreSelector">
-                        <router-link to="/"><button class='scoreboardnavbutton'>Huvudmeny</button></router-link>
-                        <router-link to="/scoreboardEasy"><button class='scoreboardnavbutton'>Easy Mode</button></router-link>
-                        <router-link to="/scoreboardMedium"><button class="scoreboardnavbutton">Normal Mode</button></router-link>
-                        <router-link to="/scoreboardHard"><button class="scoreboardnavbutton">Hard Mode</button></router-link>
+    data() {
+        return {
+            playerInfo: []
+        }
+    },
+    created() {
+        let playerData = localStorage.getItem('playerData');
+        this.playerInfo = JSON.parse(playerData) || [];
+        this.sortedArrays();
+    },
+    methods: {
+        sortedArrays() {
+            return this.playerInfo.sort((a, b) => b.pointsEarned - a.pointsEarned)
+        }
+    },
+    template: `<div class="scoreboard">
+                    <nav class="scoreboardNavbar">
+                        <ul>
+                            <li><router-link to="/"><button class='scoreboardnavbutton'>Huvudmeny</button></router-link></li>
+                            <li>Ribbon</li>
+                            <li>Home</li>
+                        </ul>
+                    </nav>
+                    <div class="scoreboardHeader">
+                        <h2>SCOREBOARD</h2>
                     </div>
-                    <div class="playerScoreViewer">
-                        
+                    <div class="scoreboardTableContainer">
+                        <div class="scoreboardHeadRow">
+                            <p class="p-cont">Nivå</p>
+                            <p class="p-cont">Poäng</p>
+                            <p class="p-cont">Årtal</p>
+                            <p class="p-cont"></p>
+                        </div>
+                        <div class="scoreboardInfoRow">
+                            <div v-for="(player, i) in playerInfo" :key="i">
+                                <p class="p-cont">{{player.getDifficulty}}</p>
+                                <p class="p-cont">{{player.pointsEarned}}</p>
+                                <p class="p-cont">{{player.playerName}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>`
 }
@@ -122,27 +153,8 @@ const scoreboardEasy = {
                     <div class="playerScoreViewer">
                         <p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>
                     </div>
+                    <p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>
                 </div>`
-}
-
-const scoreboardMedium = {
-    name: "scoreboardMedium",
-    data() {
-        return {
-            playerInfo: []
-        }
-    },
-    created() {
-        let playerData = localStorage.getItem('playerData');
-        this.playerInfo = JSON.parse(playerData) || [];
-        this.sortedArrays();
-    },
-    methods: {
-        sortedArrays() {
-            return this.playerInfo.sort((a, b) => b.pointsEarned - a.pointsEarned)
-        }
-    },
-    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} </p>`
 }
 
 
