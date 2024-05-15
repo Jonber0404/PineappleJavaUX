@@ -92,7 +92,7 @@
 /*NEW CSS*/
 body {
     height: 100vh;
-    background-image: url('assets/bakgrund2.png');
+    background-image: url('assets/bakgrund2_small.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -300,6 +300,7 @@ body {
     /*Huvudmeny*/
     body {
         background-color: White;
+        background-image: url('assets/bakgrund2.png');
     }
 
     .startmenubutton {
