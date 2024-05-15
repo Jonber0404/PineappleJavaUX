@@ -40,7 +40,8 @@ const difficultySelection = {
         return {
             difficulty: "",
             playerOneName: "",
-            playerTwoName: ""
+            playerTwoName: "",
+            namesRegistered: false
         }
     }, methods: {
         setDifficulty(n) {
@@ -49,20 +50,16 @@ const difficultySelection = {
 
         },
         storeNames() {
+            this.namesRegistered = true;
             localStorage.setItem('playerOneName', this.playerOneName);
-            localStorage.setItem('playerTwoName', this.playerTwoName);
-
-            if (this.$root.numPlayers === 1) {
-                this.$router.push('/onePlayerGame');
-            } else if (this.$root.numPlayers === 2) {
-                this.$router.push('/twoPlayerGame');
-            }
+            localStorage.setItem('playerTwoName', this.playerTwoName);         
+      
 
         }
     },
     template: `<div class="main-flex">
     
-        <div class="selection">
+        <div class="selection" v-show="namesRegistered">
 
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
@@ -77,12 +74,12 @@ const difficultySelection = {
             <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
             <!--<router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
             
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
-            
-            
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+                     
         </div>
 
+        <h1> ANGE SPELARNAMN </h1>
         <div v-if="$root.numPlayers === 1">
         <input type="text" v-model="playerOneName">
         </div>
@@ -90,8 +87,9 @@ const difficultySelection = {
         <div v-else-if="$root.numPlayers === 2">
         <input type="text" v-model="playerOneName">
         <input type="text" v-model="playerTwoName">
-       
         </div>
+        <button @click="storeNames"> SPARA </button>
+
     </div>`
 }
 
@@ -130,12 +128,14 @@ const scoreboard = {
                 <div class="scoreboard"><br><br>
                     <h1>SCOREBOARD</h1>
                     <div class="scoreboard_row">
+                        <div class="scoreboard_header_cell">Datum</div>
                         <div class="scoreboard_header_cell">Nivå</div>
                         <div class="scoreboard_header_cell">Poäng</div>
                         <div class="scoreboard_header_cell">Årtal</div>
                         <div class="scoreboard_header_cell"></div>
                     </div>
                     <div v-for="(player, i) in playerInfo" :key="i" class="scoreboard_row">
+                        <div class="scoreboard_cell"> {{player.currentDate}}</div>
                         <div class="scoreboard_cell">{{player.difficulty}}</div>
                         <div class="scoreboard_cell">{{player.pointsEarned}}</div>
                         <div class="scoreboard_cell">{{player.correctYear}}</div>
