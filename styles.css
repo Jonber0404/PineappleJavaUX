@@ -33,6 +33,32 @@
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
+.game-rules {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-family: Inconsolata, sans-serif;
+    color: rgba(85, 44, 45, 1);
+    background-color: rgba(217, 237, 235, 1);
+}
+
+.game-rules h1 {
+    font-weight: 800;
+    font-size: 25px;
+}
+
+.game-rules p, .game-rules li {
+    font-weight: 400;
+    font-size: 16px;
+    padding: 0 2em 0 2em;
+    margin-bottom: 0;
+    margin-top: 0.6em;
+}
 
 /*Playerselection*/
 /*.oneplayer,
