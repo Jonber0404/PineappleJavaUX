@@ -42,21 +42,29 @@ const difficultySelection = {
         setDifficulty(n) {
             this.difficulty = n;
             localStorage.setItem("difficulty", this.difficulty);
+            if (this.$root.numPlayers === 1) {
+                this.$router.push('/onePlayerGame');
+            } else if (this.$root.numPlayers === 2) {
+                this.$router.push('/twoPlayerGame');
+            }
         }
     },
     template: `<div class="main-flex">
-    <h1>VÄLJ SVÅRIGHETSGRAD</h1>
+    
         <div class="selection">
 
+            <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
-            <button class="easy" @click="setDifficulty('ENKEL')">LÅG</button>
-            <button class="medium" @click="setDifficulty('MELLAN')">MEDIUM</button>
-            <button class="hard" @click="setDifficulty('SVÅR')">HÖG</button>
+            <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
+            <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
 
-            <p>Selected difficulty: {{ difficulty }}</p>
 
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+            <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
+            <!--<router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
             
         </div>
     </div>`

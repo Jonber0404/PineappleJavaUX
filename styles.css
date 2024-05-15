@@ -20,55 +20,7 @@
     border-radius: 3px;
     font-family: fantasy;
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-}
 
-.playbutton {
-    width: 20rem;
-    margin-top: -6rem;
-
-}
-
-.scoreboardbutton {
-    width: 20rem;
-    margin-top: 0rem;
-}
-
-.gamerulesbutton {
-    width: 20rem;
-    margin-top: 6rem;
-}
-
-.easy {
-    width: 5rem;
-    margin-top: 0rem;
-    margin-right: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-}
-
-.medium {
-    width: 5rem;
-    margin-top: 0rem;
-    margin-right: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-}
-
-.hard {
-    width: 5rem;
-    margin-top: 0rem;
-    margin-right: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
 .startGameArrow {
@@ -141,22 +93,23 @@ body {
     font-weight: 800;
     line-height: 32px;
     /* 114.286% */
+    width: 20rem;
+    border-radius: 10px;
 }
 
 .playbutton {
-    border-radius: 10px;
     background: var(--Turkos-200, #1A7475);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: -6rem;
 }
 
 .scoreboardbutton {
-    border-radius: 10px;
     background: var(--Brun, #552C2D);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: 0rem;
 }
 
 .gamerulesbutton {
-    border-radius: 10px;
     background: transparent;
     box-shadow: none;
 
@@ -168,21 +121,18 @@ body {
     font-weight: 800;
     line-height: 23px;
     /* 104.545% */
+    margin-top: 6rem;
 }
 
 .oneplayer {
-    border-radius: 10px;
     background: var(--Orange, #F05537);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 20rem;
     margin-top: -6rem;
 }
 
 .twoplayer {
-    border-radius: 10px;
     background: var(--Turkos-100, #1D9594);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 20rem;
     margin-top: -0rem;
 }
 
@@ -198,6 +148,66 @@ body {
     width: 30px;
     height: 25px;
     background-image: url('assets/Vector.svg');
+    background-color: transparent;
+    border: none;
+}
+
+.easy {
+    background: var(--Turkos-200, #1A7475);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: -7rem;
+}
+
+.hard {
+    background: var(--Orange-200, #BC361C);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: 1rem;
+}
+
+.difficultytext {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--Brun, #552C2D);
+    font-family: Inconsolata;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 3rem;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-80%, 0%);
+}
+
+.easytext {
+    margin-top: -4.5rem;
+
+}
+
+.hardtext {
+    margin-top: 3.5rem;
+}
+
+.choosedifficultytext {
+    color: var(--Brun, #552C2D);
+    /* Mobile_H2 */
+    font-family: Inconsolata;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 40.04px;
+    /* 100.1% */
+    margin-top: -14rem;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 
@@ -276,20 +286,10 @@ a {
     text-decoration: none;
 }
 
-.oneplayer:hover,
-.twoplayer:hover,
-.stopButton:hover {
-    font-size: 175%;
-}
 
 
-.oneplayer:active,
-.twoplayer:active,
-.stopButton:active {
-    font-size: 175%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    transform: scale(0.95);
-}
+
+
 
 
 /*Feel free to delete this, it's just for ease of testing*/
