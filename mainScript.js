@@ -31,12 +31,16 @@ const playerSelection = {
             </div>`
 }
 
+
+
 //Välj svårighetsgrad, som ska vara efter man valt antalet spelare
 const difficultySelection = {
     name: "difficultySelection",
     data() {
         return {
-            difficulty: ""
+            difficulty: "",
+            playerOneName: "",
+            playerTwoName:""
         }
     }, methods: {
         setDifficulty(n) {
@@ -66,6 +70,20 @@ const difficultySelection = {
             <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
             <!--<router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
             
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
+            
+            
+        </div>
+
+        <div v-if="$root.numPlayers === 1">
+        <input type="text" v-model="playerOneName">
+        </div>
+
+        <div v-else-if="$root.numPlayers === 2">
+        <input type="text" v-model="playerOneName">
+        <input type="text" v-model="playerTwoName">
+       
         </div>
     </div>`
 }
@@ -95,17 +113,53 @@ const scoreboard = {
                     return b.pointsEarned - a.pointsEarned
                 }
             })
-
-
-
+        },
+        toMuseum(gameToShow) {
+            currentRoundPictures = gameToShow.currentRoundPictures
+            this.$router.push('/museum')
         }
     },
-    template: `<p v-for="(player, i) in playerInfo" :key="i">Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}}
-   - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
+    template: `<p v-for="(player, i) in playerInfo" :key="i" @click="toMuseum(player)">
+                Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
 <!--    <pre>{{ playerInfo }}</pre>-->
     <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
 }
 
+const museum = {
+    name: "museum",
+    data() {
+        return {
+            images: [],
+            selectedImage: {}
+        }
+    },
+    mounted() {
+        this.images = currentRoundPictures
+        this.selectedImage = currentRoundPictures[0]
+    },
+    methods: {
+        selectImage(image) {
+            this.selectedImage = image;
+        }
+    },
+    template: `<!--<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>-->
+                <div class="museum-image-container">
+                    <!-- Stor bild -->
+                    <div class="museum-big-image-div">
+                        <img :src="selectedImage.imgUrl" class="museum-big-image">
+                    </div>
+                    <div class="museum-text-container">
+                    <p>{{ selectedImage.date }}</p>
+                    <p>{{ selectedImage.description }}</p>
+                    <a :href="selectedImage.infoUrl" target="_blank">Mer info</a>
+                    </div>
+                    <!-- Lista med små bilder -->
+                    <div class="museum-small-images">
+                        <img v-for="(image, i) in images" :src="image.imgUrl" @click="selectImage(image)"
+                             class="museum-small-image">
+                    </div>
+                </div>`
+}
 
 // spelregler
 const gameRules = {
@@ -121,6 +175,7 @@ const onePlayerGame = {
     created() {
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
+       this.playerOneName = localStorage.getItem('playerOneName');
 
     },
     mounted() {
@@ -144,13 +199,13 @@ const onePlayerGame = {
             decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
-            playerName: "",
             visibleForm: false,
             timeStop: false,
             visibleButtons: true,
             playerData: []
         }
     },
+
 
     methods: {
         async extractData() {
@@ -166,7 +221,7 @@ const onePlayerGame = {
                     }
                 }
             }
-            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl})
+            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum})
         },
         startTimer() {
             this.timer = setInterval(() => {
@@ -199,10 +254,11 @@ const onePlayerGame = {
 
             if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
-                let playerName = this.playerName;
+                let playerName = this.playerOneName;
                 const currentDate = new Date().toLocaleDateString();
                 let difficulty = this.difficulty;
-                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty, correctYear, currentRoundPictures });
+                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty,
+                                    correctYear, currentRoundPictures });
 
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
@@ -243,12 +299,11 @@ const twoPlayerGame = {
     },
     created() {
         this.extractData();
-
+        this.playerOneName = localStorage.getItem('playerOneName');
+        this.playerTwoName = localStorage.getItem('playerTwoName');
     },
     mounted() {
         this.startTimer();
-        this.playerOneName = prompt("Vad heter spelare 1?");
-        this.playerTwoName = prompt("Vad heter spelare 2?");
     },
     data() {
         return {
@@ -276,7 +331,10 @@ const twoPlayerGame = {
             playerData: [],
             playerOneCorrect: false,
             playerTwoCorrect: false,
-            showMain: true
+            showMain: true,
+            roundOver: false,
+            p1TimeStop: false,
+            p2TimeStop: false
 
 
         }
@@ -319,11 +377,15 @@ const twoPlayerGame = {
             this.timeStop = true;
             if (n === 1) {
                 this.visibleButton2 = false;
+                this.p1TimeStop = true;
             }
             else {
                 this.visibleButton1 = false;
+                this.p2TimeStop = true;
+              
+          
             }
-
+            
         },
 
         nextPicture() {
@@ -338,9 +400,20 @@ const twoPlayerGame = {
             const yearInput = this.selectYear;
             this.visibleNextButton = true;
             this.visibleForm = false;
+            this.selectYear = "";
             if (this.timeStop) {
                 this.startTimer();
                 this.timeStop = false;
+            }
+            if(yearInput !== correctYear){
+                if(this.p1TimeStop){
+                    this.visibleButton1 = false;
+                    this.visibleButton2 = true;            
+                }
+                else{
+                    this.visibleButton2 = false;
+                    this.visibleButton1 = true;
+                }
             }
             if (yearInput === correctYear) {
                 if (this.visibleButton1 && !this.visibleButton2) {
@@ -358,32 +431,33 @@ const twoPlayerGame = {
                 }
                 this.points -= 2;
                 this.count = 60;
-                this.extractData();
-            } else {
+            }  
+            else {
+             
                 this.points -= 2;
                 this.count = 60;
+                
             }
-            if (this.visibleButton1) {
-                this.visibleButton2 = true;
-            } else if (this.visibleButton2) {
-                this.visibleButton1 = true;
-            }
-            this.extractData();
+
             if(this.playerOneCorrect){
                 this.visibleButton1 = false;
             }
             else if(this.playerTwoCorrect){
                 this.visibleButton2 = false;
             }
-            if (this.playerOneCorrect && this.playerTwoCorrect) {
+            if ((this.playerOneCorrect && this.playerTwoCorrect) || (this.p1TimeStop && this.p2TimeStop)) {
                 this.rounds++;
                 this.points = 10;
                 this.visibleButton1 = true;
                 this.visibleButton2 = true;
                 this.playerOneCorrect = false;
                 this.playerTwoCorrect = false;
+                this.playerTwoWrongGuess = false;
+                this.playerOneWrongGuess = false;
+                this.p1TimeStop = false;
+                this.p2TimeStop = false;
+
                 this.generateDecade();
-                this.extractData();
             }
 
             if (this.rounds > 3) {
@@ -391,10 +465,12 @@ const twoPlayerGame = {
                 this.visibleForm = false;
                 this.visibleButton1 = false;
                 this.visibleButton2 = false;
-                this.stopTimer();
                 this.showMain = false;
-                
+                this.roundOver = true;
+                this.stopTimer();
+
             }
+            this.extractData();
         }
 
     },
@@ -414,7 +490,11 @@ const twoPlayerGame = {
             <input type="text" class="date" v-model="selectYear">
             <input type="submit" class="submitButton" @click.prevent="submitYear"  value="GISSA ÅR" />
             </form>
-            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3>           
+            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
+            <div v-show="roundOver">    
+            <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
+            <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
+            </div>    
             </div>`
 }
 
@@ -426,9 +506,10 @@ const router = VueRouter.createRouter({
         { path: '/playerSelection', component: playerSelection },
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
-        { path: '/onePlayerGame', component: onePlayerGame },
+        { path: '/onePlayerGame', component: onePlayerGame},
         { path: '/twoPlayerGame', component: twoPlayerGame },
-        { path: '/difficultySelection', component: difficultySelection }
+        { path: '/difficultySelection', component: difficultySelection },
+        { path: '/museum', component: museum }
     ]
 })
 
@@ -437,8 +518,15 @@ const app = {}
 const vueApp = Vue.createApp(app)
 
 // Här nedanför kan man lägga globala metoder
+
+let decadeUrn = []
 vueApp.config.globalProperties.generateDecade = function () {
-    decadeStart = (Math.floor(Math.random() * 10) * 10) + 1900
+    if (decadeUrn.length === 0) {
+        decadeUrn = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990]
+    }
+    let randomIdx = Math.floor(Math.random() * (decadeUrn.length - 1))
+    decadeStart = decadeUrn[randomIdx]
+    decadeUrn.splice(randomIdx, 1)
     decadeEnd = decadeStart + 9
 }
 

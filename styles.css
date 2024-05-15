@@ -210,7 +210,58 @@ body {
     transform: translate(-50%, -50%);
 }
 
+/* MUSEUM */
+.museum-big-image-div {
+    aspect-ratio: 1 / 1;
+    width: 80%;
+    border-radius: 1em 1em 0 0;
+    overflow: hidden;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
 
+.museum-big-image {
+    width: 100%;
+    z-index: 0;
+}
+
+.museum-text-container {
+    width: 80%;
+    height: 8em;
+    overflow: scroll;
+    background-color: white;
+    padding: 0.5em;
+    box-sizing: border-box;
+    border-radius: 0 0 1em 1em;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+/* Stil för de små bilderna */
+.museum-small-images {
+    display: flex;
+    justify-content: space-between; /* Justera layout efter behov */
+    width: 80%; /* Sätt bredden till 100% för att anpassa sig till storleken på den stora bilden */
+    box-sizing: border-box; /* Inkludera padding i totalbredden */
+}
+
+.museum-small-image {
+    width: 18%; /* Justera storlek efter behov */
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Stil för behållaren för den stora bilden och små bilderna */
+.museum-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrera innehållet vertikalt */
+    width: 100%;
+    margin-top: 5%;
+}
 
 
 
@@ -269,6 +320,9 @@ body {
         font-size: 150%;
     }
 
+    .museum-big-image-div, .museum-text-container, .museum-small-images {
+        width: 25%;
+    }
 }
 
 
