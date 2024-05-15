@@ -46,25 +46,36 @@ const difficultySelection = {
         setDifficulty(n) {
             this.difficulty = n;
             localStorage.setItem("difficulty", this.difficulty);
+
         },
         storeNames() {
             localStorage.setItem('playerOneName', this.playerOneName);
             localStorage.setItem('playerTwoName', this.playerTwoName);
+
+            if (this.$root.numPlayers === 1) {
+                this.$router.push('/onePlayerGame');
+            } else if (this.$root.numPlayers === 2) {
+                this.$router.push('/twoPlayerGame');
+            }
+
         }
     },
     template: `<div class="main-flex">
-    <h1>VÄLJ SVÅRIGHETSGRAD</h1>
     
         <div class="selection">
 
+            <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
-            <button class="easy" @click="setDifficulty('ENKEL')">LÅG</button>
-            <button class="medium" @click="setDifficulty('MELLAN')">MEDIUM</button>
-            <button class="hard" @click="setDifficulty('SVÅR')">HÖG</button>
+            <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
+            <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
 
-            <p>Selected difficulty: {{ difficulty }}</p>
-   
-       
+
+            <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
+            <!--<router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
             
             <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
             <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
@@ -115,10 +126,22 @@ const scoreboard = {
             this.$router.push('/museum')
         }
     },
-    template: `<p v-for="(player, i) in playerInfo" :key="i" @click="toMuseum(player)">
-                Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
-<!--    <pre>{{ playerInfo }}</pre>-->
-    <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
+    template: `<router-link to="/"><button class='backtomenu'> </button></router-link>
+                <div class="scoreboard"><br><br>
+                    <h1>SCOREBOARD</h1>
+                    <div class="scoreboard_row">
+                        <div class="scoreboard_header_cell">Nivå</div>
+                        <div class="scoreboard_header_cell">Poäng</div>
+                        <div class="scoreboard_header_cell">Årtal</div>
+                        <div class="scoreboard_header_cell"></div>
+                    </div>
+                    <div v-for="(player, i) in playerInfo" :key="i" class="scoreboard_row">
+                        <div class="scoreboard_cell">{{player.difficulty}}</div>
+                        <div class="scoreboard_cell">{{player.pointsEarned}}</div>
+                        <div class="scoreboard_cell">{{player.correctYear}}</div>
+                        <div class="scoreboard_cell" @click="toMuseum(player)">&bull;&bull;&bull;</div> 
+                    </div>
+                </div>`
 }
 
 const museum = {
@@ -160,7 +183,19 @@ const museum = {
 // spelregler
 const gameRules = {
     name: "gameRules",
-    template: `<p>lägg till gameRules här</p>`
+    template: `<div class="game-rules">
+                <router-link to="/"><button class='backtomenu'> </button></router-link><br><br>
+                <h1>SPELREGLER</h1>
+                <p>Spelet går ut på att gissa vilket årtal man befinner sig i.</p>
+                <p>&bull; Varje spelrunda har 5 foton från samma årtionde.</p>
+                <p>&bull; Spelaren gissar med ledtrådar från bilderna och får poäng beroende på vilken bild hen gissar rätt på.</p>
+                <p>&bull; Poängen minskar ju fler bilder som visas i rundan.</p><br>
+                <p>Om två spelare är med och en gissar rätt måste den vänta till nästa runda medan den andra fortsätter gissa. 
+                Spelaren med flest poäng efter tre rundor vinner.</p>
+                <p>För att gissa trycker man på handbromsen och väljer ett årtal.</p>
+                <p>Om man gissar fel får man inte gissa igen förrän nästa bild visas.</p>
+                <p>OBS! Viktigt att hålla svaret hemligt för motspelaren när ni är två.</p>
+            </div>`
 }
 
 const onePlayerGame = {

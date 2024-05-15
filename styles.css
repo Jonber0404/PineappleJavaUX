@@ -20,55 +20,7 @@
     border-radius: 3px;
     font-family: fantasy;
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-}
 
-.playbutton {
-    width: 20rem;
-    margin-top: -6rem;
-
-}
-
-.scoreboardbutton {
-    width: 20rem;
-    margin-top: 0rem;
-}
-
-.gamerulesbutton {
-    width: 20rem;
-    margin-top: 6rem;
-}
-
-.easy {
-    width: 5rem;
-    margin-top: 0rem;
-    margin-right: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-}
-
-.medium {
-    width: 5rem;
-    margin-top: 0rem;
-    margin-right: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-}
-
-.hard {
-    width: 5rem;
-    margin-top: 0rem;
-    margin-right: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
 .startGameArrow {
@@ -81,6 +33,77 @@
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
+.game-rules {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-family: Inconsolata, sans-serif;
+    color: rgba(85, 44, 45, 1);
+    background-color: rgba(217, 237, 235, 1);
+}
+
+.game-rules h1 {
+    font-weight: 800;
+    font-size: 25px;
+}
+
+.game-rules p, .game-rules li {
+    font-weight: 400;
+    font-size: 16px;
+    padding: 0 2em 0 2em;
+    margin-bottom: 0;
+    margin-top: 0.6em;
+}
+
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    margin: 0 8% 0 8%;
+    text-align: center;
+    font-family: Inconsolata, sans-serif;
+    font-size: 20px;
+    color: rgba(85, 44, 45, 1);
+}
+
+.scoreboard_row {
+    color: rgba(245, 223, 189, 1);
+    font-size: 25px;
+    font-weight: 700;
+    margin: 0.2em 0 0.2em 0;
+    display: flex;
+    text-align: center;
+}
+
+.scoreboard_cell {
+    flex: 1;
+    padding: 0.3em;
+    background-color: rgba(26, 116, 117, 1);
+}
+
+.scoreboard_cell:last-child {
+    color: rgba(26, 116, 117, 1);
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.scoreboard_cell:first-child {
+    border-radius: 0.5em 0em 0em 0.5em;
+}
+
+.scoreboard_cell:nth-child(3) {
+    border-radius: 0em 0.5em 0.5em 0em;
+}
+
+.scoreboard_header_cell {
+    flex: 1;
+    color: rgba(26, 116, 117, 1);
+    padding: 0.3em;
+}
 
 /*Playerselection*/
 /*.oneplayer,
@@ -114,7 +137,7 @@
 /*NEW CSS*/
 body {
     height: 100vh;
-    background-image: url('assets/bakgrund2.png');
+    background-image: url('assets/bakgrund2_small.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -141,22 +164,23 @@ body {
     font-weight: 800;
     line-height: 32px;
     /* 114.286% */
+    width: 20rem;
+    border-radius: 10px;
 }
 
 .playbutton {
-    border-radius: 10px;
     background: var(--Turkos-200, #1A7475);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: -6rem;
 }
 
 .scoreboardbutton {
-    border-radius: 10px;
     background: var(--Brun, #552C2D);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: 0rem;
 }
 
 .gamerulesbutton {
-    border-radius: 10px;
     background: transparent;
     box-shadow: none;
 
@@ -168,21 +192,18 @@ body {
     font-weight: 800;
     line-height: 23px;
     /* 104.545% */
+    margin-top: 6rem;
 }
 
 .oneplayer {
-    border-radius: 10px;
     background: var(--Orange, #F05537);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 20rem;
     margin-top: -6rem;
 }
 
 .twoplayer {
-    border-radius: 10px;
     background: var(--Turkos-100, #1D9594);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 20rem;
     margin-top: -0rem;
 }
 
@@ -198,6 +219,66 @@ body {
     width: 30px;
     height: 25px;
     background-image: url('assets/Vector.svg');
+    background-color: transparent;
+    border: none;
+}
+
+.easy {
+    background: var(--Turkos-200, #1A7475);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: -7rem;
+}
+
+.hard {
+    background: var(--Orange-200, #BC361C);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: 1rem;
+}
+
+.difficultytext {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--Brun, #552C2D);
+    font-family: Inconsolata;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 3rem;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-80%, 0%);
+}
+
+.easytext {
+    margin-top: -4.5rem;
+
+}
+
+.hardtext {
+    margin-top: 3.5rem;
+}
+
+.choosedifficultytext {
+    color: var(--Brun, #552C2D);
+    /* Mobile_H2 */
+    font-family: Inconsolata;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 40.04px;
+    /* 100.1% */
+    margin-top: -14rem;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* MUSEUM */
@@ -264,6 +345,7 @@ body {
     /*Huvudmeny*/
     body {
         background-color: White;
+        background-image: url('assets/bakgrund2.png');
     }
 
     .startmenubutton {
@@ -330,20 +412,10 @@ a {
     text-decoration: none;
 }
 
-.oneplayer:hover,
-.twoplayer:hover,
-.stopButton:hover {
-    font-size: 175%;
-}
 
 
-.oneplayer:active,
-.twoplayer:active,
-.stopButton:active {
-    font-size: 175%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    transform: scale(0.95);
-}
+
+
 
 
 /*Feel free to delete this, it's just for ease of testing*/
