@@ -60,14 +60,49 @@
     margin-top: 0.6em;
 }
 
-.scoreboard_entries {
-    background-color: rgba(26, 116, 117, 1);
-    color: rgba(245, 223, 189, 1);
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    margin: 0 8% 0 8%;
+    text-align: center;
     font-family: Inconsolata, sans-serif;
+    font-size: 20px;
+    color: rgba(85, 44, 45, 1);
+}
+
+.scoreboard_row {
+    color: rgba(245, 223, 189, 1);
     font-size: 25px;
     font-weight: 700;
-    padding: 0.5em;
-    border-radius: 0.5em;
+    margin: 0.2em 0 0.2em 0;
+    display: flex;
+    text-align: center;
+}
+
+.scoreboard_cell {
+    flex: 1;
+    padding: 0.3em;
+    background-color: rgba(26, 116, 117, 1);
+}
+
+.scoreboard_cell:last-child {
+    color: rgba(26, 116, 117, 1);
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.scoreboard_cell:first-child {
+    border-radius: 0.5em 0em 0em 0.5em;
+}
+
+.scoreboard_cell:nth-child(3) {
+    border-radius: 0em 0.5em 0.5em 0em;
+}
+
+.scoreboard_header_cell {
+    flex: 1;
+    color: rgba(26, 116, 117, 1);
+    padding: 0.3em;
 }
 
 /*Playerselection*/

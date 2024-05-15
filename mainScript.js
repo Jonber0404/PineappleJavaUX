@@ -120,8 +120,21 @@ const scoreboard = {
         }
     },
     template: `<router-link to="/"><button class='backtomenu'> </button></router-link>
-                <p v-for="(player, i) in playerInfo" :key="i" @click="toMuseum(player)" class="scoreboard_entries">
-                {{player.difficulty}}  {{player.pointsEarned}}  {{ player.correctYear}} </p>`
+                <div class="scoreboard"><br><br>
+                    <h1>SCOREBOARD</h1>
+                    <div class="scoreboard_row">
+                        <div class="scoreboard_header_cell">Nivå</div>
+                        <div class="scoreboard_header_cell">Poäng</div>
+                        <div class="scoreboard_header_cell">Årtal</div>
+                        <div class="scoreboard_header_cell"></div>
+                    </div>
+                    <div v-for="(player, i) in playerInfo" :key="i" class="scoreboard_row">
+                        <div class="scoreboard_cell">{{player.difficulty}}</div>
+                        <div class="scoreboard_cell">{{player.pointsEarned}}</div>
+                        <div class="scoreboard_cell">{{player.correctYear}}</div>
+                        <div class="scoreboard_cell" @click="toMuseum(player)">&bull;&bull;&bull;</div> 
+                    </div>
+                </div>`
 }
 
 const museum = {
