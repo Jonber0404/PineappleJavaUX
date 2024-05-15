@@ -542,7 +542,7 @@ const twoPlayerGame = {
             <img :src="objektBild" alt="" class="fetchedImage">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
-            </div>
+            
             <div v-show="lookAway">
             <h3 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h3>
             <h3 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h3>
@@ -566,6 +566,7 @@ const twoPlayerGame = {
             </select>
             <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
             </form>
+            </div>
             <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
             <div v-show="roundOver">    
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
