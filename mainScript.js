@@ -25,9 +25,10 @@ const playerSelection = {
         }
     },
 
-    template: `<div class="main-flex">
-            <h1>ANTAL SPELARE</h1>
-                <div class="selection">
+    template: `
+            <div class="main-flex">
+                <h1>ANTAL SPELARE</h1>
+                <div class="player-selection">
                     <router-link to="/"><button class='backtomenu'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
@@ -87,7 +88,7 @@ const difficultySelection = {
     },
     template: `<div class="main-flex">
     
-        <div class="selection" v-show="namesRegistered">
+        <div class="difficulty-selection" v-show="namesRegistered">
 
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
@@ -624,6 +625,7 @@ const twoPlayerGame = {
             </div>    
             </div>`
 }
+
 
 // skapa router
 const router = VueRouter.createRouter({
