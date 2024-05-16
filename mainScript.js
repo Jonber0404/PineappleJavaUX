@@ -55,6 +55,9 @@ const difficultySelection = {
             if(this.playerOneName.length>3){
               this.initialsPlayerOne= this.playerOneName.slice(0,3);
             }
+            else{
+                this.initialsPlayerOne = this.playerOneName;
+            }
             localStorage.setItem('playerOneName', this.initialsPlayerOne);       
         },
         storeNames(){
