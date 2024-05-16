@@ -383,14 +383,9 @@ body {
     .selection {
         display: flex;
         flex-direction: row;
+        
     }
 
-    .oneplayer,
-    .twoplayer,
-    .stopButton {
-        margin: 3rem;
-        font-size: 150%;
-    }
 
     .museum-big-image-div, .museum-text-container, .museum-small-images {
         width: 25%;
