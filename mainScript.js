@@ -183,19 +183,16 @@ const museum = {
     methods: {
         selectImage(image) {
             this.selectedImage = image;
-        },
-        goBack() {
-            this.$router.go(-1)
         }
     },
-    template: `<button class='backtomenu' @click="goBack"> </button>
+    template: `<!--<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>-->
                 <div class="museum-image-container">
-                    <br><br>
-                    <h1>{{selectedImage.date}}</h1>
+                    <!-- Stor bild -->
                     <div class="museum-big-image-div">
                         <img :src="selectedImage.imgUrl" class="museum-big-image">
                     </div>
                     <div class="museum-text-container">
+                    <p>{{ selectedImage.date }}</p>
                     <p>{{ selectedImage.description }}</p>
                     <a :href="selectedImage.infoUrl" target="_blank">Mer info</a>
                     </div>
@@ -247,12 +244,14 @@ const onePlayerGame = {
             points: 10,
             difficulty: 0,
             count: 60,
+            guessTime: 10,
             objekt: {},
             objektBild: "",
             objektDatum: "",
             objektDesc: "",
             objektUrl: "",
             timer: null,
+            guessTimer: null,
             decadeS: decadeStart,
             decadeE: decadeEnd,
             selectYear: "",
@@ -305,6 +304,15 @@ const onePlayerGame = {
             this.visibleForm = true;
             this.timeStop = true;
             this.visibleButtons = false;
+            this.guessTimer = setInterval(() => {
+                this.guessTime--;
+                if(this.guessTime === 0){
+                    this.extractData();
+                    this.points-=2;
+                    this.count = 60;
+                    this.startTimer();
+                }
+            },1000)
         },
         nextPicture() {
             this.count = 0;
@@ -351,6 +359,7 @@ const onePlayerGame = {
             <h1>Vilket årtioende söker vi?</h1>
             <h2>{{points}} POÄNG</h2>
             <h3>Timer: {{count}}</h3>
+            <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
             <img :src="objektBild" alt="" class="fetchedImage">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
@@ -392,12 +401,14 @@ const twoPlayerGame = {
         return {
             points: 10,
             count: 60,
+            guessTime: 10,
             objekt: {},
             objektBild: "",
             objektDatum: "",
             objektDesc: "",
             objektUrl: "",
             timer: null,
+            guessTimer: null,
             decadeS: decadeStart,
             decadeE: decadeEnd,
             selectYear: "",
@@ -470,6 +481,27 @@ const twoPlayerGame = {
                 this.p2TimeStop = true;
 
             }
+            this.guessTimer = setInterval(() => {
+                this.guessTime--;
+                if(this.guessTime === 0){
+                    this.extractData();
+                    this.points-=2;
+                    this.count = 60;
+                    this.lookAway = false;
+                    clearInterval(this.guessTimer);
+                    this.timeStop = false;
+                    this.startTimer();
+                    if(this.p1TimeStop){
+                        this.p1TimeStop = false;
+                        this.visibleButton1 = false;
+                        this.visibleButton2 = true;
+                    }else{
+                        this.p2TimeStop = false;
+                        this.visibleButton2 = false;
+                        this.visibleButton1 = true;
+                    }
+                }
+            },1000)
 
         },
 
@@ -568,6 +600,7 @@ const twoPlayerGame = {
             <h1>Vilket årtioende söker vi?</h1>
             <h2>{{points}} POÄNG</h2>
             <h3>Timer: {{count}}</h3>
+            <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
             <img :src="objektBild" alt="" class="fetchedImage">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
