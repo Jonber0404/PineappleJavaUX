@@ -82,11 +82,7 @@ const difficultySelection = {
         storeNames(){
             this.namesRegistered = true;
             localStorage.setItem('playerOneName', this.playerOneName);
-<<<<<<< HEAD
-            localStorage.setItem('playerTwoName', this.playerTwoName);         
-=======
             localStorage.setItem('playerTwoName', this.playerTwoName);
->>>>>>> 03ab4b6bf00942b0adb694727031ffb9c0853b28
         }
     },
     template: `<div class="main-flex">
