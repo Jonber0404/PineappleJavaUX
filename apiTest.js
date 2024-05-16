@@ -48,14 +48,14 @@ const app = {
             const decadeEnd = decadeStart + 9;
 
             // Man kan ersätta totalAmount med elementet "totalHits" från K-samsök
-            const totalAmount = 6407;
+            const totalAmount = 665;
 
             let randomObjekt = Math.floor((Math.random() * totalAmount) + 1)
             try {
                 const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?` +
                     `method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}` +
                     `+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j` +
-                    `+AND+contextLabel=Fotografering`, {
+                    `+AND+contextLabel=Fotografering+AND+(item=fordon+OR+item=person)`, {
                     headers: {'Accept': 'application/json'}
                 });
                 this.objekt = await response.json();
