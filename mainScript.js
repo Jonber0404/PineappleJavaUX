@@ -253,9 +253,8 @@ const onePlayerGame = {
             decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
-            visibleForm: false,
+            answerView: false,
             timeStop: false,
-            visibleButtons: true,
             playerData: [],
             gameOver: false,
             mainDiv: true
@@ -281,14 +280,10 @@ const onePlayerGame = {
         },
         startTimer() {
             this.timer = setInterval(() => {
-                this.count--;
+                // this.count--;
                 this.timeStop = false;
                 clearInterval(this.guessTimer)
                 this.guessTime = 10
-                if (this.points === 0) {
-                    this.gameOver = true
-                    this.mainDiv = false
-                }
                 if (this.count < 1) {
                     this.nextPicture()
                 }
@@ -296,12 +291,12 @@ const onePlayerGame = {
 
         },
         stopTimer() {
+            this.mainDiv = false
             clearInterval(this.timer)
-            this.visibleForm = true;
+            this.answerView = true;
             this.timeStop = true;
-            this.visibleButtons = false;
             this.guessTimer = setInterval(() => {
-                this.guessTime--;
+                // this.guessTime--;
                 if(this.guessTime === 0){
                     this.nextPicture()
                 }
@@ -313,13 +308,16 @@ const onePlayerGame = {
             }
             this.count = 60
             this.points = this.points - 2
+            if (this.points === 0) {
+                this.gameOver = true
+                this.mainDiv = false
+            }
             this.loadNextImg();
         },
         submitYear() {
             const correctYear = String(decadeStart);
             const yearInput = this.selectYear;
-            this.visibleButtons = true;
-            this.visibleForm = false;
+            this.answerView = false;
 
             if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
@@ -338,42 +336,46 @@ const onePlayerGame = {
             else if (yearInput !== correctYear) {
                 this.nextPicture()
             }
+            this.mainDiv = true
         }
 
     },
-    template: `<img src="assets/timer-symbol.svg" class="timer-symbol"> <p class="timer-num">{{count}}</p>
-                <div class="main-flex">
-                <br><br>
+    template: `<br><br>
              <div v-show="gameOver" v-if="points === 0">
-             <h1> HOPPSAN, DU FICK 0 POÄNG </h1>
-             <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
-              </div>
-              <div v-show="mainDiv">
-            <h2>{{points}} POÄNG</h2>
-            <p>Vilket årtionde söker vi?</p>
-            <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
-            <div class="museum-big-image-div">
-                <img :src="objektBild" class="museum-big-image">
+                <h1> HOPPSAN, DU FICK 0 POÄNG </h1>
+                <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
+             </div>
+             
+             <div v-show="mainDiv" class="main-flex">
+                <img src="assets/timer-symbol.svg" class="timer-symbol">
+                <p class="timer-num" v-show="mainDiv">{{count}}</p>
+                <h2>{{points}} POÄNG</h2>
+                <p>Vilket årtionde söker vi?</p>
+                <div class="museum-big-image-div">
+                    <img :src="objektBild" class="museum-big-image">
+                </div>
+                <img src="assets/Svara-knapp-red.svg" @click="stopTimer" class="stopButton">
+                <button class="nextButton" @click="nextPicture">SKIPPA BILD</button>
             </div>
-            <img src="assets/Svara-knapp-red.svg" v-show="visibleButtons" @click="stopTimer" class="stopButton">
-            <form v-show="visibleForm">
-            <select class="date" v-model="selectYear">
-            <option value="1900">1900</option>
-            <option value="1910">1910</option>
-            <option value="1920">1920</option>
-            <option value="1930">1930</option>
-            <option value="1940">1940</option>
-            <option value="1950">1950</option>
-            <option value="1960">1960</option>
-            <option value="1970">1970</option>
-            <option value="1980">1980</option>
-            <option value="1990">1990</option>
-            </select>
-            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
-            </form>
-            </div>
-            </div>
-            <button class="nextButton" v-show="visibleButtons" @click="nextPicture">SKIPPA BILD</button>`
+            
+            <div v-show="answerView" class="answer-view" class="main-flex">
+                <img src="assets/timer-symbol.svg" class="timer-symbol">
+                <p class="timer-num">{{guessTime}}</p>
+                <p>Vilket årtionde söker vi?</p>
+                <select class="date" v-model="selectYear">
+                <option value="1900">1900</option>
+                <option value="1910">1910</option>
+                <option value="1920">1920</option>
+                <option value="1930">1930</option>
+                <option value="1940">1940</option>
+                <option value="1950">1950</option>
+                <option value="1960">1960</option>
+                <option value="1970">1970</option>
+                <option value="1980">1980</option>
+                <option value="1990">1990</option>
+                </select>
+                <input type="submit" class="submitButton" @click.prevent="submitYear" value="BEKRÄFTA" />
+            </div>`
 }
 
 
