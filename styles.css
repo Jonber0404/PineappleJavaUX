@@ -285,12 +285,11 @@ body {
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
     width: 80%;
-    border-radius: 1em 1em 0 0;
+    border-radius: 0.5em;
     overflow: hidden;
     background-color: whitesmoke;
     display: flex;
     align-items: center;
-    margin-bottom: 0;
 }
 
 .museum-big-image {
@@ -300,14 +299,16 @@ body {
 
 .museum-text-container {
     width: 80%;
-    height: 8em;
+    height: 5em;
     overflow: scroll;
-    background-color: white;
+    background-color: rgba(245, 223, 189, 1);
     padding: 0.5em;
     box-sizing: border-box;
-    border-radius: 0 0 1em 1em;
-    margin-top: 0;
+    border-radius: 0.5em;
+    margin-top: 0.5em;
     margin-bottom: 1em;
+    font-size: 17px;
+    font-weight: 800;
 }
 
 /* Stil för de små bilderna */
@@ -331,7 +332,9 @@ body {
     flex-direction: column;
     align-items: center; /* Centrera innehållet vertikalt */
     width: 100%;
-    margin-top: 5%;
+    font-family: Inconsolata, sans-serif;
+    color: rgba(85, 44, 45, 1);
+    font-size: 25px;
 }
 
 

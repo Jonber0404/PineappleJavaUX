@@ -183,16 +183,19 @@ const museum = {
     methods: {
         selectImage(image) {
             this.selectedImage = image;
+        },
+        goBack() {
+            this.$router.go(-1)
         }
     },
-    template: `<!--<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>-->
+    template: `<button class='backtomenu' @click="goBack"> </button>
                 <div class="museum-image-container">
-                    <!-- Stor bild -->
+                    <br><br>
+                    <h1>{{selectedImage.date}}</h1>
                     <div class="museum-big-image-div">
                         <img :src="selectedImage.imgUrl" class="museum-big-image">
                     </div>
                     <div class="museum-text-container">
-                    <p>{{ selectedImage.date }}</p>
                     <p>{{ selectedImage.description }}</p>
                     <a :href="selectedImage.infoUrl" target="_blank">Mer info</a>
                     </div>
