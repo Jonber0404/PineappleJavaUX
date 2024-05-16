@@ -107,27 +107,26 @@
 
 /*Playerselection*/
 /*.oneplayer,
-.twoplayer,
+.twoplayer
+ */
+
+
 .stopButton {
-    display: block;
-    text-align: center;
-    padding: 0.5rem;
-    margin: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-} */
+    width: 100px;
+    margin-top: 20px;
+}
 
 .nextButton {
-    display: block;
-    font-size: 150%;
-    background-color: burlywood;
-    font-family: fantasy;
+    position: fixed;
+    font-size: 25px;
+    font-weight: 800;
+    color: rgba(85, 44, 45, 1);
+    background-color: transparent;
+    border: transparent;
+    font-family: Inconsolata, sans-serif;
     cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+    right: 8px;
+    bottom: 8px;
 }
 
 .selection {
@@ -290,6 +289,7 @@ body {
     background-color: whitesmoke;
     display: flex;
     align-items: center;
+    margin: auto;
 }
 
 .museum-big-image {
@@ -337,9 +337,33 @@ body {
     font-size: 25px;
 }
 
+.main-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-family: Inconsolata, sans-serif;
+    color: rgba(85, 44, 45, 1);
+    font-size: 25px;
+    font-weight: 800;
+    text-align: center;
+}
 
+.timer-symbol {
+    position: fixed;
+    top: 20px;
+    right: 60px;
+}
 
-
+.timer-num {
+    position: fixed;
+    top: -19px;
+    right: 18px;
+    font-family: Inconsolata, sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+}
 
 
 
@@ -394,17 +418,6 @@ body {
     .museum-big-image-div, .museum-text-container, .museum-small-images {
         width: 25%;
     }
-}
-
-
-
-.main-flex {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    font-family: fantasy;
-
 }
 
 a {
