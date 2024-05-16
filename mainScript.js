@@ -453,6 +453,8 @@ const twoPlayerGame = {
         startTimer() {
             this.timer = setInterval(() => {
                 this.count--;
+                clearInterval(this.guessTimer);
+                this.guessTime = 10;
                 if (this.count < 1) {
                     this.points = this.points - 2
                     this.count = 60
@@ -483,22 +485,28 @@ const twoPlayerGame = {
             }
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
+                this.guessTimeStop = true;
                 if(this.guessTime === 0){
                     this.extractData();
                     this.points-=2;
                     this.count = 60;
                     this.lookAway = false;
+                    this.guessTime = 10;
                     clearInterval(this.guessTimer);
                     this.timeStop = false;
-                    this.startTimer();
+                    this.guessTimeStop = false;
+                    
+                   
                     if(this.p1TimeStop){
                         this.p1TimeStop = false;
                         this.visibleButton1 = false;
                         this.visibleButton2 = true;
+                        this.playerOneCorrect = false;
                     }else{
                         this.p2TimeStop = false;
                         this.visibleButton2 = false;
                         this.visibleButton1 = true;
+                        this.playerTwoCorrect = false;
                     }
                 }
             },1000)
@@ -539,6 +547,7 @@ const twoPlayerGame = {
                     this.visibleButton2 = true;
                     this.playerOneCorrect = true;
                     this.visibleButton1 = false;
+                    
 
                 }
                 else if (this.visibleButton2 && !this.visibleButton1) {
