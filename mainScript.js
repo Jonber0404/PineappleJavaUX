@@ -337,6 +337,9 @@ const onePlayerGame = {
             else if (yearInput !== correctYear) {
                 this.nextPicture()
             }
+        },
+        toHome() {
+            this.$router.push("/")
         }
 
     },
@@ -348,6 +351,7 @@ const onePlayerGame = {
              
              <div v-show="mainDiv" class="main-flex">
                 <img src="assets/timer-symbol.svg" class="timer-symbol">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
                 <p class="timer-num" v-show="mainDiv">{{count}}</p>
                 <h2>{{points}} POÄNG</h2>
                 <p>Vilket årtionde söker vi?</p>
@@ -360,6 +364,7 @@ const onePlayerGame = {
             
             <div v-show="answerView" class="answer-view" class="main-flex">
                 <img src="assets/timer-symbol.svg" class="timer-symbol">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
                 <p class="timer-num">{{guessTime}}</p>
                 <p>Vilket årtionde söker vi?</p>
                 <select class="date" v-model="selectYear">
