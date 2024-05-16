@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 .fetchedImage {
     height: 200px;
     width: auto;
@@ -60,6 +64,7 @@
     margin-top: 0.6em;
 }
 
+/****************Scoreboard Things****************/
 .scoreboard {
     display: flex;
     flex-direction: column;
@@ -105,6 +110,7 @@
     padding: 0.3em;
 }
 
+
 /*Playerselection*/
 /*.oneplayer,
 .twoplayer,
@@ -130,7 +136,11 @@
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
-.selection {
+.player-selection {
+    flex-direction: column;
+}
+
+.difficulty-selection {
     flex-direction: column;
 }
 
@@ -337,7 +347,47 @@ body {
     font-size: 25px;
 }
 
+.navbar {
+    display: none;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    
+    align-items: center;
+}
 
+.navbar-logo img{
+    width: auto;
+    height: 30px;
+    padding-right: 10px;
+}
+
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
+}
+
+.navbar-nav li:last-child {
+    margin-left: auto;
+}
+
+.nav-item {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.nav-item a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+.nav-item a:hover {
+    background-color: #555;
+}
 
 
 
@@ -384,15 +434,40 @@ body {
     /*Playerselection*/
 
 
-    .selection {
+    .player-selection {
         display: flex;
         flex-direction: row;
-        
+        justify-content: center;
+        align-items: center;
+    }
+
+    .difficulty-selection {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
 
 
     .museum-big-image-div, .museum-text-container, .museum-small-images {
         width: 25%;
+    }
+
+    .navbar {
+        display: flex;
+        margin-left: 0;
+    }
+
+    .navbar-nav {
+        margin-left: 0;
+    }
+
+    .backtomenu {
+        display: none;
+    }
+
+    .game-rules .backtomenu {
+        display: flex;
     }
 }
 
@@ -414,19 +489,6 @@ a {
 
 
 
-
-
-
-/*Feel free to delete this, it's just for ease of testing*/
-
-.beta-nav {
-    display: flex;
-    flex-direction: row;
-}
-
-.beta-nav a:last-child {
-    margin-left: auto;
-}
 
 @media screen and (min-width: 576px) {}
 

@@ -3,9 +3,13 @@ let decadeEnd, decadeStart, currentRoundPictures
 // Main meny
 const homePage = {
     name: "homePage",
-    template: `<router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
-                <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
-                <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>`
+    template:   `<div class="container">
+                    <router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
+                    <div class="container2">
+                        <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
+                        <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>
+                    </div>
+                </div>`
 }
 
 // Single player eller two player
@@ -21,9 +25,10 @@ const playerSelection = {
         }
     },
 
-    template: `<div class="main-flex">
-            <h1>ANTAL SPELARE</h1>
-                <div class="selection">
+    template: `
+            <div class="main-flex">
+                <h1>ANTAL SPELARE</h1>
+                <div class="player-selection">
                     <router-link to="/"><button class='backtomenu'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
@@ -47,6 +52,21 @@ const difficultySelection = {
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
+        },
+        getDifficulty() {
+            return this.difficulty()
+        },
+        getSelectedDifficulty(dif) {
+            switch (dif) {
+                case 'easy':
+                    return this.difficulty.getDifficulty(1)
+                case 'normal':
+                    return this.difficulty.getDifficulty(2)
+                case 'hard':
+                    return this.difficulty.getDifficulty(3)
+                default:
+                    return 'Unknown'
+            }
             localStorage.setItem("difficulty", this.difficulty);
 
         },
@@ -68,7 +88,7 @@ const difficultySelection = {
     },
     template: `<div class="main-flex">
     
-        <div class="selection" v-show="namesRegistered">
+        <div class="difficulty-selection" v-show="namesRegistered">
 
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
@@ -650,6 +670,7 @@ const twoPlayerGame = {
             </div>    
             </div>`
 }
+
 
 // skapa router
 const router = VueRouter.createRouter({
