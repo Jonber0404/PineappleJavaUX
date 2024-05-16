@@ -154,13 +154,22 @@ const scoreboard = {
         toMuseum(gameToShow) {
             currentRoundPictures = gameToShow.currentRoundPictures
             this.$router.push('/museum')
+        },
+        formatDate(dateStr) {
+            var date = new Date(dateStr);
+
+            var year = date.getFullYear().toString().substr(-2);
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+
+            return month + "/" + day;
         }
     },
     template: `<router-link to="/"><button class='backtomenu'> </button></router-link>
                 <div class="scoreboard"><br><br>
                     <h1>SCOREBOARD</h1>
                     <div class="scoreboard_row">
-                        <div class="scoreboard_header_cell">Namn</div>
+<!--                        <div class="scoreboard_header_cell">Namn</div>-->
                         <div class="scoreboard_header_cell">Datum</div>
                         <div class="scoreboard_header_cell">Nivå</div>
                         <div class="scoreboard_header_cell">Poäng</div>
@@ -168,8 +177,8 @@ const scoreboard = {
                         <div class="scoreboard_header_cell"></div>
                     </div>
                     <div v-for="(player, i) in playerInfo" :key="i" class="scoreboard_row">
-                        <div class="scoreboard_cell"> {{player.playerName}}</div>
-                        <div class="scoreboard_cell"> {{player.currentDate}}</div>
+<!--                        <div class="scoreboard_cell"> {{player.playerName}}</div>-->
+                        <div class="scoreboard_cell"> {{this.formatDate(player.currentDate)}}</div>
                         <div class="scoreboard_cell">{{player.difficulty}}</div>
                         <div class="scoreboard_cell">{{player.pointsEarned}}</div>
                         <div class="scoreboard_cell">{{player.correctYear}}</div>
@@ -193,16 +202,19 @@ const museum = {
     methods: {
         selectImage(image) {
             this.selectedImage = image;
+        },
+        goBack() {
+            this.$router.go(-1)
         }
     },
-    template: `<!--<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>-->
+    template: `<button class='backtomenu' @click="goBack"> </button>
                 <div class="museum-image-container">
-                    <!-- Stor bild -->
+                    <br><br>
+                    <h1>{{selectedImage.date}}</h1>
                     <div class="museum-big-image-div">
                         <img :src="selectedImage.imgUrl" class="museum-big-image">
                     </div>
                     <div class="museum-text-container">
-                    <p>{{ selectedImage.date }}</p>
                     <p>{{ selectedImage.description }}</p>
                     <a :href="selectedImage.infoUrl" target="_blank">Mer info</a>
                     </div>
