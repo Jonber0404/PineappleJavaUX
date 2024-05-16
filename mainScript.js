@@ -280,7 +280,7 @@ const onePlayerGame = {
         },
         startTimer() {
             this.timer = setInterval(() => {
-                // this.count--;
+                this.count--;
                 this.timeStop = false;
                 clearInterval(this.guessTimer)
                 this.guessTime = 10
@@ -296,7 +296,7 @@ const onePlayerGame = {
             this.answerView = true;
             this.timeStop = true;
             this.guessTimer = setInterval(() => {
-                // this.guessTime--;
+                this.guessTime--;
                 if(this.guessTime === 0){
                     this.nextPicture()
                 }
@@ -308,6 +308,7 @@ const onePlayerGame = {
             }
             this.count = 60
             this.points = this.points - 2
+            this.mainDiv = true
             if (this.points === 0) {
                 this.gameOver = true
                 this.mainDiv = false
@@ -336,7 +337,6 @@ const onePlayerGame = {
             else if (yearInput !== correctYear) {
                 this.nextPicture()
             }
-            this.mainDiv = true
         }
 
     },
