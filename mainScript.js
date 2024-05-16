@@ -45,7 +45,8 @@ const difficultySelection = {
             difficulty: "",
             playerOneName: "",
             playerTwoName: "",
-            namesRegistered: false
+            namesRegistered: false,
+            initialsPlayerOne: "",
         }
     }, methods: {
         setDifficulty(n) {
@@ -68,10 +69,24 @@ const difficultySelection = {
             localStorage.setItem("difficulty", this.difficulty);
 
         },
-        storeNames() {
+        storeName() {     
+            this.namesRegistered = true;
+            if(this.playerOneName.length>3){
+              this.initialsPlayerOne= this.playerOneName.slice(0,3);
+            }
+            else{
+                this.initialsPlayerOne = this.playerOneName;
+            }
+            localStorage.setItem('playerOneName', this.initialsPlayerOne);       
+        },
+        storeNames(){
             this.namesRegistered = true;
             localStorage.setItem('playerOneName', this.playerOneName);
+<<<<<<< HEAD
             localStorage.setItem('playerTwoName', this.playerTwoName);         
+=======
+            localStorage.setItem('playerTwoName', this.playerTwoName);
+>>>>>>> 03ab4b6bf00942b0adb694727031ffb9c0853b28
         }
     },
     template: `<div class="main-flex">
@@ -96,16 +111,20 @@ const difficultySelection = {
                      
         </div>
 
-        <h1> ANGE SPELARNAMN </h1>
+        
         <div v-if="$root.numPlayers === 1">
+        <h1> ANGE DINA INITIALER </h1>
         <input type="text" v-model="playerOneName">
+        <button @click="storeName"> SPARA </button>
         </div>
 
         <div v-else-if="$root.numPlayers === 2">
+        <h1> ANGE ERA NAMN </h1>
         <input type="text" v-model="playerOneName">
         <input type="text" v-model="playerTwoName">
-        </div>
         <button @click="storeNames"> SPARA </button>
+        </div>
+       
 
     </div>`
 }
@@ -145,6 +164,7 @@ const scoreboard = {
                 <div class="scoreboard"><br><br>
                     <h1>SCOREBOARD</h1>
                     <div class="scoreboard_row">
+                        <div class="scoreboard_header_cell">Namn</div>
                         <div class="scoreboard_header_cell">Datum</div>
                         <div class="scoreboard_header_cell">Nivå</div>
                         <div class="scoreboard_header_cell">Poäng</div>
@@ -152,6 +172,7 @@ const scoreboard = {
                         <div class="scoreboard_header_cell"></div>
                     </div>
                     <div v-for="(player, i) in playerInfo" :key="i" class="scoreboard_row">
+                        <div class="scoreboard_cell"> {{player.playerName}}</div>
                         <div class="scoreboard_cell"> {{player.currentDate}}</div>
                         <div class="scoreboard_cell">{{player.difficulty}}</div>
                         <div class="scoreboard_cell">{{player.pointsEarned}}</div>
@@ -331,7 +352,8 @@ const onePlayerGame = {
         }
 
     },
-    template: `<div class="main-flex">
+    template: ` <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
+                <div class="main-flex">
              <div v-show="gameOver" v-if="points === 0">
              <h1> HOPPSAN, DU FICK 0 POÄNG </h1>
              <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
@@ -344,7 +366,6 @@ const onePlayerGame = {
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
             <button class="stopButton" v-show="visibleButtons" @click="stopTimer">NÖDBROMS</button>
-            <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
             <select class="date" v-model="selectYear">
             <option value="1900">1900</option>
@@ -551,8 +572,10 @@ const twoPlayerGame = {
         }
 
     },
-    template: `<div class="main-flex">
+    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
+                <div class="main-flex">
             <div v-show="showMain"> 
+           
             <h1>Vilket årtioende söker vi?</h1>
             <h2>{{points}} POÄNG</h2>
             <h3>Timer: {{count}}</h3>
@@ -561,13 +584,13 @@ const twoPlayerGame = {
             <p>Fotograferad: {{objektDatum}}</p>
             
             <div v-show="lookAway">
-            <h3 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h3>
-            <h3 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h3>
+            <h2 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h2>
+            <h2 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h2>
             </div>
             <button class="stopButton" v-show="visibleButton1" @click="stopTimer(1)">NÖDBROMS 1</button>
             <button class="stopButton" v-show="visibleButton2" @click="stopTimer(2)">NÖDBROMS 2</button>
             
-            <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
+            
             <form v-show="visibleForm">
             <select class="date" v-model="selectYear">
             <option value="1900">1900</option>
@@ -589,6 +612,7 @@ const twoPlayerGame = {
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
             <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
             <h2 v-else> OAVGJORT! </h2>
+            <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
             </div>    
             </div>`
 }
