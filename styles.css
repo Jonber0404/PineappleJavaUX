@@ -33,22 +33,6 @@
     box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
 }
 
-
-/*Playerselection*/
-/*.oneplayer,
-.twoplayer,
-.stopButton {
-    display: block;
-    text-align: center;
-    padding: 0.5rem;
-    margin: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-} */
-
 .nextButton {
     display: block;
     font-size: 150%;
@@ -74,6 +58,10 @@ body {
     padding: 0;
 }
 
+body.difficulty-selection {
+    background: var(--Turkos-50, #caf0eb);
+}
+
 .startmenubutton {
     display: flex;
     width: 350px;
@@ -87,7 +75,7 @@ body {
     color: var(--Beige, #F5DFBD);
     text-align: center;
     /* Mobile_H3 */
-    font-family: Inconsolata;
+    font-family: Inconsolata, sans-serif;
     font-size: 28px;
     font-style: normal;
     font-weight: 800;
@@ -115,7 +103,7 @@ body {
 
     color: var(--Brun, #552C2D);
     /* Desktop_H4 */
-    font-family: Inconsolata;
+    font-family: Inconsolata, sans-serif;
     font-size: 22px;
     font-style: normal;
     font-weight: 800;
@@ -136,10 +124,9 @@ body {
     margin-top: -0rem;
 }
 
-.backtomenu {
+.topicon {
     position: fixed;
     top: 20px;
-    left: 20px;
     display: flex;
     padding: 10px;
     flex-direction: column;
@@ -147,9 +134,23 @@ body {
     gap: 10px;
     width: 30px;
     height: 25px;
-    background-image: url('assets/Vector.svg');
     background-color: transparent;
     border: none;
+    background-repeat: no-repeat;
+}
+
+.backarrow {
+    left: 20px;
+    background-image: url('assets/ArrowVector.svg');
+}
+
+.scoreboardicon {
+    background-image: url('assets/MedalVector.svg');
+}
+
+.backtomenu {
+    right: 20px;
+    background-image: url('assets/HouseVector.svg');
 }
 
 .easy {
@@ -171,7 +172,7 @@ body {
     align-items: center;
 
     color: var(--Brun, #552C2D);
-    font-family: Inconsolata;
+    font-family: Inconsolata, sans-serif;
     font-size: 15px;
     font-style: normal;
     font-weight: 500;
@@ -196,7 +197,7 @@ body {
 .choosedifficultytext {
     color: var(--Brun, #552C2D);
     /* Mobile_H2 */
-    font-family: Inconsolata;
+    font-family: Inconsolata, sans-serif;
     font-size: 40px;
     font-style: normal;
     font-weight: 800;

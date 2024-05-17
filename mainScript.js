@@ -22,9 +22,8 @@ const playerSelection = {
     },
 
     template: `<div class="main-flex">
-            <h1>ANTAL SPELARE</h1>
                 <div class="selection">
-                    <router-link to="/"><button class='backtomenu'> </button></router-link>
+                    <router-link to="/"><button class='backarrow topicon'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
                 </div>
@@ -40,7 +39,7 @@ const difficultySelection = {
         return {
             difficulty: "",
             playerOneName: "",
-            playerTwoName:""
+            playerTwoName: ""
         }
     }, methods: {
         setDifficulty(n) {
@@ -57,6 +56,10 @@ const difficultySelection = {
     
         <div class="selection">
 
+            <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
+            <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+            <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
             <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
@@ -65,13 +68,6 @@ const difficultySelection = {
             <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
             <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
             <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
-
-
-            <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
-            <!--<router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
-            
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button @click="storeNames" class="startGameArrow">Starta Spelet</button></router-link>
             
             
         </div>
@@ -175,7 +171,7 @@ const onePlayerGame = {
     created() {
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
-       this.playerOneName = localStorage.getItem('playerOneName');
+        this.playerOneName = localStorage.getItem('playerOneName');
 
     },
     mounted() {
@@ -221,7 +217,7 @@ const onePlayerGame = {
                     }
                 }
             }
-            currentRoundPictures.push({imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum})
+            currentRoundPictures.push({ imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum })
         },
         startTimer() {
             this.timer = setInterval(() => {
@@ -257,8 +253,10 @@ const onePlayerGame = {
                 let playerName = this.playerOneName;
                 const currentDate = new Date().toLocaleDateString();
                 let difficulty = this.difficulty;
-                this.playerData.push({ playerName, pointsEarned: this.pointsEarned, currentDate, difficulty,
-                                    correctYear, currentRoundPictures });
+                this.playerData.push({
+                    playerName, pointsEarned: this.pointsEarned, currentDate, difficulty,
+                    correctYear, currentRoundPictures
+                });
 
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
                 this.$router.push('/scoreboard');
@@ -382,10 +380,10 @@ const twoPlayerGame = {
             else {
                 this.visibleButton1 = false;
                 this.p2TimeStop = true;
-              
-          
+
+
             }
-            
+
         },
 
         nextPicture() {
@@ -405,12 +403,12 @@ const twoPlayerGame = {
                 this.startTimer();
                 this.timeStop = false;
             }
-            if(yearInput !== correctYear){
-                if(this.p1TimeStop){
+            if (yearInput !== correctYear) {
+                if (this.p1TimeStop) {
                     this.visibleButton1 = false;
-                    this.visibleButton2 = true;            
+                    this.visibleButton2 = true;
                 }
-                else{
+                else {
                     this.visibleButton2 = false;
                     this.visibleButton1 = true;
                 }
@@ -431,18 +429,18 @@ const twoPlayerGame = {
                 }
                 this.points -= 2;
                 this.count = 60;
-            }  
+            }
             else {
-             
+
                 this.points -= 2;
                 this.count = 60;
-                
+
             }
 
-            if(this.playerOneCorrect){
+            if (this.playerOneCorrect) {
                 this.visibleButton1 = false;
             }
-            else if(this.playerTwoCorrect){
+            else if (this.playerTwoCorrect) {
                 this.visibleButton2 = false;
             }
             if ((this.playerOneCorrect && this.playerTwoCorrect) || (this.p1TimeStop && this.p2TimeStop)) {
@@ -506,12 +504,21 @@ const router = VueRouter.createRouter({
         { path: '/playerSelection', component: playerSelection },
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
-        { path: '/onePlayerGame', component: onePlayerGame},
+        { path: '/onePlayerGame', component: onePlayerGame },
         { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection },
         { path: '/museum', component: museum }
     ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.path === '/difficultySelection') {
+        document.body.classList.add('difficulty-selection');
+    } else {
+        document.body.classList.remove('difficulty-selection');
+    }
+    next();
+});
 
 
 const app = {}
