@@ -136,3 +136,120 @@ a {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     transform: scale(0.95);
 }
+
+
+
+
+/****************Scoreboard Things****************/
+.scoreboardNavbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+
+    top: 0rem;
+    width: 100%;
+
+    background-color: blueviolet;
+    padding: 0.2rem;
+    margin-bottom: 2rem;
+
+    row-gap: 10px;
+}
+
+nav ul {
+    width: 80%;
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    gap: 10px;
+    padding: 0.3rem;
+}
+
+.scoreboardnavbutton {
+    text-align: center;
+}
+
+.scoreboardHeader {
+    text-align: center;
+}
+
+.scoreboardTableContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    background-color: red;
+}
+
+.scoreboardHeadRow {
+    width: 90%;
+    list-style: none;
+    display: flex;
+}
+
+.scoreboardInfoRow {
+    width: 90%;
+    list-style: none;
+    display: flex;
+}
+
+.p-cont {
+    width: 80%;
+    list-style: none;
+    display: flex;
+}
+
+
+
+
+
+
+
+
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    margin: 0 8% 0 8%;
+    text-align: center;
+    font-family: Inconsolata, sans-serif;
+    font-size: 20px;
+    color: rgba(85, 44, 45, 1);
+}
+
+.scoreboard_row {
+    color: rgba(245, 223, 189, 1);
+    font-size: 25px;
+    font-weight: 700;
+    margin: 0.2em 0 0.2em 0;
+    display: flex;
+    text-align: center;
+}
+
+.scoreboard_cell {
+    flex: 1;
+    padding: 0.3em;
+    background-color: rgba(26, 116, 117, 1);
+}
+
+.scoreboard_cell:last-child {
+    color: rgba(26, 116, 117, 1);
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.scoreboard_cell:first-child {
+    border-radius: 0.5em 0em 0em 0.5em;
+}
+
+.scoreboard_cell:nth-child(4) {
+    border-radius: 0em 0.5em 0.5em 0em;
+}
+
+.scoreboard_header_cell {
+    flex: 1;
+    color: rgba(26, 116, 117, 1);
+    padding: 0.3em;
+}

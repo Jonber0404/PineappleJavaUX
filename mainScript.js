@@ -3,9 +3,13 @@ let decadeEnd, decadeStart, currentRoundPictures
 // Main meny
 const homePage = {
     name: "homePage",
-    template: `<router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
-                <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
-                <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>`
+    template:   `<div class="container">
+                    <router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
+                    <div class="container2">
+                        <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
+                        <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>
+                    </div>
+                </div>`
 }
 
 // Single player eller two player
@@ -21,9 +25,12 @@ const playerSelection = {
         }
     },
 
-    template: `<div class="main-flex">
-                <div class="selection">
-                    <router-link to="/"><button class='backarrow topicon'> </button></router-link>
+
+    template: `
+            <div class="main-flex">
+                <h1>ANTAL SPELARE</h1>
+                <div class="player-selection">
+                    <router-link to="/"><button class='backtomenu'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
                 </div>
@@ -39,22 +46,51 @@ const difficultySelection = {
         return {
             difficulty: "",
             playerOneName: "",
-            playerTwoName: ""
+
+            playerTwoName: "",
+            namesRegistered: false,
+            initialsPlayerOne: "",
         }
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
-            localStorage.setItem("difficulty", this.difficulty);
-            if (this.$root.numPlayers === 1) {
-                this.$router.push('/onePlayerGame');
-            } else if (this.$root.numPlayers === 2) {
-                this.$router.push('/twoPlayerGame');
+        },
+        getDifficulty() {
+            return this.difficulty()
+        },
+        getSelectedDifficulty(dif) {
+            switch (dif) {
+                case 'easy':
+                    return this.difficulty.getDifficulty(1)
+                case 'normal':
+                    return this.difficulty.getDifficulty(2)
+                case 'hard':
+                    return this.difficulty.getDifficulty(3)
+                default:
+                    return 'Unknown'
             }
+            localStorage.setItem("difficulty", this.difficulty);
+
+        },
+        storeName() {     
+            this.namesRegistered = true;
+            if(this.playerOneName.length>3){
+              this.initialsPlayerOne= this.playerOneName.slice(0,3);
+            }
+            else{
+                this.initialsPlayerOne = this.playerOneName;
+            }
+            localStorage.setItem('playerOneName', this.initialsPlayerOne);       
+        },
+        storeNames(){
+            this.namesRegistered = true;
+            localStorage.setItem('playerOneName', this.playerOneName);
+            localStorage.setItem('playerTwoName', this.playerTwoName);
         }
     },
     template: `<div class="main-flex">
     
-        <div class="selection">
+        <div class="difficulty-selection" v-show="namesRegistered">
 
             <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
             <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
@@ -68,19 +104,32 @@ const difficultySelection = {
             <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
             <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
             <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
+
+
+
+            <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
+            <!--<router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
             
-            
+            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
+                     
         </div>
 
+        
         <div v-if="$root.numPlayers === 1">
+        <h1> ANGE DINA INITIALER </h1>
         <input type="text" v-model="playerOneName">
+        <button @click="storeName"> SPARA </button>
         </div>
 
         <div v-else-if="$root.numPlayers === 2">
+        <h1> ANGE ERA NAMN </h1>
         <input type="text" v-model="playerOneName">
         <input type="text" v-model="playerTwoName">
-       
+        <button @click="storeNames"> SPARA </button>
         </div>
+       
+
     </div>`
 }
 
@@ -113,12 +162,37 @@ const scoreboard = {
         toMuseum(gameToShow) {
             currentRoundPictures = gameToShow.currentRoundPictures
             this.$router.push('/museum')
+        },
+        formatDate(dateStr) {
+            var date = new Date(dateStr);
+
+            var year = date.getFullYear().toString().substr(-2);
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+
+            return month + "/" + day;
         }
     },
-    template: `<p v-for="(player, i) in playerInfo" :key="i" @click="toMuseum(player)">
-                Namn: {{player.playerName}} - Poäng: {{player.pointsEarned}} - DATUM: {{ player.currentDate}} - SVÅRIGHETSGRAD: {{player.difficulty}} </p>
-<!--    <pre>{{ playerInfo }}</pre>-->
-    <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link> `
+    template: `<router-link to="/"><button class='backtomenu'> </button></router-link>
+                <div class="scoreboard"><br><br>
+                    <h1>SCOREBOARD</h1>
+                    <div class="scoreboard_row">
+<!--                        <div class="scoreboard_header_cell">Namn</div>-->
+                        <div class="scoreboard_header_cell">Datum</div>
+                        <div class="scoreboard_header_cell">Nivå</div>
+                        <div class="scoreboard_header_cell">Poäng</div>
+                        <div class="scoreboard_header_cell">Årtal</div>
+                        <div class="scoreboard_header_cell"></div>
+                    </div>
+                    <div v-for="(player, i) in playerInfo" :key="i" class="scoreboard_row">
+<!--                        <div class="scoreboard_cell"> {{player.playerName}}</div>-->
+                        <div class="scoreboard_cell"> {{this.formatDate(player.currentDate)}}</div>
+                        <div class="scoreboard_cell">{{player.difficulty}}</div>
+                        <div class="scoreboard_cell">{{player.pointsEarned}}</div>
+                        <div class="scoreboard_cell">{{player.correctYear}}</div>
+                        <div class="scoreboard_cell" @click="toMuseum(player)">&bull;&bull;&bull;</div> 
+                    </div>
+                </div>`
 }
 
 const museum = {
@@ -136,16 +210,19 @@ const museum = {
     methods: {
         selectImage(image) {
             this.selectedImage = image;
+        },
+        goBack() {
+            this.$router.go(-1)
         }
     },
-    template: `<!--<router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>-->
+    template: `<button class='backtomenu' @click="goBack"> </button>
                 <div class="museum-image-container">
-                    <!-- Stor bild -->
+                    <br><br>
+                    <h1>{{selectedImage.date}}</h1>
                     <div class="museum-big-image-div">
                         <img :src="selectedImage.imgUrl" class="museum-big-image">
                     </div>
                     <div class="museum-text-container">
-                    <p>{{ selectedImage.date }}</p>
                     <p>{{ selectedImage.description }}</p>
                     <a :href="selectedImage.infoUrl" target="_blank">Mer info</a>
                     </div>
@@ -160,7 +237,19 @@ const museum = {
 // spelregler
 const gameRules = {
     name: "gameRules",
-    template: `<p>lägg till gameRules här</p>`
+    template: `<div class="game-rules">
+                <router-link to="/"><button class='backtomenu'> </button></router-link><br><br>
+                <h1>SPELREGLER</h1>
+                <p>Spelet går ut på att gissa vilket årtal man befinner sig i.</p>
+                <p>&bull; Varje spelrunda har 5 foton från samma årtionde.</p>
+                <p>&bull; Spelaren gissar med ledtrådar från bilderna och får poäng beroende på vilken bild hen gissar rätt på.</p>
+                <p>&bull; Poängen minskar ju fler bilder som visas i rundan.</p><br>
+                <p>Om två spelare är med och en gissar rätt måste den vänta till nästa runda medan den andra fortsätter gissa. 
+                Spelaren med flest poäng efter tre rundor vinner.</p>
+                <p>För att gissa trycker man på handbromsen och väljer ett årtal.</p>
+                <p>Om man gissar fel får man inte gissa igen förrän nästa bild visas.</p>
+                <p>OBS! Viktigt att hålla svaret hemligt för motspelaren när ni är två.</p>
+            </div>`
 }
 
 const onePlayerGame = {
@@ -185,12 +274,14 @@ const onePlayerGame = {
             points: 10,
             difficulty: 0,
             count: 60,
+            guessTime: 10,
             objekt: {},
             objektBild: "",
             objektDatum: "",
             objektDesc: "",
             objektUrl: "",
             timer: null,
+            guessTimer: null,
             decadeS: decadeStart,
             decadeE: decadeEnd,
             selectYear: "",
@@ -198,7 +289,9 @@ const onePlayerGame = {
             visibleForm: false,
             timeStop: false,
             visibleButtons: true,
-            playerData: []
+            playerData: [],
+            gameOver: false,
+            mainDiv: true
         }
     },
 
@@ -227,14 +320,29 @@ const onePlayerGame = {
                     this.points = this.points - 2
                     this.count = 60
                     this.extractData();
+                } else if (this.points === 0) {
+                //    this.points = 0;
+                    this.gameOver = true;
+                    this.mainDiv = false;
+
                 }
             }, 1000)
+
         },
         stopTimer() {
             clearInterval(this.timer)
             this.visibleForm = true;
             this.timeStop = true;
             this.visibleButtons = false;
+            this.guessTimer = setInterval(() => {
+                this.guessTime--;
+                if(this.guessTime === 0){
+                    this.extractData();
+                    this.points-=2;
+                    this.count = 60;
+                    this.startTimer();
+                }
+            },1000)
         },
         nextPicture() {
             this.count = 0;
@@ -268,25 +376,41 @@ const onePlayerGame = {
                 this.startTimer();
                 this.extractData();
             }
-
-
         }
 
     },
-    template: `<div class="main-flex">
+    template: ` <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
+                <div class="main-flex">
+             <div v-show="gameOver" v-if="points === 0">
+             <h1> HOPPSAN, DU FICK 0 POÄNG </h1>
+             <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
+              </div>
+              <div v-show="mainDiv">
             <h1>Vilket årtioende söker vi?</h1>
             <h2>{{points}} POÄNG</h2>
             <h3>Timer: {{count}}</h3>
+            <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
             <img :src="objektBild" alt="" class="fetchedImage">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
             <button class="stopButton" v-show="visibleButtons" @click="stopTimer">NÖDBROMS</button>
-            <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
             <form v-show="visibleForm">
-            <input type="text" class="date" v-model="selectYear">
+            <select class="date" v-model="selectYear">
+            <option value="1900">1900</option>
+            <option value="1910">1910</option>
+            <option value="1920">1920</option>
+            <option value="1930">1930</option>
+            <option value="1940">1940</option>
+            <option value="1950">1950</option>
+            <option value="1960">1960</option>
+            <option value="1970">1970</option>
+            <option value="1980">1980</option>
+            <option value="1990">1990</option>
+            </select>
             <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
             </form>
             <h3> DU HAR {{pointsEarned}} POÄNG</h3>
+            </div>
             </div>`
 }
 
@@ -307,12 +431,14 @@ const twoPlayerGame = {
         return {
             points: 10,
             count: 60,
+            guessTime: 10,
             objekt: {},
             objektBild: "",
             objektDatum: "",
             objektDesc: "",
             objektUrl: "",
             timer: null,
+            guessTimer: null,
             decadeS: decadeStart,
             decadeE: decadeEnd,
             selectYear: "",
@@ -332,7 +458,8 @@ const twoPlayerGame = {
             showMain: true,
             roundOver: false,
             p1TimeStop: false,
-            p2TimeStop: false
+            p2TimeStop: false,
+            lookAway: false
 
 
         }
@@ -356,6 +483,8 @@ const twoPlayerGame = {
         startTimer() {
             this.timer = setInterval(() => {
                 this.count--;
+                clearInterval(this.guessTimer);
+                this.guessTime = 10;
                 if (this.count < 1) {
                     this.points = this.points - 2
                     this.count = 60
@@ -373,9 +502,11 @@ const twoPlayerGame = {
             this.visibleNextButton = false;
             this.visibleForm = true;
             this.timeStop = true;
+            this.lookAway = true;
             if (n === 1) {
                 this.visibleButton2 = false;
                 this.p1TimeStop = true;
+
             }
             else {
                 this.visibleButton1 = false;
@@ -383,6 +514,33 @@ const twoPlayerGame = {
 
 
             }
+            this.guessTimer = setInterval(() => {
+                this.guessTime--;
+                this.guessTimeStop = true;
+                if(this.guessTime === 0){
+                    this.extractData();
+                    this.points-=2;
+                    this.count = 60;
+                    this.lookAway = false;
+                    this.guessTime = 10;
+                    clearInterval(this.guessTimer);
+                    this.timeStop = false;
+                    this.guessTimeStop = false;
+                    
+                   
+                    if(this.p1TimeStop){
+                        this.p1TimeStop = false;
+                        this.visibleButton1 = false;
+                        this.visibleButton2 = true;
+                        this.playerOneCorrect = false;
+                    }else{
+                        this.p2TimeStop = false;
+                        this.visibleButton2 = false;
+                        this.visibleButton1 = true;
+                        this.playerTwoCorrect = false;
+                    }
+                }
+            },1000)
 
         },
 
@@ -399,6 +557,7 @@ const twoPlayerGame = {
             this.visibleNextButton = true;
             this.visibleForm = false;
             this.selectYear = "";
+            this.lookAway = false;
             if (this.timeStop) {
                 this.startTimer();
                 this.timeStop = false;
@@ -419,6 +578,7 @@ const twoPlayerGame = {
                     this.visibleButton2 = true;
                     this.playerOneCorrect = true;
                     this.visibleButton1 = false;
+                    
 
                 }
                 else if (this.visibleButton2 && !this.visibleButton1) {
@@ -465,6 +625,7 @@ const twoPlayerGame = {
                 this.visibleButton2 = false;
                 this.showMain = false;
                 this.roundOver = true;
+                this.lookAway = false;
                 this.stopTimer();
 
             }
@@ -472,29 +633,52 @@ const twoPlayerGame = {
         }
 
     },
-    template: `<div class="main-flex">
+    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
+                <div class="main-flex">
             <div v-show="showMain"> 
+           
             <h1>Vilket årtioende söker vi?</h1>
             <h2>{{points}} POÄNG</h2>
             <h3>Timer: {{count}}</h3>
+            <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
             <img :src="objektBild" alt="" class="fetchedImage">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
+            
+            <div v-show="lookAway">
+            <h2 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h2>
+            <h2 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h2>
             </div>
             <button class="stopButton" v-show="visibleButton1" @click="stopTimer(1)">NÖDBROMS 1</button>
             <button class="stopButton" v-show="visibleButton2" @click="stopTimer(2)">NÖDBROMS 2</button>
-            <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
+            
+            
             <form v-show="visibleForm">
-            <input type="text" class="date" v-model="selectYear">
-            <input type="submit" class="submitButton" @click.prevent="submitYear"  value="GISSA ÅR" />
+            <select class="date" v-model="selectYear">
+            <option value="1900">1900</option>
+            <option value="1910">1910</option>
+            <option value="1920">1920</option>
+            <option value="1930">1930</option>
+            <option value="1940">1940</option>
+            <option value="1950">1950</option>
+            <option value="1960">1960</option>
+            <option value="1970">1970</option>
+            <option value="1980">1980</option>
+            <option value="1990">1990</option>
+            </select>
+            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
             </form>
+            </div>
             <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
             <div v-show="roundOver">    
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
             <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
+            <h2 v-else> OAVGJORT! </h2>
+            <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
             </div>    
             </div>`
 }
+
 
 // skapa router
 const router = VueRouter.createRouter({
