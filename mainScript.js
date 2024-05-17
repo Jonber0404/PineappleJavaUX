@@ -3,9 +3,13 @@ let decadeEnd, decadeStart, currentRoundPictures
 // Main meny
 const homePage = {
     name: "homePage",
-    template: `<router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
-                <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
-                <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>`
+    template: `<div class="container">
+                    <router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
+                    <div class="container2">
+                        <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
+                        <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>
+                    </div>
+                </div>`
 }
 
 // Single player eller two player
@@ -21,9 +25,10 @@ const playerSelection = {
         }
     },
 
-    template: `<div class="main-flex">
-            <h1>ANTAL SPELARE</h1>
-                <div class="selection">
+    template: `
+            <div class="main-flex">
+                <h1>ANTAL SPELARE</h1>
+                <div class="player-selection">
                     <router-link to="/"><button class='backtomenu'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
@@ -47,62 +52,75 @@ const difficultySelection = {
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
-            localStorage.setItem("difficulty", this.difficulty);
-
         },
-        storeName() {     
-            this.namesRegistered = true;
-            if(this.playerOneName.length>3){
-              this.initialsPlayerOne= this.playerOneName.slice(0,3);
+        getDifficulty() {
+            return this.difficulty;
+        },
+        getSelectedDifficulty(dif) {
+            let difficultyLevel;
+            switch (dif) {
+                case 'easy':
+                    difficultyLevel = 'easy';
+                    break;
+                case 'normal':
+                    difficultyLevel = 'normal';
+                    break;
+                case 'hard':
+                    difficultyLevel = 'hard';
+                    break;
+                default:
+                    difficultyLevel = 'Unknown';
             }
-            else{
+            localStorage.setItem("difficulty", difficultyLevel);
+            return difficultyLevel;
+        },
+        storeName() {
+            this.namesRegistered = true;
+            if (this.playerOneName.length > 3) {
+                this.initialsPlayerOne = this.playerOneName.slice(0, 3);
+            }
+            else {
                 this.initialsPlayerOne = this.playerOneName;
             }
-            localStorage.setItem('playerOneName', this.initialsPlayerOne);       
+            localStorage.setItem('playerOneName', this.initialsPlayerOne);
         },
-        storeNames(){
+        storeNames() {
             this.namesRegistered = true;
             localStorage.setItem('playerOneName', this.playerOneName);
             localStorage.setItem('playerTwoName', this.playerTwoName);
         }
     },
-    template: `<div class="main-flex">
+    template: `
+    <div class="main-flex">
     
-        <div class="selection" v-show="namesRegistered">
+        <div v-if="!namesRegistered">
+            <div v-if="$root.numPlayers === 1">
+                    <h1>ANGE DINA INITIALER</h1>
+                    <input type="text" v-model="playerOneName">
+                    <button @click="storeName">SPARA</button>
+            </div>
+            <div v-else-if="$root.numPlayers === 2">
+                    <h1>ANGE ERA NAMN</h1>
+                    <input type="text" v-model="playerOneName">
+                    <input type="text" v-model="playerTwoName">
+                    <button @click="storeNames">SPARA</button>
+            </div>
+        </div>
 
+        <div v-else class="difficulty-selection">
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
-
             <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/onePlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
+            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+                <div class='difficultytext easytext'>Längre tid för att svara</div>
+            </router-link>
             <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/onePlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
-
-
-            <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
-            <!--<router-link v-else-if="$root.numPlayers === 2" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
-            
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
-                     
+            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+                <div class='difficultytext hardtext'>Kortare tid för att svara</div>
+            </router-link>
+            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+                <button class="startGameArrow">Starta Spelet</button>
+            </router-link>
         </div>
-
-        
-        <div v-if="$root.numPlayers === 1">
-        <h1> ANGE DINA INITIALER </h1>
-        <input type="text" v-model="playerOneName">
-        <button @click="storeName"> SPARA </button>
-        </div>
-
-        <div v-else-if="$root.numPlayers === 2">
-        <h1> ANGE ERA NAMN </h1>
-        <input type="text" v-model="playerOneName">
-        <input type="text" v-model="playerTwoName">
-        <button @click="storeNames"> SPARA </button>
-        </div>
-       
-
     </div>`
 }
 
@@ -300,7 +318,7 @@ const onePlayerGame = {
                 if(this.guessTime === 0){
                     this.nextPicture()
                 }
-            },1000)
+            }, 1000)
         },
         nextPicture() {
             if (this.timeStop) {
