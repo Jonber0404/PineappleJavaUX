@@ -335,6 +335,7 @@ const onePlayerGame = {
             if (this.points === 0) {
                 this.gameOver = true
                 this.mainDiv = false
+                return
             }
             this.loadNextImg();
         },
