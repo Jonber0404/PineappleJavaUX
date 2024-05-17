@@ -435,6 +435,270 @@ const onePlayerGame = {
             </div>`
 }
 
+const twoPlayerGame = {
+    name: "twoPlayerGame",
+    beforeCreate() {
+        this.generateDecade()
+    },
+    created() {
+        this.extractData();
+        this.playerOneName = localStorage.getItem('playerOneName');
+        this.playerTwoName = localStorage.getItem('playerTwoName');
+    },
+    mounted() {
+        this.startTimer();
+    },
+    data() {
+        return {
+            points: 10,
+            count: 60,
+            guessTime: 10,
+            objekt: {},
+            objektBild: "",
+            objektDatum: "",
+            objektDesc: "",
+            objektUrl: "",
+            timer: null,
+            guessTimer: null,
+            decadeS: decadeStart,
+            decadeE: decadeEnd,
+            selectYear: "",
+            playerOnePoints: 0,
+            playerTwoPoints: 0,
+            playerOneName: "",
+            playerTwoName: "",
+            rounds: 1,
+            visibleForm: false,
+            timeStop: false,
+            visibleButton1: true,
+            visibleButton2: true,
+            visibleNextButton: true,
+            playerData: [],
+            playerOneCorrect: false,
+            playerTwoCorrect: false,
+            showMain: true,
+            roundOver: false,
+            p1TimeStop: false,
+            p2TimeStop: false,
+            lookAway: false
+
+
+        }
+    },
+
+    methods: {
+        async extractData() {
+            let fetchRes = await this.getObjectData()
+            let currentRecord = fetchRes.result.records[0].record['@graph']
+            this.objektBild = currentRecord.find(obj => obj.lowresSource).lowresSource
+            this.objektDesc = currentRecord.find(obj => obj.desc).desc
+            this.objektUrl = currentRecord.find(obj => obj.url).url
+            for (obj of currentRecord) {
+                if (Object.keys(obj).includes("contextLabel")) {
+                    if (obj.contextLabel.includes("Fotografering") && obj.contextType.includes("produce")) {
+                        this.objektDatum = obj.fromTime
+                    }
+                }
+            }
+        },
+        startTimer() {
+            this.timer = setInterval(() => {
+                this.count--;
+                clearInterval(this.guessTimer);
+                this.guessTime = 10;
+                if (this.count < 1) {
+                    this.points = this.points - 2
+                    this.count = 60
+                    this.extractData();
+                }
+                else if (this.points < 2) {
+                    this.generateDecade();
+                    this.extractData();
+                    this.points = 10;
+                }
+            }, 1000)
+        },
+        stopTimer(n) {
+            clearInterval(this.timer)
+            this.visibleNextButton = false;
+            this.visibleForm = true;
+            this.timeStop = true;
+            this.lookAway = true;
+            if (n === 1) {
+                this.visibleButton2 = false;
+                this.p1TimeStop = true;
+
+            }
+            else {
+                this.visibleButton1 = false;
+                this.p2TimeStop = true;
+
+            }
+            this.guessTimer = setInterval(() => {
+                this.guessTime--;
+                this.guessTimeStop = true;
+                if (this.guessTime === 0) {
+                    this.extractData();
+                    this.points -= 2;
+                    this.count = 60;
+                    this.lookAway = false;
+                    this.guessTime = 10;
+                    clearInterval(this.guessTimer);
+                    this.timeStop = false;
+                    this.guessTimeStop = false;
+
+
+                    if (this.p1TimeStop) {
+                        this.p1TimeStop = false;
+                        this.visibleButton1 = false;
+                        this.visibleButton2 = true;
+                        this.playerOneCorrect = false;
+                    } else {
+                        this.p2TimeStop = false;
+                        this.visibleButton2 = false;
+                        this.visibleButton1 = true;
+                        this.playerTwoCorrect = false;
+                    }
+                }
+            }, 1000)
+
+        },
+
+        nextPicture() {
+            this.count = 0;
+            if (this.timeStop) {
+                this.startTimer();
+                this.timeStop = false;
+            }
+        },
+        submitYear() {
+            const correctYear = String(decadeStart);
+            const yearInput = this.selectYear;
+            this.visibleNextButton = true;
+            this.visibleForm = false;
+            this.selectYear = "";
+            this.lookAway = false;
+            if (this.timeStop) {
+                this.startTimer();
+                this.timeStop = false;
+            }
+            if (yearInput !== correctYear) {
+                if (this.p1TimeStop) {
+                    this.visibleButton1 = false;
+                    this.visibleButton2 = true;
+                }
+                else {
+                    this.visibleButton2 = false;
+                    this.visibleButton1 = true;
+                }
+            }
+            if (yearInput === correctYear) {
+                if (this.visibleButton1 && !this.visibleButton2) {
+                    this.playerOnePoints += this.points;
+                    this.visibleButton2 = true;
+                    this.playerOneCorrect = true;
+                    this.visibleButton1 = false;
+
+
+                }
+                else if (this.visibleButton2 && !this.visibleButton1) {
+                    this.playerTwoPoints += this.points;
+                    this.visibleButton1 = true;
+                    this.playerTwoCorrect = true;
+                    this.visibleButton2 = false;
+                }
+                this.points -= 2;
+                this.count = 60;
+            }
+            else {
+
+                this.points -= 2;
+                this.count = 60;
+
+            }
+
+            if (this.playerOneCorrect) {
+                this.visibleButton1 = false;
+            }
+            else if (this.playerTwoCorrect) {
+                this.visibleButton2 = false;
+            }
+            if ((this.playerOneCorrect && this.playerTwoCorrect) || (this.p1TimeStop && this.p2TimeStop)) {
+                this.rounds++;
+                this.points = 10;
+                this.visibleButton1 = true;
+                this.visibleButton2 = true;
+                this.playerOneCorrect = false;
+                this.playerTwoCorrect = false;
+                this.playerTwoWrongGuess = false;
+                this.playerOneWrongGuess = false;
+                this.p1TimeStop = false;
+                this.p2TimeStop = false;
+
+                this.generateDecade();
+            }
+
+            if (this.rounds > 3) {
+                this.rounds = 3;
+                this.visibleForm = false;
+                this.visibleButton1 = false;
+                this.visibleButton2 = false;
+                this.showMain = false;
+                this.roundOver = true;
+                this.lookAway = false;
+                this.stopTimer();
+
+            }
+            this.extractData();
+        }
+
+    },
+    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
+                <div class="main-flex">
+            <div v-show="showMain"> 
+           
+            <h1>Vilket årtioende söker vi?</h1>
+            <h2>{{points}} POÄNG</h2>
+            <h3>Timer: {{count}}</h3>
+            <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
+            <img :src="objektBild" alt="" class="fetchedImage">
+            <p> Bildtext: {{objektDesc}}</p>
+            <p>Fotograferad: {{objektDatum}}</p>
+            
+            <div v-show="lookAway">
+            <h2 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h2>
+            <h2 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h2>
+            </div>
+            <button class="stopButton" v-show="visibleButton1" @click="stopTimer(1)">NÖDBROMS 1</button>
+            <button class="stopButton" v-show="visibleButton2" @click="stopTimer(2)">NÖDBROMS 2</button>
+            
+            
+            <form v-show="visibleForm">
+            <select class="date" v-model="selectYear">
+            <option value="1900">1900</option>
+            <option value="1910">1910</option>
+            <option value="1920">1920</option>
+            <option value="1930">1930</option>
+            <option value="1940">1940</option>
+            <option value="1950">1950</option>
+            <option value="1960">1960</option>
+            <option value="1970">1970</option>
+            <option value="1980">1980</option>
+            <option value="1990">1990</option>
+            </select>
+            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
+            </form>
+            </div>
+            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
+            <div v-show="roundOver">    
+            <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
+            <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
+            <h2 v-else> OAVGJORT! </h2>
+            <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
+            </div>    
+            </div>`
+}
+
 
 // skapa router
 const router = VueRouter.createRouter({
