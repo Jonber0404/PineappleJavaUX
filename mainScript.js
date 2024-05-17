@@ -267,11 +267,10 @@ const onePlayerGame = {
             objektUrl: "",
             timer: null,
             guessTimer: null,
-            decadeS: decadeStart,
-            decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
             answerView: false,
+            wrongAnswerView: false,
             timeStop: false,
             playerData: [],
             gameOver: false,
@@ -315,12 +314,18 @@ const onePlayerGame = {
             this.timeStop = true;
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
-                if(this.guessTime === 0){
+                if(this.guessTime === 0) {
                     this.nextPicture()
+                    if (this.points === 0) {
+                        clearInterval(this.guessTimer)
+                        clearInterval(this.timer)
+                    }
                 }
             }, 1000)
         },
         nextPicture() {
+            this.answerView = false
+            this.wrongAnswerView = false
             if (this.timeStop) {
                 this.startTimer();
             }
@@ -349,22 +354,42 @@ const onePlayerGame = {
                 });
 
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
-                this.$router.push('/scoreboard');
-
+                this.answerView = false
+                this.gameOver = true
+                clearInterval(this.timer)
+                clearInterval(this.guessTimer)
             }
             else if (yearInput !== correctYear) {
-                this.nextPicture()
+                if (this.points !== 2) {
+                    this.answerView = false
+                    clearInterval(this.guessTimer)
+                    this.wrongAnswerView = true
+                } else {
+                    this.nextPicture()
+                    clearInterval(this.timer)
+                    clearInterval(this.guessTimer)
+                }
             }
         },
         toHome() {
             this.$router.push("/")
+        },
+        toMuseum() {
+            this.$router.push("/museum")
         }
 
     },
     template: `<br><br>
-             <div v-show="gameOver" v-if="points === 0">
-                <h1> HOPPSAN, DU FICK 0 POÄNG </h1>
-                <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
+             <div v-show="gameOver" class="game-over main-flex">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol-light" @click="toHome">
+                <h1 v-if="points === 0">HOPPSAN</h1>
+                <h1 v-if="points !== 0">BRA JOBBAT</h1>
+                <p v-if="points === 0">Tyvärr, rätt år var {{ objektDatum.substring(0,2) + "00"}}</p>
+                <p v-if="points !== 0">Du klarade av att resa tillbaka till {{ selectYear }}</p>
+                <img v-if="points === 0" src="assets/mingcute_sad-line.svg" class="sad-symbol">
+                <img v-if="points !== 0" src="assets/oui_cheer.svg" class="cheer-symbol">
+                <button class="submitButton" @click="toHome">HUVUDMENY</button>
+                <button class="submitButton" @click="toMuseum">MER INFO OM BILDERNA</button>
              </div>
              
              <div v-show="mainDiv" class="main-flex">
@@ -377,14 +402,15 @@ const onePlayerGame = {
                     <img :src="objektBild" class="museum-big-image">
                 </div>
                 <img src="assets/Svara-knapp-red.svg" @click="stopTimer" class="stopButton">
-                <button class="nextButton" @click="nextPicture">SKIPPA BILD</button>
+                <button v-if="points !== 2" class="nextButton" @click="nextPicture">SKIPPA BILD</button>
             </div>
             
-            <div v-show="answerView" class="answer-view" class="main-flex">
+            <div v-show="answerView" class="answer-view main-flex">
                 <img src="assets/timer-symbol.svg" class="timer-symbol">
                 <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
                 <p class="timer-num">{{guessTime}}</p>
                 <p>Vilket årtionde söker vi?</p>
+                <p>{{objektDatum}}</p>
                 <select class="date" v-model="selectYear">
                 <option value="1900">1900</option>
                 <option value="1910">1910</option>
@@ -398,6 +424,14 @@ const onePlayerGame = {
                 <option value="1990">1990</option>
                 </select>
                 <input type="submit" class="submitButton" @click.prevent="submitYear" value="BEKRÄFTA" />
+            </div>
+            
+            <div v-show="wrongAnswerView" class="wrong-answer main-flex">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol-light" @click="toHome">
+                <h1>HOPPSAN</h1>
+                <p>Det var inte riktigt rätt</p>
+                <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
+                <button class="submitButton" @click="nextPicture">FORTSÄTT SPELA</button>
             </div>`
 }
 
