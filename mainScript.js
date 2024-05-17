@@ -3,7 +3,7 @@ let decadeEnd, decadeStart, currentRoundPictures
 // Main meny
 const homePage = {
     name: "homePage",
-    template:   `<div class="container">
+    template: `<div class="container">
                     <router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
                     <div class="container2">
                         <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
@@ -54,75 +54,73 @@ const difficultySelection = {
             this.difficulty = n;
         },
         getDifficulty() {
-            return this.difficulty()
+            return this.difficulty;
         },
         getSelectedDifficulty(dif) {
+            let difficultyLevel;
             switch (dif) {
                 case 'easy':
-                    return this.difficulty.getDifficulty(1)
+                    difficultyLevel = 'easy';
+                    break;
                 case 'normal':
-                    return this.difficulty.getDifficulty(2)
+                    difficultyLevel = 'normal';
+                    break;
                 case 'hard':
-                    return this.difficulty.getDifficulty(3)
+                    difficultyLevel = 'hard';
+                    break;
                 default:
-                    return 'Unknown'
+                    difficultyLevel = 'Unknown';
             }
-            localStorage.setItem("difficulty", this.difficulty);
-
+            localStorage.setItem("difficulty", difficultyLevel);
+            return difficultyLevel;
         },
-        storeName() {     
+        storeName() {
             this.namesRegistered = true;
-            if(this.playerOneName.length>3){
-              this.initialsPlayerOne= this.playerOneName.slice(0,3);
+            if (this.playerOneName.length > 3) {
+                this.initialsPlayerOne = this.playerOneName.slice(0, 3);
             }
-            else{
+            else {
                 this.initialsPlayerOne = this.playerOneName;
             }
-            localStorage.setItem('playerOneName', this.initialsPlayerOne);       
+            localStorage.setItem('playerOneName', this.initialsPlayerOne);
         },
-        storeNames(){
+        storeNames() {
             this.namesRegistered = true;
             localStorage.setItem('playerOneName', this.playerOneName);
             localStorage.setItem('playerTwoName', this.playerTwoName);
         }
     },
-    template: `<div class="main-flex">
+    template: `
+    <div class="main-flex">
     
-        <div class="difficulty-selection" v-show="namesRegistered">
+        <div v-if="!namesRegistered">
+            <div v-if="$root.numPlayers === 1">
+                    <h1>ANGE DINA INITIALER</h1>
+                    <input type="text" v-model="playerOneName">
+                    <button @click="storeName">SPARA</button>
+            </div>
+            <div v-else-if="$root.numPlayers === 2">
+                    <h1>ANGE ERA NAMN</h1>
+                    <input type="text" v-model="playerOneName">
+                    <input type="text" v-model="playerTwoName">
+                    <button @click="storeNames">SPARA</button>
+            </div>
+        </div>
 
+        <div v-else class="difficulty-selection">
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
-
             <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext easytext'>Längre tid för att svara</div></router-link>
+            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+                <div class='difficultytext easytext'>Längre tid för att svara</div>
+            </router-link>
             <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><div class='difficultytext hardtext'>Kortare tid för att svara</div></router-link>
-
-
-            <!--<router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
-            <!--<router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>-->
-            
-            <router-link v-if="$root.numPlayers === 1" to="/onePlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
-            <router-link v-else-if="$root.numPlayers === 2" to="/twoPlayerGame"><button class="startGameArrow">Starta Spelet</button></router-link>
-                     
+            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+                <div class='difficultytext hardtext'>Kortare tid för att svara</div>
+            </router-link>
+            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+                <button class="startGameArrow">Starta Spelet</button>
+            </router-link>
         </div>
-
-        
-        <div v-if="$root.numPlayers === 1">
-        <h1> ANGE DINA INITIALER </h1>
-        <input type="text" v-model="playerOneName">
-        <button @click="storeName"> SPARA </button>
-        </div>
-
-        <div v-else-if="$root.numPlayers === 2">
-        <h1> ANGE ERA NAMN </h1>
-        <input type="text" v-model="playerOneName">
-        <input type="text" v-model="playerTwoName">
-        <button @click="storeNames"> SPARA </button>
-        </div>
-       
-
     </div>`
 }
 
@@ -314,7 +312,7 @@ const onePlayerGame = {
                     this.count = 60
                     this.extractData();
                 } else if (this.points === 0) {
-                //    this.points = 0;
+                    //    this.points = 0;
                     this.gameOver = true;
                     this.mainDiv = false;
 
@@ -329,13 +327,13 @@ const onePlayerGame = {
             this.visibleButtons = false;
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
-                if(this.guessTime === 0){
+                if (this.guessTime === 0) {
                     this.extractData();
-                    this.points-=2;
+                    this.points -= 2;
                     this.count = 60;
                     this.startTimer();
                 }
-            },1000)
+            }, 1000)
         },
         nextPicture() {
             this.count = 0;
@@ -509,30 +507,30 @@ const twoPlayerGame = {
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
                 this.guessTimeStop = true;
-                if(this.guessTime === 0){
+                if (this.guessTime === 0) {
                     this.extractData();
-                    this.points-=2;
+                    this.points -= 2;
                     this.count = 60;
                     this.lookAway = false;
                     this.guessTime = 10;
                     clearInterval(this.guessTimer);
                     this.timeStop = false;
                     this.guessTimeStop = false;
-                    
-                   
-                    if(this.p1TimeStop){
+
+
+                    if (this.p1TimeStop) {
                         this.p1TimeStop = false;
                         this.visibleButton1 = false;
                         this.visibleButton2 = true;
                         this.playerOneCorrect = false;
-                    }else{
+                    } else {
                         this.p2TimeStop = false;
                         this.visibleButton2 = false;
                         this.visibleButton1 = true;
                         this.playerTwoCorrect = false;
                     }
                 }
-            },1000)
+            }, 1000)
 
         },
 
@@ -570,7 +568,7 @@ const twoPlayerGame = {
                     this.visibleButton2 = true;
                     this.playerOneCorrect = true;
                     this.visibleButton1 = false;
-                    
+
 
                 }
                 else if (this.visibleButton2 && !this.visibleButton1) {

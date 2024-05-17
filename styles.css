@@ -359,7 +359,9 @@ body {
 .navbar-logo img{
     width: auto;
     height: 30px;
-    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-right: 15px;
 }
 
 .navbar-nav {
@@ -376,13 +378,19 @@ body {
 
 .nav-item {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 1rem;
 }
 
 .nav-item a {
-    color: #fff;
+    color: var(--Beige, #F5DFBD); 
     text-decoration: none;
     padding: 5px 10px;
+
+    font-family: Inconsolata;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 23px; /* 104.545% */ 
 }
 
 .nav-item a:hover {
