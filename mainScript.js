@@ -766,19 +766,19 @@ const router = VueRouter.createRouter({
 router.beforeEach((to, from, next) => {
     if (to.path === '/difficultySelection') {
         document.body.classList.add('difficulty-selection');
-        document.body.classList.remove('count-down'); // Ensure count-down class is removed
+        document.body.classList.remove('count-down');
     }
     else if (to.path === '/countDown') {
         document.body.classList.add('count-down');
-        document.body.classList.remove('difficulty-selection'); // Ensure difficulty-selection class is removed
+        document.body.classList.remove('difficulty-selection');
     }
     else if (to.path === '/') {
         document.body.classList.add('main-menu');
         document.body.classList.remove('difficulty-selection');
-        document.body.classList.remove('count-down'); // Ensure both classes are removed when returning to the main menu
+        document.body.classList.remove('count-down');
     } else {
         document.body.classList.remove('difficulty-selection');
-        document.body.classList.remove('count-down'); // Ensure both classes are removed for other routes
+        document.body.classList.remove('count-down');
     }
     next();
 });

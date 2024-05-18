@@ -198,6 +198,7 @@ body.count-down {
 
 .gamerulesbutton {
     background: transparent;
+    border: none;
     box-shadow: none;
 
     color: var(--Brun, #552C2D);
@@ -572,6 +573,7 @@ body.count-down {
         /*  font-size: 50px;
         width: 20rem;
         margin-top: 0rem; */
+        
 
         border-radius: 11.429px;
         background: var(--Turkos-100, #1D9594);
@@ -579,13 +581,12 @@ body.count-down {
     }
 
     .scoreboardbutton {
-        /*  font-size: 22px;
+    /*    font-size: 22px;
         width: 10rem;
-        margin-left: -5rem;
-        margin-top: 4rem; */
+        margin-left: -5rem;*/
+        margin-top: 4rem; 
 
         border-radius: 11.389px;
-        background: var(--Brun, #552C2D);
         box-shadow: 0px 4.556px 4.556px 0px rgba(0, 0, 0, 0.25);
     }
 
