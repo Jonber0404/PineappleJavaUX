@@ -182,6 +182,7 @@ body {
     background: var(--Turkos-200, #1A7475);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     margin-top: -6rem;
+    cursor: pointer;
 }
 
 .scoreboardbutton {
@@ -408,6 +409,16 @@ body {
     body {
         background-color: White;
         background-image: url('assets/bakgrund2.png');
+    }
+
+    /*
+    .homePageContainer {
+
+    }
+    */
+
+    .homePageContainer2 button {
+        display: none;
     }
 
     .startmenubutton {
