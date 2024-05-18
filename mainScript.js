@@ -25,11 +25,12 @@ const playerSelection = {
         }
     },
 
+
     template: `
             <div class="main-flex">
                 <h1>ANTAL SPELARE</h1>
                 <div class="player-selection">
-                    <router-link to="/"><button class='backtomenu'> </button></router-link>
+                    <router-link to="/"><button class='backarrow topicon'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
                 </div>
@@ -45,6 +46,7 @@ const difficultySelection = {
         return {
             difficulty: "",
             playerOneName: "",
+
             playerTwoName: "",
             namesRegistered: false,
             initialsPlayerOne: "",
@@ -52,6 +54,10 @@ const difficultySelection = {
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
+            const countdownTime = (n === 'SVÅR') ? 30 : 60; // Adjust countdown time based on difficulty
+            localStorage.setItem("difficulty", n);
+            localStorage.setItem("countdownTime", countdownTime);
+            this.$router.push('/countDown');
         },
         getDifficulty() {
             return this.difficulty;
@@ -92,6 +98,7 @@ const difficultySelection = {
     },
     template: `
     <div class="main-flex">
+
     
         <div v-if="!namesRegistered">
             <div v-if="$root.numPlayers === 1">
@@ -107,21 +114,54 @@ const difficultySelection = {
             </div>
         </div>
 
+
         <div v-else class="difficulty-selection">
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
+
             <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
-            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+            
                 <div class='difficultytext easytext'>Längre tid för att svara</div>
-            </router-link>
+            
+
             <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
-            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+            
                 <div class='difficultytext hardtext'>Kortare tid för att svara</div>
-            </router-link>
-            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
-                <button class="startGameArrow">Starta Spelet</button>
-            </router-link>
+            
         </div>
     </div>`
+}
+
+const countDown = {
+    name: "countDown",
+    data() {
+        return {
+            counter: 3
+        };
+    },
+    mounted() {
+        this.startCountdown();
+    },
+    methods: {
+        startCountdown() {
+            const countdownInterval = setInterval(() => {
+                if (this.counter > 1) {
+                    this.counter--;
+                } else {
+                    clearInterval(countdownInterval);
+                    this.counter = "Nu kör vi!";
+                    setTimeout(this.navigateToGame, 2000);
+                }
+            }, 1000);
+        },
+        navigateToGame() {
+            if (this.$root.numPlayers === 1) {
+                this.$router.push('/onePlayerGame');
+            } else if (this.$root.numPlayers === 2) {
+                this.$router.push('/twoPlayerGame');
+            }
+        }
+    },
+    template: `<div class='countdowntext'>{{ counter }}</div>`
 }
 
 
@@ -245,26 +285,20 @@ const gameRules = {
 
 const onePlayerGame = {
     name: "onePlayerGame",
-    beforeCreate() {
+    mounted() {
         this.generateDecade()
-    },
-    created() {
         this.playerData = JSON.parse(localStorage.getItem('playerData') || '[]');
         this.difficulty = localStorage.getItem("difficulty");
         this.playerOneName = localStorage.getItem('playerOneName');
-
-    },
-    mounted() {
         currentRoundPictures = []
-        this.extractData();
+        this.loadNextImg();
         this.startTimer();
-
     },
     data() {
         return {
             points: 10,
             difficulty: 0,
-            count: 60,
+            count: localStorage.getItem("countdownTime"),
             guessTime: 10,
             objekt: {},
             objektBild: "",
@@ -273,13 +307,11 @@ const onePlayerGame = {
             objektUrl: "",
             timer: null,
             guessTimer: null,
-            decadeS: decadeStart,
-            decadeE: decadeEnd,
             selectYear: "",
             pointsEarned: 0,
-            visibleForm: false,
+            answerView: false,
+            wrongAnswerView: false,
             timeStop: false,
-            visibleButtons: true,
             playerData: [],
             gameOver: false,
             mainDiv: true
@@ -288,7 +320,7 @@ const onePlayerGame = {
 
 
     methods: {
-        async extractData() {
+        async loadNextImg() {
             let fetchRes = await this.getObjectData()
             let currentRecord = fetchRes.result.records[0].record['@graph']
             this.objektBild = currentRecord.find(obj => obj.lowresSource).lowresSource
@@ -304,48 +336,58 @@ const onePlayerGame = {
             currentRoundPictures.push({ imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum })
         },
         startTimer() {
+            console.log(this.count);
             this.timer = setInterval(() => {
                 this.count--;
+                console.log(this.count);
                 this.timeStop = false;
+                clearInterval(this.guessTimer)
+                this.guessTime = 10
                 if (this.count < 1) {
-                    this.points = this.points - 2
-                    this.count = 60
-                    this.extractData();
-                } else if (this.points === 0) {
-                    //    this.points = 0;
-                    this.gameOver = true;
-                    this.mainDiv = false;
+
+                    this.nextPicture()
 
                 }
             }, 1000)
 
         },
         stopTimer() {
+            this.mainDiv = false
             clearInterval(this.timer)
-            this.visibleForm = true;
+            this.answerView = true;
             this.timeStop = true;
-            this.visibleButtons = false;
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
+
                 if (this.guessTime === 0) {
-                    this.extractData();
-                    this.points -= 2;
-                    this.count = 60;
-                    this.startTimer();
+                    this.nextPicture()
+                    if (this.points === 0) {
+                        clearInterval(this.guessTimer)
+                        clearInterval(this.timer)
+                    }
                 }
             }, 1000)
         },
         nextPicture() {
-            this.count = 0;
+            this.answerView = false
+            this.wrongAnswerView = false
             if (this.timeStop) {
                 this.startTimer();
             }
+            this.count = localStorage.getItem("countdownTime")
+            this.points = this.points - 2
+            this.mainDiv = true
+            if (this.points === 0) {
+                this.gameOver = true
+                this.mainDiv = false
+                return
+            }
+            this.loadNextImg();
         },
         submitYear() {
             const correctYear = String(decadeStart);
             const yearInput = this.selectYear;
-            this.visibleButtons = true;
-            this.visibleForm = false;
+            this.answerView = false;
 
             if (yearInput === correctYear) {
                 this.pointsEarned += this.points;
@@ -358,50 +400,84 @@ const onePlayerGame = {
                 });
 
                 localStorage.setItem('playerData', JSON.stringify(this.playerData));
-                this.$router.push('/scoreboard');
-
+                this.answerView = false
+                this.gameOver = true
+                clearInterval(this.timer)
+                clearInterval(this.guessTimer)
             }
             else if (yearInput !== correctYear) {
-                this.points = this.points - 2;
-                this.count = 60;
-                this.startTimer();
-                this.extractData();
+                if (this.points !== 2) {
+                    this.answerView = false
+                    clearInterval(this.guessTimer)
+                    this.wrongAnswerView = true
+                } else {
+                    this.nextPicture()
+                    clearInterval(this.timer)
+                    clearInterval(this.guessTimer)
+                }
             }
+        },
+        toHome() {
+            this.$router.push("/")
+        },
+        toMuseum() {
+            this.$router.push("/museum")
         }
 
     },
-    template: ` <button class="nextButton" v-show="visibleButtons" @click="nextPicture">NÄSTA</button>
-                <div class="main-flex">
-             <div v-show="gameOver" v-if="points === 0">
-             <h1> HOPPSAN, DU FICK 0 POÄNG </h1>
-             <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
-              </div>
-              <div v-show="mainDiv">
-            <h1>Vilket årtioende söker vi?</h1>
-            <h2>{{points}} POÄNG</h2>
-            <h3>Timer: {{count}}</h3>
-            <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
-            <img :src="objektBild" alt="" class="fetchedImage">
-            <p> Bildtext: {{objektDesc}}</p>
-            <p>Fotograferad: {{objektDatum}}</p>
-            <button class="stopButton" v-show="visibleButtons" @click="stopTimer">NÖDBROMS</button>
-            <form v-show="visibleForm">
-            <select class="date" v-model="selectYear">
-            <option value="1900">1900</option>
-            <option value="1910">1910</option>
-            <option value="1920">1920</option>
-            <option value="1930">1930</option>
-            <option value="1940">1940</option>
-            <option value="1950">1950</option>
-            <option value="1960">1960</option>
-            <option value="1970">1970</option>
-            <option value="1980">1980</option>
-            <option value="1990">1990</option>
-            </select>
-            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
-            </form>
-            <h3> DU HAR {{pointsEarned}} POÄNG</h3>
+    template: `<br><br>
+             <div v-show="gameOver" class="game-over main-flex">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol-light" @click="toHome">
+                <h1 v-if="points === 0">HOPPSAN</h1>
+                <h1 v-if="points !== 0">BRA JOBBAT</h1>
+                <p v-if="points === 0">Tyvärr, rätt år var {{ objektDatum.substring(0,2) + "00"}}</p>
+                <p v-if="points !== 0">Du klarade av att resa tillbaka till {{ selectYear }}</p>
+                <img v-if="points === 0" src="assets/mingcute_sad-line.svg" class="sad-symbol">
+                <img v-if="points !== 0" src="assets/oui_cheer.svg" class="cheer-symbol">
+                <button class="submitButton" @click="toHome">HUVUDMENY</button>
+                <button class="submitButton" @click="toMuseum">MER INFO OM BILDERNA</button>
+             </div>
+             
+             <div v-show="mainDiv" class="main-flex">
+                <img src="assets/timer-symbol.svg" class="timer-symbol">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
+                <p class="timer-num" v-show="mainDiv">{{count}}</p>
+                <h2>{{points}} POÄNG</h2>
+                <p>Vilket årtionde söker vi?</p>
+                <div class="museum-big-image-div">
+                    <img :src="objektBild" class="museum-big-image">
+                </div>
+                <img src="assets/Svara-knapp-red.svg" @click="stopTimer" class="stopButton">
+                <button v-if="points !== 2" class="nextButton" @click="nextPicture">SKIPPA BILD</button>
             </div>
+            
+            <div v-show="answerView" class="answer-view main-flex">
+                <img src="assets/timer-symbol.svg" class="timer-symbol">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
+                <p class="timer-num">{{guessTime}}</p>
+                <p>Vilket årtionde söker vi?</p>
+                <p>{{objektDatum}}</p>
+                <select class="date" v-model="selectYear">
+                <option value="1900">1900</option>
+                <option value="1910">1910</option>
+                <option value="1920">1920</option>
+                <option value="1930">1930</option>
+                <option value="1940">1940</option>
+                <option value="1950">1950</option>
+                <option value="1960">1960</option>
+                <option value="1970">1970</option>
+                <option value="1980">1980</option>
+                <option value="1990">1990</option>
+                </select>
+                <input type="submit" class="submitButton" @click.prevent="submitYear" value="BEKRÄFTA" />
+            </div>
+            
+            <div v-show="wrongAnswerView" class="wrong-answer main-flex">
+                <img src="assets/mingcute_exit-fill.svg" class="exit-symbol-light" @click="toHome">
+                <h1>HOPPSAN</h1>
+                <p>Det var inte riktigt rätt</p>
+                <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
+                <button class="submitButton" @click="nextPicture">FORTSÄTT SPELA</button>
             </div>`
 }
 
@@ -421,7 +497,7 @@ const twoPlayerGame = {
     data() {
         return {
             points: 10,
-            count: 60,
+            count: localStorage.getItem("countdownTime"),
             guessTime: 10,
             objekt: {},
             objektBild: "",
@@ -450,9 +526,9 @@ const twoPlayerGame = {
             roundOver: false,
             p1TimeStop: false,
             p2TimeStop: false,
-            lookAway: false
+            lookAway: false,
 
-
+            
         }
     },
 
@@ -478,7 +554,7 @@ const twoPlayerGame = {
                 this.guessTime = 10;
                 if (this.count < 1) {
                     this.points = this.points - 2
-                    this.count = 60
+                    this.count = localStorage.getItem("countdownTime")
                     this.extractData();
                 }
                 else if (this.points < 2) {
@@ -503,6 +579,7 @@ const twoPlayerGame = {
                 this.visibleButton1 = false;
                 this.p2TimeStop = true;
 
+
             }
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
@@ -510,7 +587,7 @@ const twoPlayerGame = {
                 if (this.guessTime === 0) {
                     this.extractData();
                     this.points -= 2;
-                    this.count = 60;
+                    this.count = localStorage.getItem("countdownTime");
                     this.lookAway = false;
                     this.guessTime = 10;
                     clearInterval(this.guessTimer);
@@ -578,12 +655,12 @@ const twoPlayerGame = {
                     this.visibleButton2 = false;
                 }
                 this.points -= 2;
-                this.count = 60;
+                this.count = localStorage.getItem("countdownTime");
             }
             else {
 
                 this.points -= 2;
-                this.count = 60;
+                this.count = localStorage.getItem("countdownTime");
 
             }
 
@@ -681,9 +758,22 @@ const router = VueRouter.createRouter({
         { path: '/onePlayerGame', component: onePlayerGame },
         { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection },
+        { path: '/countDown', component: countDown },
         { path: '/museum', component: museum }
     ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.path === '/difficultySelection') {
+        document.body.classList.add('difficulty-selection');
+    }
+    else if (to.path === '/countDown') {
+        document.body.classList.add('count-down');
+    } else {
+        document.body.classList.remove('difficulty-selection');
+    }
+    next();
+});
 
 
 const app = {}
