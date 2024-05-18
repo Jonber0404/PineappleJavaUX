@@ -9,6 +9,10 @@
 
 /*MOBILEN*/
 /*Huvudmeny*/
+button {
+    cursor: pointer;
+}
+
 .startmenubutton {
     background-color: gray;
     border-radius: 25px;
@@ -192,7 +196,6 @@ body.count-down {
     background: var(--Turkos-200, #1A7475);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     margin-top: -6rem;
-    cursor: pointer;
 }
 
 .scoreboardbutton {
@@ -602,10 +605,12 @@ body.count-down {
     }
 
     .difficulty-selection {
-        display: flex;
+        /* display has to be flexbox, if it's flex then something fucky happens. */
+        display: flexbox;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        width: 100%;
     }
 
 
@@ -630,6 +635,40 @@ body.count-down {
 
     .game-rules .backtomenu {
         display: flex;
+    }
+
+    .backarrow {
+        display: none;
+    }
+
+    .exit-symbol {
+        position: fixed;
+        top: 60px;
+        left: 20px;
+    }
+    
+    .exit-symbol-light {
+        position: fixed;
+        top: 60px;
+        left: 20px;
+        background-color: rgb(245, 223, 189);
+        border-radius: 50%;
+        padding: 2px;
+    }
+
+    .timer-symbol {
+        position: fixed;
+        top: 60px;
+        right: 58px;
+    }
+
+    .timer-num {
+        position: fixed;
+        top: 20px;
+        right: 18px;
+        font-family: Inconsolata, sans-serif;
+        font-size: 36px;
+        font-weight: 800;
     }
 }
 
