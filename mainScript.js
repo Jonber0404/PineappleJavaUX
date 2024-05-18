@@ -54,6 +54,10 @@ const difficultySelection = {
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
+            const countdownTime = (n === 'SVÅR') ? 30 : 60; // Adjust countdown time based on difficulty
+            localStorage.setItem("difficulty", n);
+            localStorage.setItem("countdownTime", countdownTime);
+            this.$router.push('/countDown');
         },
         getDifficulty() {
             return this.difficulty;
@@ -115,46 +119,49 @@ const difficultySelection = {
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
             <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
-            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+            
                 <div class='difficultytext easytext'>Längre tid för att svara</div>
-            </router-link>
+            
+
             <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
-            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
+            
                 <div class='difficultytext hardtext'>Kortare tid för att svara</div>
-            </router-link>
-            <router-link :to="$root.numPlayers === 1 ? '/onePlayerGame' : '/twoPlayerGame'">
-                <button class="startGameArrow">Starta Spelet</button>
-            </router-link>
+            
         </div>
     </div>`
 }
 
-//countdown 3 2 1...
 const countDown = {
     name: "countDown",
     data() {
         return {
             counter: 3
-        }
+        };
     },
     mounted() {
         this.startCountdown();
     },
     methods: {
         startCountdown() {
-            let countdownInterval = setInterval(() => {
+            const countdownInterval = setInterval(() => {
                 if (this.counter > 1) {
                     this.counter--;
                 } else {
                     clearInterval(countdownInterval);
                     this.counter = "Nu kör vi!";
+                    setTimeout(this.navigateToGame, 2000);
                 }
-            }, 1000)
+            }, 1000);
+        },
+        navigateToGame() {
+            if (this.$root.numPlayers === 1) {
+                this.$router.push('/onePlayerGame');
+            } else if (this.$root.numPlayers === 2) {
+                this.$router.push('/twoPlayerGame');
+            }
         }
     },
-    template: `<div class='countdowntext'> {{counter}} </div>`
-
-
+    template: `<div class='countdowntext'>{{ counter }}</div>`
 }
 
 
@@ -291,7 +298,7 @@ const onePlayerGame = {
         return {
             points: 10,
             difficulty: 0,
-            count: 60,
+            count: localStorage.getItem("countdownTime"),
             guessTime: 10,
             objekt: {},
             objektBild: "",
@@ -329,8 +336,10 @@ const onePlayerGame = {
             currentRoundPictures.push({ imgUrl: this.objektBild, infoUrl: this.objektUrl, description: this.objektDesc, date: this.objektDatum })
         },
         startTimer() {
+            console.log(this.count);
             this.timer = setInterval(() => {
                 this.count--;
+                console.log(this.count);
                 this.timeStop = false;
                 clearInterval(this.guessTimer)
                 this.guessTime = 10
@@ -350,7 +359,7 @@ const onePlayerGame = {
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
 
-                if(this.guessTime === 0) {
+                if (this.guessTime === 0) {
                     this.nextPicture()
                     if (this.points === 0) {
                         clearInterval(this.guessTimer)
@@ -365,7 +374,7 @@ const onePlayerGame = {
             if (this.timeStop) {
                 this.startTimer();
             }
-            this.count = 60
+            this.count = localStorage.getItem("countdownTime")
             this.points = this.points - 2
             this.mainDiv = true
             if (this.points === 0) {
@@ -488,7 +497,7 @@ const twoPlayerGame = {
     data() {
         return {
             points: 10,
-            count: 60,
+            count: localStorage.getItem("countdownTime"),
             guessTime: 10,
             objekt: {},
             objektBild: "",
@@ -517,9 +526,9 @@ const twoPlayerGame = {
             roundOver: false,
             p1TimeStop: false,
             p2TimeStop: false,
-            lookAway: false
+            lookAway: false,
 
-
+            
         }
     },
 
@@ -545,7 +554,7 @@ const twoPlayerGame = {
                 this.guessTime = 10;
                 if (this.count < 1) {
                     this.points = this.points - 2
-                    this.count = 60
+                    this.count = localStorage.getItem("countdownTime")
                     this.extractData();
                 }
                 else if (this.points < 2) {
@@ -578,7 +587,7 @@ const twoPlayerGame = {
                 if (this.guessTime === 0) {
                     this.extractData();
                     this.points -= 2;
-                    this.count = 60;
+                    this.count = localStorage.getItem("countdownTime");
                     this.lookAway = false;
                     this.guessTime = 10;
                     clearInterval(this.guessTimer);
@@ -646,12 +655,12 @@ const twoPlayerGame = {
                     this.visibleButton2 = false;
                 }
                 this.points -= 2;
-                this.count = 60;
+                this.count = localStorage.getItem("countdownTime");
             }
             else {
 
                 this.points -= 2;
-                this.count = 60;
+                this.count = localStorage.getItem("countdownTime");
 
             }
 
@@ -747,6 +756,7 @@ const router = VueRouter.createRouter({
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
         { path: '/onePlayerGame', component: onePlayerGame },
+        { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection },
         { path: '/countDown', component: countDown },
         { path: '/museum', component: museum }
