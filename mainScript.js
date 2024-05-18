@@ -710,6 +710,7 @@ const router = VueRouter.createRouter({
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
         { path: '/onePlayerGame', component: onePlayerGame },
+        { path: '/twoPlayerGame', component: twoPlayerGame },
         { path: '/difficultySelection', component: difficultySelection },
         { path: '/museum', component: museum }
     ]
