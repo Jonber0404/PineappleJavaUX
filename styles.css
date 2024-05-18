@@ -115,28 +115,27 @@
 
 /*Playerselection*/
 /*.oneplayer,
-.twoplayer,
+.twoplayer
+ */
+
+
 .stopButton {
-    display: block;
-    text-align: center;
-    padding: 0.5rem;
-    margin: 5rem;
-    background-color: burlywood;
-    font-family: fantasy;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
-} */
+    width: 100px;
+    margin-top: 20px;
+}
 
 
 .nextButton {
-    display: block;
-    font-size: 150%;
-    background-color: burlywood;
-    font-family: fantasy;
+    position: fixed;
+    font-size: 25px;
+    font-weight: 800;
+    color: rgba(85, 44, 45, 1);
+    background-color: transparent;
+    border: transparent;
+    font-family: Inconsolata, sans-serif;
     cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+    right: 8px;
+    bottom: 8px;
 }
 
 .player-selection {
@@ -344,6 +343,7 @@ body.count-down {
     background-color: whitesmoke;
     display: flex;
     align-items: center;
+    margin: auto;
 }
 
 .museum-big-image {
@@ -396,6 +396,54 @@ body.count-down {
     font-size: 25px;
 }
 
+.main-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-family: Inconsolata, sans-serif;
+    color: rgba(85, 44, 45, 1);
+    font-size: 25px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.exit-symbol {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+
+.exit-symbol-light {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: rgb(245, 223, 189);
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.wrong-answer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(85, 44, 45, 1);
+    color: rgba(245, 223, 189, 1);
+}
+
+.game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 116, 117, 1);
+    color: rgba(245, 223, 189, 1);
+}
+
 .navbar {
     display: none;
     background-color: #333;
@@ -408,7 +456,9 @@ body.count-down {
 .navbar-logo img {
     width: auto;
     height: 30px;
-    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-right: 15px;
 }
 
 .navbar-nav {
@@ -419,28 +469,78 @@ body.count-down {
     width: 100%;
 }
 
+.timer-symbol {
+    position: fixed;
+    top: 20px;
+    right: 60px;
+}
 .navbar-nav li:last-child {
     margin-left: auto;
 }
 
 .nav-item {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 1rem;
 }
 
 .nav-item a {
-    color: #fff;
+    color: var(--Beige, #F5DFBD);
     text-decoration: none;
     padding: 5px 10px;
+
+    font-family: Inconsolata;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 23px; /* 104.545% */
 }
 
 .nav-item a:hover {
     background-color: #555;
 }
 
+.timer-num {
+    position: fixed;
+    top: -19px;
+    right: 18px;
+    font-family: Inconsolata, sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+}
 
+.answer-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(245, 223, 189, 1);
+}
 
+.date {
+    width: 70%;
+    height: 8%;
+    font-family: Inconsolata, sans-serif;
+    border: transparent;
+    font-size: 37px;
+    font-weight: 800;
+    text-align: center;
+    border-radius: 0.5em;
+}
 
+.submitButton {
+    width: 70%;
+    height: 8%;
+    font-family: Inconsolata, sans-serif;
+    border: transparent;
+    font-size: 30px;
+    font-weight: 800;
+    text-align: center;
+    border-radius: 0.5em;
+    margin-top: 0.5em;
+    background-color: rgba(240, 85, 55, 1);
+    color: rgba(245, 223, 189, 1);
+}
 
 @media screen and (min-width: 576px) {
 
@@ -520,17 +620,6 @@ body.count-down {
     .game-rules .backtomenu {
         display: flex;
     }
-}
-
-
-
-.main-flex {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    font-family: fantasy;
-
 }
 
 a {
