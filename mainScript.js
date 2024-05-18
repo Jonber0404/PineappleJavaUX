@@ -3,11 +3,11 @@ let decadeEnd, decadeStart, currentRoundPictures
 // Main meny
 const homePage = {
     name: "homePage",
-    template: `<div class="container">
+    template: `<div class="homePageContainer">
                     <router-link to="/playerSelection"><button class='playbutton startmenubutton'>Spela</button></router-link>
-                    <div class="container2">
+                    <div class="homePageContainer2">
                         <router-link to="/scoreboard"><button class='scoreboardbutton startmenubutton'>Scoreboard</button></router-link>
-                        <router-link to="/gameRules"><div class='gamerulesbutton startmenubutton'>Spelregler</div></router-link>
+                        <router-link to="/gameRules"><button class='gamerulesbutton startmenubutton'>Spelregler</button></router-link>
                     </div>
                 </div>`
 }
@@ -442,7 +442,7 @@ const onePlayerGame = {
                 <img src="assets/timer-symbol.svg" class="timer-symbol">
                 <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
                 <p class="timer-num" v-show="mainDiv">{{count}}</p>
-                <h2>{{points}} POÄNG</h2>
+                <h2 class="desktop-h2-game1-modifier">{{points}} POÄNG</h2>
                 <p>Vilket årtionde söker vi?</p>
                 <div class="museum-big-image-div">
                     <img :src="objektBild" class="museum-big-image">

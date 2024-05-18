@@ -9,6 +9,10 @@
 
 /*MOBILEN*/
 /*Huvudmeny*/
+button {
+    cursor: pointer;
+}
+
 .startmenubutton {
     background-color: gray;
     border-radius: 25px;
@@ -330,6 +334,8 @@ body.count-down {
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
     width: 80%;
+    max-width: 700px;
+    max-height: 500px;
     border-radius: 0.5em;
     overflow: hidden;
     background-color: whitesmoke;
@@ -545,6 +551,16 @@ body.count-down {
         background-image: url('assets/bakgrund2.png');
     }
 
+    /*
+    .homePageContainer {
+
+    }
+    */
+
+    .homePageContainer2 button {
+        display: none;
+    }
+
     .startmenubutton {
         position: absolute;
         top: 50%;
@@ -594,10 +610,12 @@ body.count-down {
     }
 
     .difficulty-selection {
-        display: flex;
+        /* display has to be flexbox, if it's flex then something fucky happens. */
+        display: flexbox;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        width: 100%;
     }
 
 
@@ -622,6 +640,45 @@ body.count-down {
 
     .game-rules .backtomenu {
         display: flex;
+    }
+
+    .backarrow {
+        display: none;
+    }
+
+    .exit-symbol {
+        position: fixed;
+        top: 60px;
+        left: 20px;
+    }
+    
+    .exit-symbol-light {
+        position: fixed;
+        top: 60px;
+        left: 20px;
+        background-color: rgb(245, 223, 189);
+        border-radius: 50%;
+        padding: 2px;
+    }
+
+    .timer-symbol {
+        position: fixed;
+        top: 60px;
+        right: 58px;
+    }
+
+    .timer-num {
+        position: fixed;
+        top: 20px;
+        right: 18px;
+        font-family: Inconsolata, sans-serif;
+        font-size: 36px;
+        font-weight: 800;
+    }
+
+    .desktop-h2-game1-modifier {
+        margin-top: -50px;
+        margin: -10px;
     }
 }
 
