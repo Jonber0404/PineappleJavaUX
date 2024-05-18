@@ -57,7 +57,8 @@
     font-size: 25px;
 }
 
-.game-rules p, .game-rules li {
+.game-rules p,
+.game-rules li {
     font-weight: 400;
     font-size: 16px;
     padding: 0 2em 0 2em;
@@ -93,7 +94,7 @@
 
 .scoreboard_cell:last-child {
     color: rgba(26, 116, 117, 1);
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     cursor: pointer;
 }
 
@@ -159,6 +160,10 @@ body {
 
 body.difficulty-selection {
     background: var(--Turkos-50, #caf0eb);
+}
+
+body.count-down {
+    background: var(--Turkos-200, #1A7475);
 }
 
 .startmenubutton {
@@ -310,6 +315,26 @@ body.difficulty-selection {
     transform: translate(-50%, -50%);
 }
 
+.countdowntext {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+    color: var(--Beige, #F5DFBD);
+
+    text-align: center;
+    /* Mobile_H1 */
+    font-family: Inconsolata, sans-serif;
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 40.04px;
+    overflow: hidden;
+    /* 80.08% */
+}
+
 /* MUSEUM */
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
@@ -343,13 +368,17 @@ body.difficulty-selection {
 /* Stil för de små bilderna */
 .museum-small-images {
     display: flex;
-    justify-content: space-between; /* Justera layout efter behov */
-    width: 80%; /* Sätt bredden till 100% för att anpassa sig till storleken på den stora bilden */
-    box-sizing: border-box; /* Inkludera padding i totalbredden */
+    justify-content: space-between;
+    /* Justera layout efter behov */
+    width: 80%;
+    /* Sätt bredden till 100% för att anpassa sig till storleken på den stora bilden */
+    box-sizing: border-box;
+    /* Inkludera padding i totalbredden */
 }
 
 .museum-small-image {
-    width: 18%; /* Justera storlek efter behov */
+    width: 18%;
+    /* Justera storlek efter behov */
     aspect-ratio: 1 / 1;
     cursor: pointer;
     border-radius: 5px;
@@ -359,7 +388,8 @@ body.difficulty-selection {
 .museum-image-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrera innehållet vertikalt */
+    align-items: center;
+    /* Centrera innehållet vertikalt */
     width: 100%;
     font-family: Inconsolata, sans-serif;
     color: rgba(85, 44, 45, 1);
@@ -371,11 +401,11 @@ body.difficulty-selection {
     background-color: #333;
     color: #fff;
     padding: 10px 0;
-    
+
     align-items: center;
 }
 
-.navbar-logo img{
+.navbar-logo img {
     width: auto;
     height: 30px;
     padding-right: 10px;
@@ -468,7 +498,9 @@ body.difficulty-selection {
     }
 
 
-    .museum-big-image-div, .museum-text-container, .museum-small-images {
+    .museum-big-image-div,
+    .museum-text-container,
+    .museum-small-images {
         width: 25%;
     }
 
