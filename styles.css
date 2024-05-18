@@ -342,6 +342,8 @@ body.count-down {
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
     width: 80%;
+    max-width: 700px;
+    max-height: 500px;
     border-radius: 0.5em;
     overflow: hidden;
     background-color: whitesmoke;
@@ -669,6 +671,11 @@ body.count-down {
         font-family: Inconsolata, sans-serif;
         font-size: 36px;
         font-weight: 800;
+    }
+
+    .desktop-h2-game1-modifier {
+        margin-top: -50px;
+        margin: -10px;
     }
 }
 
