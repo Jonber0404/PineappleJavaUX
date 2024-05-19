@@ -110,8 +110,10 @@ const difficultySelection = {
                     <h1>ANGE ERA NAMN</h1>
                     <p> Spelare 1: </p>
                     <input type="text" v-model="playerOneName">
+                    <img src="assets/redtrain.svg">
                     <p> Spelare 2: </p>
                     <input type="text" v-model="playerTwoName">
+                    <img src="assets/bluetrain.svg" >
                     <br>
                     <button class="submitButton" @click="storeNames">SPARA</button>
             </div>
