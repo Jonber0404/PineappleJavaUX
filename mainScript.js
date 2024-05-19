@@ -108,12 +108,18 @@ const difficultySelection = {
             </div>
             <div v-else-if="$root.numPlayers === 2">
                     <h1>ANGE ERA NAMN</h1>
-                    <p> Spelare 1: </p>
-                    <input type="text" v-model="playerOneName">
-                    <img src="assets/redtrain.svg">
-                    <p> Spelare 2: </p>
-                    <input type="text" v-model="playerTwoName">
-                    <img src="assets/bluetrain.svg" >
+                    <div class="diff-select-all-player-box">
+                    <div class="diff-select-player-box">
+                        <p> Spelare 1: </p>
+                        <img src="assets/redtrain.svg" class="same-size-image">
+                        <input type="text" v-model="playerOneName">
+                    </div>
+                    <div class="diff-select-player-box">
+                        <p> Spelare 2: </p>
+                        <img src="assets/bluetrain.svg" class="same-size-image">
+                        <input type="text" v-model="playerTwoName">
+                    </div>
+                    </div>
                     <br>
                     <button class="submitButton" @click="storeNames">SPARA</button>
             </div>
