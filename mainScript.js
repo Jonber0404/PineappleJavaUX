@@ -248,7 +248,7 @@ const museum = {
             this.selectedImage = image;
         },
         goBack() {
-            this.$router.go(-1)
+            this.$router.push("/")
         }
     },
     template: `<button class='backtomenu' @click="goBack"> </button>
@@ -423,6 +423,8 @@ const onePlayerGame = {
             }
         },
         toHome() {
+            clearInterval(this.timer)
+            clearInterval(this.guessTimer)
             this.$router.push("/")
         },
         toMuseum() {
