@@ -54,7 +54,7 @@ const difficultySelection = {
     }, methods: {
         setDifficulty(n) {
             this.difficulty = n;
-            const countdownTime = (n === 'SVÅR') ? 30 : 60; // Adjust countdown time based on difficulty
+            const countdownTime = (n === 'SVÅR') ? 30 : 60;
             localStorage.setItem("difficulty", n);
             localStorage.setItem("countdownTime", countdownTime);
             this.$router.push('/countDown');
