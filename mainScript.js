@@ -435,7 +435,7 @@ const onePlayerGame = {
                 <img src="assets/mingcute_exit-fill.svg" class="exit-symbol-light" @click="toHome">
                 <h1 v-if="points === 0">HOPPSAN</h1>
                 <h1 v-if="points !== 0">BRA JOBBAT</h1>
-                <p v-if="points === 0">Tyvärr, rätt år var {{ objektDatum.substring(0,2) + "00"}}</p>
+                <p v-if="points === 0">Tyvärr, rätt år var {{ objektDatum.substring(0,3) + "0"}}</p>
                 <p v-if="points !== 0">Du klarade av att resa tillbaka till {{ selectYear }}</p>
                 <img v-if="points === 0" src="assets/mingcute_sad-line.svg" class="sad-symbol">
                 <img v-if="points !== 0" src="assets/oui_cheer.svg" class="cheer-symbol">
