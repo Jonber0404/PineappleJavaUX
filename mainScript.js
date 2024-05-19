@@ -314,7 +314,7 @@ const onePlayerGame = {
             timeStop: false,
             playerData: [],
             gameOver: false,
-            mainDiv: true
+            mainDiv: true,
         }
     },
 
@@ -483,16 +483,13 @@ const onePlayerGame = {
 
 const twoPlayerGame = {
     name: "twoPlayerGame",
-    beforeCreate() {
-        this.generateDecade()
-    },
-    created() {
+    mounted() {
+        console.log(this.points)
+        this.generateDecade();
+        this.startTimer();
         this.extractData();
         this.playerOneName = localStorage.getItem('playerOneName');
         this.playerTwoName = localStorage.getItem('playerTwoName');
-    },
-    mounted() {
-        this.startTimer();
     },
     data() {
         return {
@@ -527,8 +524,12 @@ const twoPlayerGame = {
             p1TimeStop: false,
             p2TimeStop: false,
             lookAway: false,
-
-            
+            p1TimeUp: false,
+            p2TimeUp: false,
+            p1WrongGuess: false,
+            p2WrongGuess: false,
+            wrongAnswerView: false,
+            correctGuessView: false,
         }
     },
 
@@ -550,18 +551,21 @@ const twoPlayerGame = {
         startTimer() {
             this.timer = setInterval(() => {
                 this.count--;
+                this.visibleNextButton;
                 clearInterval(this.guessTimer);
                 this.guessTime = 10;
                 if (this.count < 1) {
-                    this.points = this.points - 2
                     this.count = localStorage.getItem("countdownTime")
-                    this.extractData();
+                    this.nextPicture();
+                    if (this.points === 2) {
+                        this.points = 10;
+                        this.startNewRound();
+                    }
+                    if (this.rounds > 3) {
+                        this.gameIsOver();
+                    }
                 }
-                else if (this.points < 2) {
-                    this.generateDecade();
-                    this.extractData();
-                    this.points = 10;
-                }
+
             }, 1000)
         },
         stopTimer(n) {
@@ -570,98 +574,171 @@ const twoPlayerGame = {
             this.visibleForm = true;
             this.timeStop = true;
             this.lookAway = true;
+            this.guessTimerStart();
+            console.log(n)
             if (n === 1) {
                 this.visibleButton2 = false;
                 this.p1TimeStop = true;
 
             }
-            else {
+            else if (n === 2) {
                 this.visibleButton1 = false;
                 this.p2TimeStop = true;
 
-
             }
+        },
+        guessTimerStart() {
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
-                this.guessTimeStop = true;
-                if (this.guessTime === 0) {
-                    this.extractData();
-                    this.points -= 2;
-                    this.count = localStorage.getItem("countdownTime");
-                    this.lookAway = false;
-                    this.guessTime = 10;
-                    clearInterval(this.guessTimer);
-                    this.timeStop = false;
-                    this.guessTimeStop = false;
-
-
-                    if (this.p1TimeStop) {
-                        this.p1TimeStop = false;
-                        this.visibleButton1 = false;
-                        this.visibleButton2 = true;
-                        this.playerOneCorrect = false;
-                    } else {
-                        this.p2TimeStop = false;
-                        this.visibleButton2 = false;
-                        this.visibleButton1 = true;
-                        this.playerTwoCorrect = false;
-                    }
+                console.log(this.p1TimeStop + " p1")
+                console.log(this.p2TimeStop + " p2 ")
+                if ((this.points === 2 && this.guessTime < 1) && (this.p1TimeStop || this.p2TimeStop)) {
+                    this.startNewRound();
                 }
-            }, 1000)
+                else if (this.rounds > 3) {
+                    this.gameIsOver();
+                }
+                if (this.guessTime < 1) {
+                    if (this.rounds > 3 ) {
+                        this.gameIsOver();
+                    }
+                    else{
+                        this.visibleNextButton = true;
+                        this.nextPicture();
+                        this.count = localStorage.getItem("countdownTime");
+                        this.lookAway = false;
+                        this.guessTime = 10;
+                        clearInterval(this.guessTimer);
+                        this.timeStop = false;
+                        this.visibleForm = false;
+                        this.startTimer();
+                        if (this.p1TimeStop) {
+                            this.visibleButton2 = true;
+                            this.visibleButton1 = false;
+                            this.p1TimeUp = true;
+                            this.p1TimeStop = false;
+    
+                        } if (this.p2TimeStop) {
+                            this.p2TimeUp = true;
+                            this.visibleButton1 = true;
+                            this.visibleButton2 = false;
+                            this.p2TimeStop = false;
+                        }
+    
+                    }
+                    
 
+                }
+                if (this.p1TimeUp && this.p2TimeUp) {
+                    if (this.rounds > 3 ) {
+                        this.gameIsOver();
+                    }
+                    else{
+                        this.startNewRound();
+                        this.visibleNextButton = true;
+                        this.visibleForm = false;
+                        this.visibleButton1 = true;
+                        this.visibleButton2 = true;
+                        this.p1TimeUp = false;
+                        this.p2TimeUp = false;
+                        this.p1TimeStop = false;
+                        this.p2TimeStop = false;
+    
+                    }
+                    
+                }
+                else if ((this.p1TimeUp && this.p2WrongGuess) || (this.p2TimeUp && this.p1WrongGuess) || (this.p1TimeUp && this.playerTwoCorrect)
+                    || (this.p2TimeUp && this.playerOneCorrect)) {
+                        if (this.rounds > 3) {
+                            this.gameIsOver();
+                        }
+                   else{
+                    this.startNewRound();
+                    this.visibleNextButton = true;
+                    this.visibleForm = false;
+                    this.visibleButton1 = true;
+                    this.visibleButton2 = true;
+                    this.p1TimeUp = false;
+                    this.p2TimeUp = false;
+                    this.p1TimeStop = false;
+                    this.p2TimeStop = false;      
+                }
+                }
+
+
+            }, 1000)
         },
+
 
         nextPicture() {
-            this.count = 0;
-            if (this.timeStop) {
-                this.startTimer();
-                this.timeStop = false;
+            console.log(this.points)
+            console.log(this.rounds)
+        
+            if (this.points > 2) {
+                this.points -= 2;
             }
+
+            if (this.points < 4) {
+                this.visibleNextButton = false;
+            }
+            else if (this.points < 2) {
+                this.startNewRound();
+            }
+           
+            this.wrongAnswerView = false;
+            this.showMain = true;
+            this.correctGuessView = false;
+            this.extractData();
+            if ((this.playerOneCorrect && this.playerTwoCorrect) || (this.p1WrongGuess && this.p2WrongGuess) ||
+                (this.p1WrongGuess && this.playerTwoCorrect) || (this.p2WrongGuess && this.playerOneCorrect)) {
+                this.startNewRound();
+                if (this.rounds > 3) {
+                    this.gameIsOver();
+                }
+            }
+            
+            this.count = localStorage.getItem("countdownTime")
+
         },
+
         submitYear() {
+            console.log(decadeStart)
             const correctYear = String(decadeStart);
             const yearInput = this.selectYear;
             this.visibleNextButton = true;
             this.visibleForm = false;
             this.selectYear = "";
             this.lookAway = false;
+            clearInterval(this.guessTimer);
+
+
             if (this.timeStop) {
                 this.startTimer();
                 this.timeStop = false;
             }
             if (yearInput !== correctYear) {
+              
+                this.wrongAnswerView = true;
+                this.showMain = false;
+                this.count = localStorage.getItem("countdownTime");
                 if (this.p1TimeStop) {
                     this.visibleButton1 = false;
                     this.visibleButton2 = true;
+                    this.p1WrongGuess = true;
+                    this.p1TimeStop = false;
                 }
-                else {
+                else if (this.p2TimeStop) {
                     this.visibleButton2 = false;
                     this.visibleButton1 = true;
+                    this.p2WrongGuess = true;
+                    this.p2TimeStop = false;
                 }
             }
             if (yearInput === correctYear) {
-                if (this.visibleButton1 && !this.visibleButton2) {
-                    this.playerOnePoints += this.points;
-                    this.visibleButton2 = true;
-                    this.playerOneCorrect = true;
-                    this.visibleButton1 = false;
-
-
-                }
-                else if (this.visibleButton2 && !this.visibleButton1) {
-                    this.playerTwoPoints += this.points;
-                    this.visibleButton1 = true;
-                    this.playerTwoCorrect = true;
-                    this.visibleButton2 = false;
-                }
-                this.points -= 2;
-                this.count = localStorage.getItem("countdownTime");
+                this.handleCorrectGuess();
             }
-            else {
-
-                this.points -= 2;
-                this.count = localStorage.getItem("countdownTime");
-
+            if (this.p1WrongGuess || this.p2WrongGuess) {
+                this.visibleNextButton = true;
             }
 
             if (this.playerOneCorrect) {
@@ -670,57 +747,145 @@ const twoPlayerGame = {
             else if (this.playerTwoCorrect) {
                 this.visibleButton2 = false;
             }
-            if ((this.playerOneCorrect && this.playerTwoCorrect) || (this.p1TimeStop && this.p2TimeStop)) {
-                this.rounds++;
-                this.points = 10;
-                this.visibleButton1 = true;
-                this.visibleButton2 = true;
-                this.playerOneCorrect = false;
-                this.playerTwoCorrect = false;
-                this.playerTwoWrongGuess = false;
-                this.playerOneWrongGuess = false;
-                this.p1TimeStop = false;
-                this.p2TimeStop = false;
-
-                this.generateDecade();
-            }
-
             if (this.rounds > 3) {
-                this.rounds = 3;
-                this.visibleForm = false;
+                this.gameIsOver();
+            }
+
+        },
+        startNewRound() {
+            this.rounds++;
+            this.points = 10;
+            this.visibleButton1 = true;
+            this.visibleButton2 = true;
+            this.playerOneCorrect = false;
+            this.playerTwoCorrect = false;
+            this.p1WrongGuess = false;
+            this.p2WrongGuess = false;
+            this.p1TimeStop = false;
+            this.p2TimeStop = false;
+            this.p1TimeUp = false;
+            this.p2TimeUp = false;
+            this.wrongAnswerView = false;
+            this.correctGuessView = false;
+            this.visibleNextButton = true;
+            this.showMain = true;
+            this.generateDecade();
+            this.extractData();
+
+
+        },
+        gameIsOver() {
+            this.rounds = 3;
+            this.visibleForm = false;
+            this.visibleButton1 = false;
+            this.visibleButton2 = false;
+            this.showMain = false;
+            this.roundOver = true;
+            this.lookAway = false;
+            clearInterval(this.timer)
+            clearInterval(this.guessTimer);
+
+
+        },
+        handleCorrectGuess() {      
+            this.correctGuessView = true;
+            clearInterval(this.timer);
+            clearInterval(this.guessTimer);
+            this.showMain = false;
+            if (this.visibleButton1 && !this.visibleButton2) {
+                this.playerOnePoints += this.points;
+                this.visibleButton2 = true;
+                this.playerOneCorrect = true;
                 this.visibleButton1 = false;
-                this.visibleButton2 = false;
-                this.showMain = false;
-                this.roundOver = true;
-                this.lookAway = false;
-                this.stopTimer();
+                this.p1TimeStop = false;
+
 
             }
-            this.extractData();
+            else if (this.visibleButton2 && !this.visibleButton1) {
+                this.playerTwoPoints += this.points;
+                this.visibleButton1 = true;
+                this.playerTwoCorrect = true;
+                this.visibleButton2 = false;
+                this.p2TimeStop = false;
+            }
+
+            this.count = localStorage.getItem("countdownTime");
         }
+
 
     },
     template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
                 <div class="main-flex">
+
+                <div v-show="correctGuessView" class="game-over main-flex">
+                <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+               
+                <h1>BRA JOBBAT</h1>
+                <p v-if="playerOneCorrect"> {{playerOneName}} </p>
+                <p v-else-if="playerTwoCorrect"> {{playerTwoName}} </p> 
+                <p v-if="points !== 0">Du klarade av att resa tillbaka till i tiden</p>
+                <img src="assets/oui_cheer.svg" class="cheer-symbol">
+                <button v-if="playerOneCorrect" class="submitButton" @click="nextPicture">FORTSÄTT {{playerTwoName}}</button>
+                <button v-else-if="playerTwoCorrect" class="submitButton" @click="nextPicture">FORTSÄTT {{playerOneName}}</button>                           
+             </div>
+         <!--    <div v-show="endOfRound"> 
+             <h1> {{rounds/3}} </h1>
+             <p> {{playerOneName}} - {{playerOnePoints}} </p>
+             <p> {{playerTwoName}} - {{playerTwoPoints}} </p>
+             <button class="submitButton" @click="nextPicture">FORTSÄTT SPELA </button>     
+             </div> -->
+
+                <div v-if="p1WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
+                <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+                <h1>HOPPSAN</h1>
+                <p>Det var inte riktigt rätt, {{playerOneName}}</p>
+                <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
+                <button class="submitButton" @click="nextPicture">FORTSÄTT {{playerTwoName}}</button>
+            </div>
+            <div v-else-if="p2WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
+            <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+            <h1>HOPPSAN</h1>
+            <p>Det var inte riktigt rätt, {{playerTwoName}}</p>
+            <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
+            <button class="submitButton" @click="nextPicture">FORTSÄTT {{playerOneName}}</button>
+        </div>
+       <!-- <div v-if="p2WrongGuess && p1WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
+        <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+        <h1>HOPPSAN</h1>
+        <p>Ingen fick rätt.. vi tågar vidare..</p>
+        <p>Rätt år var {{ objektDatum.substring(0,2) + "00"}}</p>
+        <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
+        <button class="submitButton" @click="nextPicture">FORTSÄTT {{playerOneName}} och {{playerTwoName}}</button>
+    </div> -->
             <div v-show="showMain"> 
            
-            <h1>Vilket årtioende söker vi?</h1>
-            <h2>{{points}} POÄNG</h2>
-            <h3>Timer: {{count}}</h3>
+            <img src="assets/timer-symbol.svg" class="timer-symbol">
+            <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+            <p class="timer-num" v-show="showMain">{{count}}</p>
+            <h2 class="desktop-h2-game1-modifier">{{points}} POÄNG</h2>
+            <p>Vilket årtionde söker vi?</p>
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
-            <img :src="objektBild" alt="" class="fetchedImage">
+            <div class="museum-big-image-div">
+                <img :src="objektBild" class="museum-big-image">
             <p> Bildtext: {{objektDesc}}</p>
             <p>Fotograferad: {{objektDatum}}</p>
-            
-            <div v-show="lookAway">
-            <h2 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h2>
-            <h2 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h2>
             </div>
-            <button class="stopButton" v-show="visibleButton1" @click="stopTimer(1)">NÖDBROMS 1</button>
-            <button class="stopButton" v-show="visibleButton2" @click="stopTimer(2)">NÖDBROMS 2</button>
+           
             
+            <img src="assets/Svara-knapp-red.svg" @click="stopTimer(1)" class="stopButton" v-show="visibleButton1">
+            <img src="assets/Svara-knapp-blue.svg" @click="stopTimer(2)" class="stopButton" v-show="visibleButton2">
             
-            <form v-show="visibleForm">
+            <div v-if="p1TimeStop || p2TimeStop" v-show="visibleForm" :class="{ 'answer-view main-flex': p1TimeStop, 'answer-view-playerTwo main-flex': p2TimeStop }">
+            <img src="assets/timer-symbol.svg" class="timer-symbol">
+            <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+            <p class="timer-num">{{guessTime}}</p>
+            <div class="museum-big-image-div">
+                <img :src="objektBild" class="museum-big-image">
+                </div>
+            <p v-if="p1TimeStop"> {{playerOneName}} </p>
+            <p v-else-if="p2TimeStop"> {{playerTwoName}} </p>
+            <p>Vilket årtionde söker vi?</p>
+            <p>{{objektDatum}}</p>
             <select class="date" v-model="selectYear">
             <option value="1900">1900</option>
             <option value="1910">1910</option>
@@ -733,8 +898,15 @@ const twoPlayerGame = {
             <option value="1980">1980</option>
             <option value="1990">1990</option>
             </select>
-            <input type="submit" class="submitButton" @click.prevent="submitYear" value="GISSA ÅR" />
-            </form>
+            <input type="submit" class="submitButton" @click.prevent="submitYear" value="BEKRÄFTA" />
+            <div v-show="lookAway">
+            <h2 v-if="visibleButton1"> {{playerTwoName}} KOLLA BORT! </h2>
+            <h2 v-else-if="visibleButton2"> {{playerOneName}} KOLLA BORT! </h2>
+            </div>
+  
+        </div>
+  
+     
             </div>
             <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
             <div v-show="roundOver">    

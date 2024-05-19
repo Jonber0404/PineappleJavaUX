@@ -126,6 +126,7 @@ button {
 .stopButton {
     width: 100px;
     margin-top: 20px;
+    margin-inline-start: 1rem;
 }
 
 
@@ -521,6 +522,14 @@ body.count-down {
     width: 100%;
     height: 100%;
     background-color: rgba(245, 223, 189, 1);
+}
+.answer-view-playerTwo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--Turkos-50, #D9EDEB);
 }
 
 .date {
