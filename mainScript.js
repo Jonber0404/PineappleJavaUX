@@ -121,6 +121,9 @@ const difficultySelection = {
 
 
         <div v-else class="difficulty-selection">
+        <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
+        <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+        <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
             <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
