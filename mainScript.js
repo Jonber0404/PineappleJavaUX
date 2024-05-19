@@ -575,7 +575,6 @@ const twoPlayerGame = {
             this.timeStop = true;
             this.lookAway = true;
             this.guessTimerStart();
-            console.log(n)
             if (n === 1) {
                 this.visibleButton2 = false;
                 this.p1TimeStop = true;
@@ -588,6 +587,9 @@ const twoPlayerGame = {
             }
         },
         guessTimerStart() {
+            if (this.rounds > 3) {
+                this.gameIsOver();
+            }
             this.guessTimer = setInterval(() => {
                 this.guessTime--;
                 console.log(this.p1TimeStop + " p1")
@@ -595,14 +597,9 @@ const twoPlayerGame = {
                 if ((this.points === 2 && this.guessTime < 1) && (this.p1TimeStop || this.p2TimeStop)) {
                     this.startNewRound();
                 }
-                else if (this.rounds > 3) {
-                    this.gameIsOver();
-                }
+                else 
                 if (this.guessTime < 1) {
-                    if (this.rounds > 3 ) {
-                        this.gameIsOver();
-                    }
-                    else{
+              
                         this.visibleNextButton = true;
                         this.nextPicture();
                         this.count = localStorage.getItem("countdownTime");
@@ -625,12 +622,12 @@ const twoPlayerGame = {
                             this.p2TimeStop = false;
                         }
     
-                    }
+                    
                     
 
                 }
                 if (this.p1TimeUp && this.p2TimeUp) {
-                    if (this.rounds > 3 ) {
+                    if (this.rounds === 3 ) {
                         this.gameIsOver();
                     }
                     else{
@@ -649,7 +646,7 @@ const twoPlayerGame = {
                 }
                 else if ((this.p1TimeUp && this.p2WrongGuess) || (this.p2TimeUp && this.p1WrongGuess) || (this.p1TimeUp && this.playerTwoCorrect)
                     || (this.p2TimeUp && this.playerOneCorrect)) {
-                        if (this.rounds > 3) {
+                        if (this.rounds === 3) {
                             this.gameIsOver();
                         }
                    else{
@@ -779,6 +776,7 @@ const twoPlayerGame = {
             this.visibleForm = false;
             this.visibleButton1 = false;
             this.visibleButton2 = false;
+            this.visibleNextButton = false;
             this.showMain = false;
             this.roundOver = true;
             this.lookAway = false;
@@ -789,8 +787,7 @@ const twoPlayerGame = {
         },
         handleCorrectGuess() {      
             this.correctGuessView = true;
-            clearInterval(this.timer);
-            clearInterval(this.guessTimer);
+            
             this.showMain = false;
             if (this.visibleButton1 && !this.visibleButton2) {
                 this.playerOnePoints += this.points;
