@@ -108,9 +108,12 @@ const difficultySelection = {
             </div>
             <div v-else-if="$root.numPlayers === 2">
                     <h1>ANGE ERA NAMN</h1>
+                    <p> Spelare 1: </p>
                     <input type="text" v-model="playerOneName">
+                    <p> Spelare 2: </p>
                     <input type="text" v-model="playerTwoName">
-                    <button @click="storeNames">SPARA</button>
+                    <br>
+                    <button class="submitButton" @click="storeNames">SPARA</button>
             </div>
         </div>
 
@@ -621,10 +624,6 @@ const twoPlayerGame = {
                             this.visibleButton2 = false;
                             this.p2TimeStop = false;
                         }
-    
-                    
-                    
-
                 }
                 if (this.p1TimeUp && this.p2TimeUp) {
                     if (this.rounds === 3 ) {
@@ -707,6 +706,7 @@ const twoPlayerGame = {
             this.selectYear = "";
             this.lookAway = false;
             clearInterval(this.guessTimer);
+            clearInterval(this.timer)
 
 
             if (this.timeStop) {
@@ -846,14 +846,14 @@ const twoPlayerGame = {
             <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
             <button class="submitButton" @click="nextPicture">FORTSÄTT {{playerOneName}}</button>
         </div>
-       <!-- <div v-if="p2WrongGuess && p1WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
+       <div v-if="p2WrongGuess && p1WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
         <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
         <h1>HOPPSAN</h1>
         <p>Ingen fick rätt.. vi tågar vidare..</p>
-        <p>Rätt år var {{ objektDatum.substring(0,2) + "00"}}</p>
+        <p>Rätt år var {{  objektDatum.substring(0,3) + "0" }}</p>
         <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
         <button class="submitButton" @click="nextPicture">FORTSÄTT {{playerOneName}} och {{playerTwoName}}</button>
-    </div> -->
+    </div> 
             <div v-show="showMain"> 
            
             <img src="assets/timer-symbol.svg" class="timer-symbol">
