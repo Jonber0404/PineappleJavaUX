@@ -815,7 +815,7 @@ const twoPlayerGame = {
 
 
     },
-    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NÄSTA</button>
+    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">SKIPPA BILD</button>
                 <div class="main-flex">
 
                 <div v-show="correctGuessView" class="game-over main-flex">
@@ -868,8 +868,6 @@ const twoPlayerGame = {
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
             <div class="museum-big-image-div">
                 <img :src="objektBild" class="museum-big-image">
-            <p> Bildtext: {{objektDesc}}</p>
-            <p>Fotograferad: {{objektDatum}}</p>
             </div>
            
             
@@ -880,11 +878,8 @@ const twoPlayerGame = {
             <img src="assets/timer-symbol.svg" class="timer-symbol">
             <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <p class="timer-num">{{guessTime}}</p>
-            <div class="museum-big-image-div">
-                <img :src="objektBild" class="museum-big-image">
-                </div>
-            <p v-if="p1TimeStop"> {{playerOneName}} </p>
-            <p v-else-if="p2TimeStop"> {{playerTwoName}} </p>
+            <h1 v-if="p1TimeStop"> {{playerOneName}} </h1>
+            <h1 v-else-if="p2TimeStop"> {{playerTwoName}} </h1>
             <p>Vilket årtionde söker vi?</p>
             <p>{{objektDatum}}</p>
             <select class="date" v-model="selectYear">
