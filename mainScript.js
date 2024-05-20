@@ -52,7 +52,7 @@ const aboutGame = {
             <div>API: K-Samsök (https://kulturarvsdata.se/ksamsapiok/?)</div>
             <br>
             <div>Skapad av: Adam Pääjärvi, David Henriksson, Jonathan Bergenstein, Ludvig Ward</div>
-            <div>           Emma Lindström, Louise Alveflo, Natasha Reed, Simona Cavalieri
+            <div>           Emma Lindström, Louise Alveflo, Natasha Reed, Simona Cavalieri</div>
         </div>
     `
 }

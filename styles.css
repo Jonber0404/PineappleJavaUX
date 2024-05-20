@@ -430,6 +430,8 @@ body.main-menu {
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+
+    margin-top: 60px;
 }
 
 
@@ -544,6 +546,8 @@ body.main-menu {
 }
 
 .navbar {
+    z-index: 1000;
+   position: relative;
     display: none;
     background-color: #333;
     color: #fff;
