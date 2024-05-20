@@ -180,16 +180,21 @@ body.main-menu {
 
 .diff-select-all-player-box {
     display: flex;
-    flex-direction: column; 
-    align-items: center;    
-    justify-content: center;
+    flex-wrap: wrap;
+
+}
+.diff-select-player-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem;
 }
 .diff-select-player-box input {
-    height: 35px;
-    width: 220px;
+    height: 28px;
+    width: 120px;
     font-size: 20px;
-    
-
+    box-sizing: border-box;
 }
 
 .startmenubutton {
@@ -772,9 +777,7 @@ body.main-menu {
 
     .diff-select-all-player-box {
         display: flex;
-        flex-direction: column; 
-        align-items: center;    
-        justify-content: center;
+    
     }
 
     .diff-select-player-box {
