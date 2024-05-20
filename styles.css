@@ -420,8 +420,6 @@ body.main-menu {
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
     width: 80%;
-    max-width: 700px;
-    max-height: 500px;
     border-radius: 0.5em;
     overflow: hidden;
     background-color: whitesmoke;
@@ -708,6 +706,9 @@ body.main-menu {
         width: 25%;
     }
     */
+    .museum-big-image-div {
+        width: 30%;
+    }
 
     .navbar {
         display: flex;
