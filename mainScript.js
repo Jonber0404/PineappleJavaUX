@@ -1025,7 +1025,7 @@ vueApp.config.globalProperties.generateDecade = function () {
 vueApp.config.globalProperties.getObjectData = async function () {
     let randomObjekt = Math.floor((Math.random() * 665) + 1)
     try {
-        const response = await fetch(`https://kulturarvsdata.se/ksamsapiok/?` +
+        const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?` +
             `method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}` +
             `+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j` +
             `+AND+contextLabel=Fotografering+AND+(item=fordon+OR+item=person)`, {
