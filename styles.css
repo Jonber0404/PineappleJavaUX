@@ -45,6 +45,13 @@ button {
     background-color: rgba(217, 237, 235, 1);
 }
 
+/*Honestly, .mobile-nav is just being used to center .backarrow, it otherwise isn't necessary, but I don't want to 
+write more CSS or HTML to do so, so this will have to do.*/
+.game-rules .mobile-nav .backarrow {
+    position: fixed;
+    top: 20px;
+}
+
 .game-rules h1 {
     font-weight: 800;
     font-size: 25px;
@@ -57,10 +64,6 @@ button {
     padding: 0 2em 0 2em;
     margin-bottom: 0;
     margin-top: 0.6em;
-}
-
-.game-rules a button {
-    position: absolute;
 }
 
 /****************Scoreboard Things****************/
@@ -664,6 +667,11 @@ body.count-down {
         max-height: 400px;
     }
 
+    .museum-small-image {
+        max-width: 100px;
+        min-width: 50px;
+    }
+
     /*
     .museum-big-image-div,
     .museum-text-container,
@@ -685,7 +693,7 @@ body.count-down {
         display: none;
     }
 
-    .game-rules .backtomenu {
+    .game-rules .backarrow {
         display: flex;
     }
 

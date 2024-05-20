@@ -22,6 +22,9 @@ const playerSelection = {
     }, methods: {
         setPlayers(num) {
             this.$root.numPlayers = num;
+        },
+        goBack() {
+            this.$router.push("/")
         }
     },
 
@@ -29,7 +32,7 @@ const playerSelection = {
     template: `
             <div class="main-flex">
                 <div class="mobile-nav">
-                    <router-link to="/"><button class='backarrow topicon'> </button></router-link>
+                    <button @click="goBack()" class='backarrow topicon'> </button>
                     <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
                     <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
                 </div>
@@ -110,7 +113,7 @@ const difficultySelection = {
         <div v-if="!namesRegistered">
             <div v-if="$root.numPlayers === 1">
                 <div class="mobile-nav">
-                    <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
+                    <button @click="goBack()" class='backarrow topicon'> </button>
                     <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
                     <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
                 </div>
@@ -233,13 +236,18 @@ const scoreboard = {
             var day = ("0" + date.getDate()).slice(-2);
 
             return month + "/" + day;
+        },
+        goBack() {
+            this.$router.push("/")
         }
     },
-    template: `<router-link to="/"><button class='backtomenu' class='topicon'> </button></router-link>
-                <div class="scoreboard"><br><br>
-                    <div class='mobile-nav'>
-
-                    </div>
+    template: `
+        <div class="mobile-nav">
+            <button @click="goBack()" class='backarrow topicon'> </button>
+            <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+            <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+        </div>
+                <div class="scoreboard">
                     <h1>SCOREBOARD</h1>
                     <div class="scoreboard_row">
 <!--                        <div class="scoreboard_header_cell">Namn</div>-->
@@ -302,8 +310,15 @@ const museum = {
 // spelregler
 const gameRules = {
     name: "gameRules",
+    methods: {
+        goBack() {
+            this.$router.push("/")
+        }
+    },
     template: `<div class="game-rules">
-                <router-link to="/"><button class='backtomenu topicon'> </button></router-link><br><br>
+                <div class="mobile-nav">
+                    <br><button @click="goBack()" class='backarrow topicon'></button><br>
+                </div>
                 <h1>SPELREGLER</h1>
                 <p>Spelet går ut på att gissa vilket årtal man befinner sig i.</p>
                 <p>&bull; Varje spelrunda har 5 foton från samma årtionde.</p>
