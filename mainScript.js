@@ -270,8 +270,7 @@ const scoreboard = {
                         <div class="scoreboard_cell">{{player.correctYear}}</div>
                         <div class="scoreboard_cell" @click="toMuseum(player)">&bull;&bull;&bull;</div> 
                     </div>
-                </div>
-                <pre>{{playerInfo}}</pre>`
+                </div>`
 }
 
 const museum = {
