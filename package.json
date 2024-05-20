@@ -1,0 +1,14 @@
+{
+  "name": "Järnvägsjakten",
+  "version": "1.0.0",
+  "description": "Grupprojekt Pineapples, Yrgo Java23 och UX23",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server ./src -p 8080",
+    "clean": "rimraf dist build"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "rimraf": "^5.0.0"
+  }
+}
