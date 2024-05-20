@@ -83,8 +83,8 @@ const playerSelection = {
     },
 
 
-    template: `
-            <div class="main-flex">
+    template: `<div class="main-flex">
+                <br>
                 <h1>ANTAL SPELARE</h1>
                 <div class="player-selection">
                     <router-link to="/mainMenu"><button class='backarrow topicon'> </button></router-link>
@@ -248,7 +248,6 @@ const scoreboard = {
         let playerData = localStorage.getItem('playerData');
         this.playerInfo = JSON.parse(playerData) || [];
         this.sortedArrays();
-
     },
     methods: {
         sortedArrays() {
@@ -260,6 +259,8 @@ const scoreboard = {
                     return b.pointsEarned - a.pointsEarned
                 }
             })
+            this.playerInfo.splice(10)
+            localStorage.setItem('playerData', JSON.stringify(this.playerInfo))
         },
         toMuseum(gameToShow) {
             currentRoundPictures = gameToShow.currentRoundPictures
@@ -319,7 +320,6 @@ const museum = {
     },
     template: `<button class='backtomenu topicon' @click="goBack"> </button>
                 <div class="museum-image-container">
-                    <br><br>
                     <h1>{{selectedImage.date}}</h1>
                     <div class="museum-big-image-div">
                         <img :src="selectedImage.imgUrl" class="museum-big-image">
@@ -495,6 +495,17 @@ const onePlayerGame = {
         },
         toMuseum() {
             this.$router.push("/museum")
+        },
+        playAgain() {
+            this.count = localStorage.getItem("countdownTime")
+            this.guessTime = 10
+            this.points = 10
+            this.generateDecade()
+            currentRoundPictures = []
+            this.loadNextImg();
+            this.startTimer();
+            this.gameOver = false
+            this.mainDiv = true
         }
 
     },
@@ -507,8 +518,8 @@ const onePlayerGame = {
                 <p v-if="points !== 0">Du klarade av att resa tillbaka till {{ selectYear }}</p>
                 <img v-if="points === 0" src="assets/mingcute_sad-line.svg" class="sad-symbol">
                 <img v-if="points !== 0" src="assets/oui_cheer.svg" class="cheer-symbol">
-                <button class="submitButton" @click="toHome">HUVUDMENY</button>
-                <button class="submitButton" @click="toMuseum">MER INFO OM BILDERNA</button>
+                <button class="submitButton" @click="playAgain">SPELA IGEN</button>
+                <button class="submitButton" @click="toMuseum">SAMMANFATTNING</button>
              </div>
              
              <div v-show="mainDiv" class="main-flex">
@@ -850,7 +861,7 @@ const twoPlayerGame = {
 
 
     },
-    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">SKIPPA BILD</button>
+    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NY BILD</button>
                 <div class="main-flex">
 
                 <div v-show="correctGuessView" class="game-over main-flex">
@@ -898,8 +909,8 @@ const twoPlayerGame = {
             <img src="assets/timer-symbol.svg" class="timer-symbol">
             <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <p class="timer-num" v-show="showMain">{{count}}</p>
-            <h2 class="desktop-h2-game1-modifier">{{points}} POÄNG</h2>
-            <p>Vilket årtionde söker vi?</p>
+            <h3 class="desktop-h2-game1-modifier">{{points}} POÄNG - RUNDA: {{rounds}}/3</h3>
+            <p>Vilket årtionde söker vi</p>
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
             <div class="museum-big-image-div">
                 <img :src="objektBild" class="museum-big-image">
@@ -942,7 +953,8 @@ const twoPlayerGame = {
   
      
             </div>
-            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
+            <p> {{playerOneName}}: {{playerOnePoints}} POÄNG <br> {{playerTwoName}}: {{playerTwoPoints}} POÄNG</p> 
+
             <div v-show="roundOver">    
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
             <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
@@ -988,7 +1000,7 @@ router.beforeEach((to, from, next) => {
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
         document.body.classList.remove('main-menu');
-        
+    
     }
     next();
 });

@@ -178,7 +178,24 @@ body.main-menu {
 }
 
 
+.diff-select-all-player-box {
+    display: flex;
+    flex-wrap: wrap;
 
+}
+.diff-select-player-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem;
+}
+.diff-select-player-box input {
+    height: 28px;
+    width: 120px;
+    font-size: 20px;
+    box-sizing: border-box;
+}
 
 .startmenubutton {
     display: flex;
@@ -297,12 +314,10 @@ body.main-menu {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    margin: 3rem;
 
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-80%, 0%);
+    transform: translate(-50%, 0);
 }
 
 .easytext {
@@ -346,7 +361,7 @@ body.main-menu {
     font-size: 80px;
     font-style: normal;
     font-weight: 900;
-    line-height: 40.04px;
+    line-height: 1em;
     overflow: hidden;
     /* 80.08% */
 }
@@ -359,6 +374,17 @@ body.main-menu {
     height: 100vh;
 
     transform: translateY(-50px);
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .introimage {
@@ -411,8 +437,6 @@ body.main-menu {
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
     width: 80%;
-    max-width: 700px;
-    max-height: 500px;
     border-radius: 0.5em;
     overflow: hidden;
     background-color: whitesmoke;
@@ -690,12 +714,6 @@ body.main-menu {
     }
 
     .difficulty-selection {
-        /* display has to be flexbox, if it's flex then something fucky happens. */
-        display: flexbox;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
     }
 
     /*
@@ -705,6 +723,9 @@ body.main-menu {
         width: 25%;
     }
     */
+    .museum-big-image-div, .museum-small-images, .museum-text-container {
+        width: 30%;
+    }
 
     .navbar {
         display: flex;
@@ -768,6 +789,7 @@ body.main-menu {
 
     .diff-select-all-player-box {
         display: flex;
+    
     }
 
     .diff-select-player-box {
