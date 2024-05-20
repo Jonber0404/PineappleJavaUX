@@ -59,6 +59,10 @@ button {
     margin-top: 0.6em;
 }
 
+.game-rules a button {
+    position: absolute;
+}
+
 /****************Scoreboard Things****************/
 .scoreboard {
     display: flex;
@@ -628,12 +632,13 @@ body.count-down {
         width: 100%;
     }
 
-
+    /*
     .museum-big-image-div,
     .museum-text-container,
     .museum-small-images {
         width: 25%;
     }
+    */
 
     .navbar {
         display: flex;
@@ -693,6 +698,30 @@ body.count-down {
     .desktop-h2-game1-modifier {
         margin-top: -50px;
         margin: -10px;
+    }
+
+    .diff-select-all-player-box {
+        display: flex;
+    }
+    
+    .diff-select-player-box {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        align-items: center;
+    }
+
+    .diff-select-player-box input {
+        height: 35px;
+        width: 220px;
+        font-size: 20px;
+    }
+
+    .same-size-image {
+        height: 224px;
+        width: 192px;
+        object-fit: cover;
+        border-radius: 0.5em;
     }
 }
 
