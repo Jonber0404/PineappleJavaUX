@@ -191,7 +191,6 @@ const scoreboard = {
         let playerData = localStorage.getItem('playerData');
         this.playerInfo = JSON.parse(playerData) || [];
         this.sortedArrays();
-
     },
     methods: {
         sortedArrays() {
@@ -203,6 +202,8 @@ const scoreboard = {
                     return b.pointsEarned - a.pointsEarned
                 }
             })
+            this.playerInfo.splice(10)
+            localStorage.setItem('playerData', JSON.stringify(this.playerInfo))
         },
         toMuseum(gameToShow) {
             currentRoundPictures = gameToShow.currentRoundPictures
@@ -237,7 +238,8 @@ const scoreboard = {
                         <div class="scoreboard_cell">{{player.correctYear}}</div>
                         <div class="scoreboard_cell" @click="toMuseum(player)">&bull;&bull;&bull;</div> 
                     </div>
-                </div>`
+                </div>
+                <pre>{{playerInfo}}</pre>`
 }
 
 const museum = {
