@@ -686,6 +686,7 @@ body.main-menu {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        border: transparent;
     }
 
     .playbutton {
@@ -695,8 +696,10 @@ body.main-menu {
         /*transform: translateX(20px);*/
 
         border-radius: 11.429px;
-        background: var(--Turkos-100, #1D9594);
+        background: var(--Turkos-200, #1A7475);
         box-shadow: 0px 4.571px 4.571px 0px rgba(0, 0, 0, 0.25);
+
+        
     }
 
     .scoreboardbutton {
