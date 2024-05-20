@@ -58,8 +58,8 @@ const playerSelection = {
     },
 
 
-    template: `
-            <div class="main-flex">
+    template: `<div class="main-flex">
+                <br>
                 <h1>ANTAL SPELARE</h1>
                 <div class="player-selection">
                     <router-link to="/mainMenu"><button class='backarrow topicon'> </button></router-link>
