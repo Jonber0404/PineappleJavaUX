@@ -1,5 +1,37 @@
 let decadeEnd, decadeStart, currentRoundPictures
 
+
+
+
+//Introskärmen
+const introPage = {
+    name: "introPage",
+    data() {
+        return {
+            
+        };
+    },
+    mounted() {
+        this.startIntroCountdown();
+    },
+    methods: {
+        startIntroCountdown() {
+
+            setTimeout(this.navigateToMainMenu, 2000);
+
+        },
+        navigateToMainMenu() {
+            
+            this.$router.push('/mainMenu');
+        }
+    },
+    template: `<div class='introtext'>
+                    <div class='introimage'></div>
+                    <div class='bigintrotext'>Järnvägsjakten</div>
+                    <div class='smallintrotext'>Tidens gåtor</div>
+                </div>`
+}
+
 // Main meny
 const homePage = {
     name: "homePage",
@@ -30,7 +62,7 @@ const playerSelection = {
             <div class="main-flex">
                 <h1>ANTAL SPELARE</h1>
                 <div class="player-selection">
-                    <router-link to="/"><button class='backarrow topicon'> </button></router-link>
+                    <router-link to="/mainMenu"><button class='backarrow topicon'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
                 </div>
@@ -129,7 +161,7 @@ const difficultySelection = {
         <div v-else class="difficulty-selection">
         <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
         <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-        <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+        <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
             <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
@@ -219,7 +251,7 @@ const scoreboard = {
             return month + "/" + day;
         }
     },
-    template: `<router-link to="/"><button class='backtomenu'> </button></router-link>
+    template: `<router-link to="/mainMenu"><button class='backarrow topicon'> </button></router-link>
                 <div class="scoreboard"><br><br>
                     <h1>SCOREBOARD</h1>
                     <div class="scoreboard_row">
@@ -259,10 +291,10 @@ const museum = {
             this.selectedImage = image;
         },
         goBack() {
-            this.$router.push("/")
+            this.$router.push("/mainMenu")
         }
     },
-    template: `<button class='backtomenu' @click="goBack"> </button>
+    template: `<button class='backtomenu topicon' @click="goBack"> </button>
                 <div class="museum-image-container">
                     <br><br>
                     <h1>{{selectedImage.date}}</h1>
@@ -285,7 +317,7 @@ const museum = {
 const gameRules = {
     name: "gameRules",
     template: `<div class="game-rules">
-                <router-link to="/"><button class='backtomenu'> </button></router-link><br><br>
+                <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link><br><br>
                 <h1>SPELREGLER</h1>
                 <p>Spelet går ut på att gissa vilket årtal man befinner sig i.</p>
                 <p>&bull; Varje spelrunda har 5 foton från samma årtionde.</p>
@@ -436,7 +468,7 @@ const onePlayerGame = {
         toHome() {
             clearInterval(this.timer)
             clearInterval(this.guessTimer)
-            this.$router.push("/")
+            this.$router.push("/mainMenu")
         },
         toMuseum() {
             this.$router.push("/museum")
@@ -612,6 +644,7 @@ const twoPlayerGame = {
                 } else if (this.guessTime < 1) {
                     this.handleGuessTimeUp();
                 }
+
             }, 1000);
         },
         handleGuessTimeUp() {
@@ -639,7 +672,7 @@ const twoPlayerGame = {
             this.checkGameOver();
         },
         checkGameOver() {
-            if (this.rounds > 3) {
+            if (this.rounds > 3 && this.points < 4) {
                 this.gameIsOver();
             } else if (this.p1TimeUp && this.p2TimeUp) {
                 this.startNewRound();
@@ -659,7 +692,7 @@ const twoPlayerGame = {
             else if (this.points < 2) {
                 this.startNewRound();
             }
-           
+
             this.wrongAnswerView = false;
             this.showMain = true;
             this.correctGuessView = false;
@@ -670,7 +703,7 @@ const twoPlayerGame = {
                     this.gameIsOver();
                 }
             }
-            
+
             this.count = localStorage.getItem("countdownTime")
             this.extractData();
 
@@ -693,7 +726,7 @@ const twoPlayerGame = {
                 this.timeStop = false;
             }
             if (yearInput !== correctYear) {
-              
+
                 this.wrongAnswerView = true;
                 this.showMain = false;
                 this.count = localStorage.getItem("countdownTime");
@@ -729,6 +762,10 @@ const twoPlayerGame = {
 
         },
         startNewRound() {
+                if (this.rounds >= 3) {
+                    this.gameIsOver();
+                    return;
+                }
             this.rounds++;
             this.points = 10;
             this.visibleButton1 = true;
@@ -764,9 +801,9 @@ const twoPlayerGame = {
 
 
         },
-        handleCorrectGuess() {      
+        handleCorrectGuess() {
             this.correctGuessView = true;
-            
+
             this.showMain = false;
             if (this.visibleButton1 && !this.visibleButton2) {
                 this.playerOnePoints += this.points;
@@ -794,7 +831,7 @@ const twoPlayerGame = {
                 <div class="main-flex">
 
                 <div v-show="correctGuessView" class="game-over main-flex">
-                <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+                <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
                
                 <h1>BRA JOBBAT</h1>
                 <p v-if="playerOneCorrect"> {{playerOneName}} </p>
@@ -812,21 +849,21 @@ const twoPlayerGame = {
              </div> -->
 
                 <div v-if="p1WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
-                <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+                <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
                 <h1>HOPPSAN</h1>
                 <p>Det var inte riktigt rätt, {{playerOneName}}</p>
                 <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
                 <button class="submitButton" @click="nextPicture">FORTSÄTT {{playerTwoName}}</button>
             </div>
             <div v-else-if="p2WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
-            <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+            <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <h1>HOPPSAN</h1>
             <p>Det var inte riktigt rätt, {{playerTwoName}}</p>
             <img src="assets/mingcute_sad-line.svg" class="sad-symbol">
             <button class="submitButton" @click="nextPicture">FORTSÄTT {{playerOneName}}</button>
         </div>
        <div v-if="p2WrongGuess && p1WrongGuess" v-show="wrongAnswerView" class="wrong-answer main-flex">
-        <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+        <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
         <h1>HOPPSAN</h1>
         <p>Ingen fick rätt.. vi tågar vidare..</p>
         <p>Rätt år var {{  objektDatum.substring(0,3) + "0" }}</p>
@@ -836,7 +873,7 @@ const twoPlayerGame = {
             <div v-show="showMain"> 
            
             <img src="assets/timer-symbol.svg" class="timer-symbol">
-            <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+            <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <p class="timer-num" v-show="showMain">{{count}}</p>
             <h2 class="desktop-h2-game1-modifier">{{points}} POÄNG</h2>
             <p>Vilket årtionde söker vi?</p>
@@ -851,7 +888,7 @@ const twoPlayerGame = {
             
             <div v-if="p1TimeStop || p2TimeStop" v-show="visibleForm" :class="{ 'answer-view main-flex': p1TimeStop, 'answer-view-playerTwo main-flex': p2TimeStop }">
             <img src="assets/timer-symbol.svg" class="timer-symbol">
-            <router-link to="/"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
+            <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <p class="timer-num">{{guessTime}}</p>
             <p v-if="p1TimeStop"> {{playerOneName}} </p>
             <p v-else-if="p2TimeStop"> {{playerTwoName}} </p>
@@ -887,7 +924,7 @@ const twoPlayerGame = {
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
             <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
             <h2 v-else> OAVGJORT! </h2>
-            <router-link to="/"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
+            <router-link to="/mainMenu"><button class='playbutton startmenubutton'>Huvudmeny</button></router-link>
             </div>    
             </div>`
 }
@@ -897,7 +934,8 @@ const twoPlayerGame = {
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
     routes: [
-        { path: '/', component: homePage },
+        { path: '/', component: introPage },
+        { path: '/mainMenu', component: homePage },
         { path: '/playerSelection', component: playerSelection },
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
@@ -918,7 +956,7 @@ router.beforeEach((to, from, next) => {
         document.body.classList.add('count-down');
         document.body.classList.remove('difficulty-selection');
     }
-    else if (to.path === '/') {
+    else if (to.path === '/mainMenu' || to.path === '/') {
         document.body.classList.add('main-menu');
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
