@@ -912,7 +912,7 @@ const twoPlayerGame = {
             <h3 class="desktop-h2-game1-modifier">{{points}} POÄNG - RUNDA: {{rounds}}/3</h3>
             <p>Vilket årtionde söker vi</p>
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
-            <div class="museum-big-image-div">
+            <div class="museum-big-image-div-twoPlayer">
                 <img :src="objektBild" class="museum-big-image">
             </div>
            
@@ -1025,7 +1025,7 @@ vueApp.config.globalProperties.generateDecade = function () {
 vueApp.config.globalProperties.getObjectData = async function () {
     let randomObjekt = Math.floor((Math.random() * 665) + 1)
     try {
-        const response = await fetch(`https://kulturarvsdata.se/ksamsapiok/?` +
+        const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?` +
             `method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}` +
             `+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j` +
             `+AND+contextLabel=Fotografering+AND+(item=fordon+OR+item=person)`, {

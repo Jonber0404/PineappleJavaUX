@@ -444,6 +444,16 @@ body.main-menu {
     align-items: center;
     margin: auto;
 }
+.museum-big-image-div-twoPlayer {
+    aspect-ratio: 1 / 1;
+    width: 80%;
+    border-radius: 0.5em;
+    overflow: hidden;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
 
 .museum-big-image {
     width: 100%;
@@ -725,6 +735,9 @@ body.main-menu {
     */
     .museum-big-image-div, .museum-small-images, .museum-text-container {
         width: 30%;
+    }
+    .museum-big-image-div-twoPlayer, .museum-small-images, .museum-text-container {
+     width:70%;
     }
 
     .navbar {
