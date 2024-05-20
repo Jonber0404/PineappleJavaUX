@@ -912,7 +912,7 @@ const twoPlayerGame = {
             <h3 class="desktop-h2-game1-modifier">{{points}} POÄNG - RUNDA: {{rounds}}/3</h3>
             <p>Vilket årtionde söker vi</p>
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
-            <div class="museum-big-image-div">
+            <div class="museum-big-image-div-twoPlayer">
                 <img :src="objektBild" class="museum-big-image">
             </div>
            
