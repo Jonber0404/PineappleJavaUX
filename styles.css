@@ -332,6 +332,12 @@ body.count-down {
     /* 80.08% */
 }
 
+/*html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; DETTA TAR BORT ALLA SCROLLSBARS
+}*/
+
 /* MUSEUM */
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
@@ -603,12 +609,6 @@ body.count-down {
         display: none;
     }
 
-    .backarrow {
-        display: none;
-    }
-
-
-
     /*Playerselection*/
 
 
@@ -654,6 +654,10 @@ body.count-down {
     }
 
     .backarrow {
+        display: none;
+    }
+
+    .scoreboardicon{
         display: none;
     }
 
