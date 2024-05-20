@@ -32,6 +32,31 @@ const introPage = {
                 </div>`
 }
 
+const aboutGame = {
+    name: "aboutGame",
+    data() {
+        return {
+            
+        };
+    },
+    
+    template: `
+        <div class='aboutGameText'>
+            <h1>Om Spelet</h1>
+            <br>
+            <div>Detta är ett spel som spelas som "på spåret". Gissa rätt årtioende baserat på ledtrådar i form av gamla fotografier. Spela själv eller spela mot en vän.
+            <br>
+            <br>
+            <div>Version: 1.0.0</div>
+            <br>
+            <div>API: K-Samsök (https://kulturarvsdata.se/ksamsapiok/?)</div>
+            <br>
+            <div>Skapad av: Adam Pääjärvi, David Henriksson, Jonathan Bergenstein, Ludvig Ward</div>
+            <div>           Emma Lindström, Louise Alveflo, Natasha Reed, Simona Cavalieri
+        </div>
+    `
+}
+
 // Main meny
 const homePage = {
     name: "homePage",
@@ -935,6 +960,7 @@ const router = VueRouter.createRouter({
         { path: '/', component: introPage },
         { path: '/mainMenu', component: homePage },
         { path: '/playerSelection', component: playerSelection },
+        { path: '/aboutGame', component: aboutGame },
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
         { path: '/onePlayerGame', component: onePlayerGame },
@@ -954,13 +980,15 @@ router.beforeEach((to, from, next) => {
         document.body.classList.add('count-down');
         document.body.classList.remove('difficulty-selection');
     }
-    else if (to.path === '/mainMenu' || to.path === '/') {
+    else if (to.path === '/mainMenu' || to.path === '/' || to.path === '/aboutGame') {
         document.body.classList.add('main-menu');
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
     } else {
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
+        document.body.classList.remove('main-menu');
+        
     }
     next();
 });
@@ -985,7 +1013,7 @@ vueApp.config.globalProperties.generateDecade = function () {
 vueApp.config.globalProperties.getObjectData = async function () {
     let randomObjekt = Math.floor((Math.random() * 665) + 1)
     try {
-        const response = await fetch(`https://kulturarvsdata.se/ksamsok/api?` +
+        const response = await fetch(`https://kulturarvsdata.se/ksamsapiok/?` +
             `method=search&hitsPerPage=1&startRecord=${randomObjekt}&query=create_fromTime>=${decadeStart}` +
             `+AND+create_fromTime<=${decadeEnd}+AND+itemType=foto+AND+thumbnailExists=j+AND+timeInfoExists=j` +
             `+AND+contextLabel=Fotografering+AND+(item=fordon+OR+item=person)`, {

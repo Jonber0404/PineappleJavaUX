@@ -264,6 +264,7 @@ body.main-menu {
 }
 
 .scoreboardicon {
+    left: 48%;
     background-image: url('assets/MedalVector.svg');
 }
 
@@ -388,11 +389,23 @@ body.main-menu {
     line-height: normal;
 }
 
-/*html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden; DETTA TAR BORT ALLA SCROLLSBARS
-}*/
+.aboutGameText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 120vh;
+    margin-left: 1rem;
+    color: var(--Brun, #552C2D);
+    transform: translate(0rem, -16rem);
+
+    font-family: Inconsolata, sans-serif;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
 
 /* MUSEUM */
 .museum-big-image-div {
@@ -645,7 +658,7 @@ body.main-menu {
         /*  font-size: 50px;
         width: 20rem;
         margin-top: 0rem; */
-
+        /*transform: translateX(20px);*/
 
         border-radius: 11.429px;
         background: var(--Turkos-100, #1D9594);
