@@ -909,6 +909,7 @@ const twoPlayerGame = {
             <img src="assets/timer-symbol.svg" class="timer-symbol">
             <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <p class="timer-num" v-show="showMain">{{count}}</p>
+            <br>
             <h3 class="desktop-h2-game1-modifier">{{points}} POÄNG - RUNDA: {{rounds}}/3</h3>
             <p>Vilket årtionde söker vi</p>
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
