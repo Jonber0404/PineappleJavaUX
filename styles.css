@@ -264,6 +264,7 @@ body.main-menu {
 }
 
 .scoreboardicon {
+    left: 48%;
     background-image: url('assets/MedalVector.svg');
 }
 
@@ -296,12 +297,10 @@ body.main-menu {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    margin: 3rem;
 
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-80%, 0%);
+    transform: translate(-50%, 0);
 }
 
 .easytext {
@@ -677,12 +676,6 @@ body.main-menu {
     }
 
     .difficulty-selection {
-        /* display has to be flexbox, if it's flex then something fucky happens. */
-        display: flexbox;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
     }
 
     /*
