@@ -185,9 +185,6 @@ body.main-menu {
     overflow: hidden;
 }
 
-
-<<<<<<< HEAD
-=======
 .diff-select-all-player-box {
     display: flex;
     flex-direction: column; 
@@ -199,10 +196,7 @@ body.main-menu {
     width: 220px;
     font-size: 20px;
     
-
 }
-
->>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
 .startmenubutton {
     display: flex;
     width: 350px;
@@ -332,11 +326,8 @@ body.main-menu {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-<<<<<<< HEAD
     margin: 3rem;
     width: 200px;
-=======
->>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
 
     position: absolute;
     top: 50%;

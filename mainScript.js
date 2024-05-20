@@ -56,28 +56,18 @@ const playerSelection = {
             this.$root.numPlayers = num;
         },
         goBack() {
-            this.$router.push("/")
+            this.$router.go(-1)
         }
     },
-
-
-<<<<<<< HEAD
     template: `
             <div class="main-flex">
                 <div class="mobile-nav">
                     <button @click="goBack()" class='backarrow topicon'> </button>
                     <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-                    <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+                    <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
                 </div>
                 <h1>ANTAL SPELARE</h1>
                 <div class="player-selection">
-=======
-    template: `<div class="main-flex">
-                <br>
-                <h1>ANTAL SPELARE</h1>
-                <div class="player-selection">
-                    <router-link to="/mainMenu"><button class='backarrow topicon'> </button></router-link>
->>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
                 </div>
@@ -155,7 +145,7 @@ const difficultySelection = {
                 <div class="mobile-nav">
                     <button @click="goBack()" class='backarrow topicon'> </button>
                     <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-                    <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+                    <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
                 </div>
                 <h1>ANGE DINA INITIALER</h1>
                 <input type="text" v-model="playerOneName">
@@ -165,7 +155,7 @@ const difficultySelection = {
                 <div class="mobile-nav">
                     <button @click="goBack()" class='backarrow topicon'> </button>
                     <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-                    <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+                    <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
                 </div>
                     <h1>ANGE ERA NAMN</h1>
                     <div class="diff-select-all-player-box">
@@ -187,17 +177,11 @@ const difficultySelection = {
 
 
         <div v-else class="difficulty-selection">
-<<<<<<< HEAD
             <div class="mobile-nav">
                 <button @click="goBack()" class='backarrow topicon'> </button>
                 <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-                <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+                <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
             </div>
-=======
-        <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
-        <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-        <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
->>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
                 <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
@@ -285,21 +269,16 @@ const scoreboard = {
             return month + "/" + day;
         },
         goBack() {
-            this.$router.push("/")
+            this.$router.go(-1)
         }
     },
-<<<<<<< HEAD
     template: `
         <div class="mobile-nav">
             <button @click="goBack()" class='backarrow topicon'> </button>
             <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-            <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+            <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
         </div>
                 <div class="scoreboard">
-=======
-    template: `<router-link to="/mainMenu"><button class='backarrow topicon'> </button></router-link>
-                <div class="scoreboard"><br><br>
->>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
                     <h1>SCOREBOARD</h1>
                     <div class="scoreboard_row">
 <!--                        <div class="scoreboard_header_cell">Namn</div>-->
@@ -337,10 +316,15 @@ const museum = {
             this.selectedImage = image;
         },
         goBack() {
-            this.$router.push("/mainMenu")
+            this.$router.go(-1)
         }
     },
-    template: `<button class='backtomenu topicon' @click="goBack"> </button>
+    template: `
+                <div class="mobile-nav">
+                <button @click="goBack()" class='backarrow topicon'> </button>
+            <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+            <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
+                </div>
                 <div class="museum-image-container">
                     <br><br>
                     <h1>{{selectedImage.date}}</h1>
@@ -364,17 +348,13 @@ const gameRules = {
     name: "gameRules",
     methods: {
         goBack() {
-            this.$router.push("/")
+            this.$router.go(-1)
         }
     },
     template: `<div class="game-rules">
-<<<<<<< HEAD
                 <div class="mobile-nav">
                     <br><button @click="goBack()" class='backarrow topicon'></button><br>
                 </div>
-=======
-                <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link><br><br>
->>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
                 <h1>SPELREGLER</h1>
                 <p>Spelet går ut på att gissa vilket årtal man befinner sig i.</p>
                 <p>&bull; Varje spelrunda har 5 foton från samma årtionde.</p>
