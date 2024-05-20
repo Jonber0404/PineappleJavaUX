@@ -126,6 +126,10 @@ write more CSS or HTML to do so, so this will have to do.*/
     cursor: pointer;
 }
 
+.stopButton:hover {
+    cursor: pointer;
+}
+
 
 .nextButton {
     position: fixed;
@@ -169,9 +173,36 @@ body.difficulty-selection {
 
 body.count-down {
     background: var(--Turkos-200, #1A7475);
+
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body.main-menu {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 
+<<<<<<< HEAD
+=======
+.diff-select-all-player-box {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+    justify-content: center;
+}
+.diff-select-player-box input {
+    height: 35px;
+    width: 220px;
+    font-size: 20px;
+    
+
+}
+
+>>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
 .startmenubutton {
     display: flex;
     width: 350px;
@@ -268,6 +299,7 @@ body.count-down {
 }
 
 .scoreboardicon {
+    left: 48%;
     background-image: url('assets/MedalVector.svg');
 }
 
@@ -300,13 +332,15 @@ body.count-down {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+<<<<<<< HEAD
     margin: 3rem;
     width: 200px;
+=======
+>>>>>>> fdd16491d2e10516a6a0cb01c06d1745e9446cb2
 
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-80%, 0%);
+    transform: translate(-50%, 0);
 }
 
 .easytext {
@@ -356,6 +390,55 @@ body.count-down {
     /* 80.08% */
 }
 
+.introtext {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    transform: translateY(-50px);
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.introimage {
+    width: 80.154px;
+    height: 115.454px;
+    flex-shrink: 0;
+    background-image: url('assets/IntroVector.svg');
+}
+
+.bigintrotext {
+    color: var(--Brun, #552C2D);
+
+    font-family: Outfit, sans-serif;
+    font-size: 44.677px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.smallintrotext {
+
+    color: var(--Brun, #552C2D);
+
+    font-family: Inconsolata, sans-serif;
+    font-size: 24.821px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
 /*html, body {
     margin: 0;
     padding: 0;
@@ -366,8 +449,6 @@ body.count-down {
 .museum-big-image-div {
     aspect-ratio: 1 / 1;
     width: 80%;
-    max-width: 700px;
-    max-height: 500px;
     border-radius: 0.5em;
     overflow: hidden;
     background-color: whitesmoke;
@@ -554,6 +635,7 @@ body.count-down {
     height: 100%;
     background-color: rgba(245, 223, 189, 1);
 }
+
 .answer-view-playerTwo {
     position: fixed;
     top: 0;
@@ -622,7 +704,7 @@ body.count-down {
         /*  font-size: 50px;
         width: 20rem;
         margin-top: 0rem; */
-        
+
 
         border-radius: 11.429px;
         background: var(--Turkos-100, #1D9594);
@@ -630,10 +712,10 @@ body.count-down {
     }
 
     .scoreboardbutton {
-    /*    font-size: 22px;
+        /*    font-size: 22px;
         width: 10rem;
         margin-left: -5rem;*/
-        margin-top: 4rem; 
+        margin-top: 4rem;
 
         border-radius: 11.389px;
         box-shadow: 0px 4.556px 4.556px 0px rgba(0, 0, 0, 0.25);
@@ -654,12 +736,6 @@ body.count-down {
     }
 
     .difficulty-selection {
-        /* display has to be flexbox, if it's flex then something fucky happens. */
-        display: flexbox;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
     }
 
     .museum-big-image-div {
@@ -679,6 +755,9 @@ body.count-down {
         width: 25%;
     }
     */
+    .museum-big-image-div {
+        width: 30%;
+    }
 
     .navbar {
         display: flex;
@@ -701,7 +780,7 @@ body.count-down {
         display: none;
     }
 
-    .scoreboardicon{
+    .scoreboardicon {
         display: none;
     }
 
@@ -710,7 +789,7 @@ body.count-down {
         top: 60px;
         left: 20px;
     }
-    
+
     .exit-symbol-light {
         position: fixed;
         top: 60px;
@@ -742,8 +821,11 @@ body.count-down {
 
     .diff-select-all-player-box {
         display: flex;
+        flex-direction: column; 
+        align-items: center;    
+        justify-content: center;
     }
-    
+
     .diff-select-player-box {
         display: flex;
         flex-direction: column;
