@@ -637,7 +637,7 @@ const twoPlayerGame = {
             this.checkGameOver();
         },
         checkGameOver() {
-            if (this.rounds > 3) {
+            if (this.rounds > 3 && this.points < 4) {
                 this.gameIsOver();
             } else if (this.p1TimeUp && this.p2TimeUp) {
                 this.startNewRound();
@@ -727,6 +727,10 @@ const twoPlayerGame = {
 
         },
         startNewRound() {
+                if (this.rounds >= 3) {
+                    this.gameIsOver();
+                    return;
+                }
             this.rounds++;
             this.points = 10;
             this.visibleButton1 = true;
