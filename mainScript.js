@@ -964,6 +964,7 @@ router.beforeEach((to, from, next) => {
     } else {
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
+        document.body.classList.remove('main-menu')
     }
     next();
 });
