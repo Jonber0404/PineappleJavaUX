@@ -58,8 +58,8 @@ const playerSelection = {
     },
 
 
-    template: `
-            <div class="main-flex">
+    template: `<div class="main-flex">
+                <br>
                 <h1>ANTAL SPELARE</h1>
                 <div class="player-selection">
                     <router-link to="/mainMenu"><button class='backarrow topicon'> </button></router-link>
@@ -270,8 +270,7 @@ const scoreboard = {
                         <div class="scoreboard_cell">{{player.correctYear}}</div>
                         <div class="scoreboard_cell" @click="toMuseum(player)">&bull;&bull;&bull;</div> 
                     </div>
-                </div>
-                <pre>{{playerInfo}}</pre>`
+                </div>`
 }
 
 const museum = {
@@ -964,6 +963,7 @@ router.beforeEach((to, from, next) => {
     } else {
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
+        document.body.classList.remove('main-menu')
     }
     next();
 });
