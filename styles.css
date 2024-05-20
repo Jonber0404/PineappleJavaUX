@@ -59,6 +59,10 @@ button {
     margin-top: 0.6em;
 }
 
+.game-rules a button {
+    position: absolute;
+}
+
 /****************Scoreboard Things****************/
 .scoreboard {
     display: flex;
