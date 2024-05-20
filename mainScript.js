@@ -827,7 +827,7 @@ const twoPlayerGame = {
 
 
     },
-    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">SKIPPA BILD</button>
+    template: ` <button class="nextButton" v-show="visibleNextButton" @click="nextPicture">NY BILD</button>
                 <div class="main-flex">
 
                 <div v-show="correctGuessView" class="game-over main-flex">
@@ -875,8 +875,8 @@ const twoPlayerGame = {
             <img src="assets/timer-symbol.svg" class="timer-symbol">
             <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <p class="timer-num" v-show="showMain">{{count}}</p>
-            <h2 class="desktop-h2-game1-modifier">{{points}} POÄNG</h2>
-            <p>Vilket årtionde söker vi?</p>
+            <h3 class="desktop-h2-game1-modifier">{{points}} POÄNG - RUNDA: {{rounds}}/3</h3>
+            <p>Vilket årtionde söker vi</p>
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
             <div class="museum-big-image-div">
                 <img :src="objektBild" class="museum-big-image">
@@ -919,7 +919,8 @@ const twoPlayerGame = {
   
      
             </div>
-            <h3> {{playerOneName}}: {{playerOnePoints}} POÄNG <br>{{playerTwoName}}: {{playerTwoPoints}} POÄNG <br> RUNDA: {{rounds}}/3</h3> 
+            <p> {{playerOneName}}: {{playerOnePoints}} POÄNG <br> {{playerTwoName}}: {{playerTwoPoints}} POÄNG</p> 
+
             <div v-show="roundOver">    
             <h2 v-if="playerOnePoints > playerTwoPoints"> GRATTIS {{playerOneName}} </h2>
             <h2 v-else-if="playerTwoPoints > playerOnePoints">GRATTIS {{playerTwoName}} </h2>
