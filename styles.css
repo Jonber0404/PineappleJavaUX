@@ -356,7 +356,7 @@ body.main-menu {
     font-size: 80px;
     font-style: normal;
     font-weight: 900;
-    line-height: 40.04px;
+    line-height: 1em;
     overflow: hidden;
     /* 80.08% */
 }
@@ -706,7 +706,7 @@ body.main-menu {
         width: 25%;
     }
     */
-    .museum-big-image-div {
+    .museum-big-image-div, .museum-small-images, .museum-text-container {
         width: 30%;
     }
 

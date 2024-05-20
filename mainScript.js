@@ -295,7 +295,6 @@ const museum = {
     },
     template: `<button class='backtomenu topicon' @click="goBack"> </button>
                 <div class="museum-image-container">
-                    <br><br>
                     <h1>{{selectedImage.date}}</h1>
                     <div class="museum-big-image-div">
                         <img :src="selectedImage.imgUrl" class="museum-big-image">
@@ -471,6 +470,17 @@ const onePlayerGame = {
         },
         toMuseum() {
             this.$router.push("/museum")
+        },
+        playAgain() {
+            this.count = localStorage.getItem("countdownTime")
+            this.guessTime = 10
+            this.points = 10
+            this.generateDecade()
+            currentRoundPictures = []
+            this.loadNextImg();
+            this.startTimer();
+            this.gameOver = false
+            this.mainDiv = true
         }
 
     },
@@ -483,8 +493,8 @@ const onePlayerGame = {
                 <p v-if="points !== 0">Du klarade av att resa tillbaka till {{ selectYear }}</p>
                 <img v-if="points === 0" src="assets/mingcute_sad-line.svg" class="sad-symbol">
                 <img v-if="points !== 0" src="assets/oui_cheer.svg" class="cheer-symbol">
-                <button class="submitButton" @click="toHome">HUVUDMENY</button>
-                <button class="submitButton" @click="toMuseum">MER INFO OM BILDERNA</button>
+                <button class="submitButton" @click="playAgain">SPELA IGEN</button>
+                <button class="submitButton" @click="toMuseum">SAMMANFATTNING</button>
              </div>
              
              <div v-show="mainDiv" class="main-flex">
