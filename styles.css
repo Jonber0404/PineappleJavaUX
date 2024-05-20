@@ -120,6 +120,7 @@ button {
     width: 100px;
     margin-top: 20px;
     margin-inline-start: 1rem;
+    cursor: pointer;
 }
 
 
@@ -140,10 +141,6 @@ button {
     flex-direction: column;
 }
 
-.difficulty-selection {
-    flex-direction: column;
-}
-
 /*NEW CSS*/
 body {
     height: 100vh;
@@ -155,6 +152,14 @@ body {
     padding: 0;
 }
 
+.difficulty-selection {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem;
+    width: 100%;
+}
+
 body.difficulty-selection {
     background: var(--Turkos-50, #caf0eb);
 }
@@ -162,8 +167,6 @@ body.difficulty-selection {
 body.count-down {
     background: var(--Turkos-200, #1A7475);
 }
-
-
 
 
 .startmenubutton {
@@ -229,9 +232,21 @@ body.count-down {
     margin-top: -0rem;
 }
 
-.topicon {
-    position: fixed;
+.mobile-nav {
+    display: flex;
     top: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: space-between;
+    gap: 80px;
+    padding: 1rem;
+    padding-top: 20px;
+    width: 100%;
+}
+
+.topicon {
+    /*position: fixed;*/        /*Removed to make the mobile nav-bar work.*/
+    /*top: 20px;*/
     display: flex;
     padding: 10px;
     flex-direction: column;
@@ -245,7 +260,7 @@ body.count-down {
 }
 
 .backarrow {
-    left: 20px;
+    /*left: 20px;*/
     background-image: url('assets/ArrowVector.svg');
 }
 
@@ -254,7 +269,7 @@ body.count-down {
 }
 
 .backtomenu {
-    right: 20px;
+    /*right: 20px;*/
     background-image: url('assets/HouseVector.svg');
 }
 
@@ -283,6 +298,7 @@ body.count-down {
     font-weight: 500;
     line-height: normal;
     margin: 3rem;
+    width: 200px;
 
     position: absolute;
     top: 50%;
@@ -292,7 +308,6 @@ body.count-down {
 
 .easytext {
     margin-top: -4.5rem;
-
 }
 
 .hardtext {
@@ -322,16 +337,18 @@ body.count-down {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100%;
 
     color: var(--Beige, #F5DFBD);
 
     text-align: center;
     /* Mobile_H1 */
     font-family: Inconsolata, sans-serif;
-    font-size: 80px;
+    font-size: 70px;
     font-style: normal;
     font-weight: 900;
-    line-height: 40.04px;
+    line-height: 1.2;
+    /*line-height: 40.04px;*/
     overflow: hidden;
     /* 80.08% */
 }
@@ -353,12 +370,17 @@ body.count-down {
     background-color: whitesmoke;
     display: flex;
     align-items: center;
+    justify-content: center;
     margin: auto;
 }
 
 .museum-big-image {
     width: 100%;
     z-index: 0;
+
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 .museum-text-container {
@@ -423,6 +445,7 @@ body.count-down {
     position: fixed;
     top: 20px;
     left: 20px;
+    cursor: pointer;
 }
 
 .exit-symbol-light {
@@ -562,6 +585,10 @@ body.count-down {
     color: rgba(245, 223, 189, 1);
 }
 
+.beegSubmitButton {
+    height: 10%;
+}
+
 @media screen and (min-width: 576px) {
 
     /*DESKTOPPEN*/
@@ -630,6 +657,11 @@ body.count-down {
         justify-content: center;
         align-items: center;
         width: 100%;
+    }
+
+    .museum-big-image-div {
+        max-width: 600px;
+        max-height: 400px;
     }
 
     /*

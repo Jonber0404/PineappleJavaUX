@@ -28,9 +28,13 @@ const playerSelection = {
 
     template: `
             <div class="main-flex">
+                <div class="mobile-nav">
+                    <router-link to="/"><button class='backarrow topicon'> </button></router-link>
+                    <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+                    <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+                </div>
                 <h1>ANTAL SPELARE</h1>
                 <div class="player-selection">
-                    <router-link to="/"><button class='backarrow topicon'> </button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(1)"><button class='oneplayer startmenubutton'>1 SPELARE</button></router-link>
                     <router-link to="/difficultySelection" @click="setPlayers(2)"><button class='twoplayer startmenubutton'>2 SPELARE</button></router-link>
                 </div>
@@ -94,6 +98,9 @@ const difficultySelection = {
             this.namesRegistered = true;
             localStorage.setItem('playerOneName', this.playerOneName);
             localStorage.setItem('playerTwoName', this.playerTwoName);
+        },
+        goBack() {
+            this.$router.go(-1)
         }
     },
     template: `
@@ -102,11 +109,21 @@ const difficultySelection = {
     
         <div v-if="!namesRegistered">
             <div v-if="$root.numPlayers === 1">
-                    <h1>ANGE DINA INITIALER</h1>
-                    <input type="text" v-model="playerOneName">
-                    <button @click="storeName">SPARA</button>
+                <div class="mobile-nav">
+                    <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
+                    <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+                    <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+                </div>
+                <h1>ANGE DINA INITIALER</h1>
+                <input type="text" v-model="playerOneName">
+                <button @click="storeName">SPARA</button>
             </div>
             <div v-else-if="$root.numPlayers === 2">
+                <div class="mobile-nav">
+                    <button @click="goBack()" class='backarrow topicon'> </button>
+                    <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+                    <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+                </div>
                     <h1>ANGE ERA NAMN</h1>
                     <div class="diff-select-all-player-box">
                     <div class="diff-select-player-box">
@@ -127,20 +144,20 @@ const difficultySelection = {
 
 
         <div v-else class="difficulty-selection">
-        <router-link to="/playerSelection"><button class='backarrow topicon'> </button></router-link>
-        <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
-        <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+            <div class="mobile-nav">
+                <button @click="goBack()" class='backarrow topicon'> </button>
+                <router-link to="/scoreboard"><button class='scoreboardicon topicon'> </button></router-link>
+                <router-link to="/"><button class='backtomenu topicon'> </button></router-link>
+            </div>
             <h1 class='choosedifficultytext'>VÄLJ NIVÅ</h1>
 
-            <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
+                <button class='easy startmenubutton' @click="setDifficulty('ENKEL')">ENKEL</button>
             
                 <div class='difficultytext easytext'>Längre tid för att svara</div>
             
-
-            <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
+                <button class='hard startmenubutton' @click="setDifficulty('SVÅR')">SVÅR</button>
             
                 <div class='difficultytext hardtext'>Kortare tid för att svara</div>
-            
         </div>
     </div>`
 }
@@ -218,8 +235,11 @@ const scoreboard = {
             return month + "/" + day;
         }
     },
-    template: `<router-link to="/"><button class='backtomenu'> </button></router-link>
+    template: `<router-link to="/"><button class='backtomenu' class='topicon'> </button></router-link>
                 <div class="scoreboard"><br><br>
+                    <div class='mobile-nav'>
+
+                    </div>
                     <h1>SCOREBOARD</h1>
                     <div class="scoreboard_row">
 <!--                        <div class="scoreboard_header_cell">Namn</div>-->
@@ -283,7 +303,7 @@ const museum = {
 const gameRules = {
     name: "gameRules",
     template: `<div class="game-rules">
-                <router-link to="/"><button class='backtomenu'> </button></router-link><br><br>
+                <router-link to="/"><button class='backtomenu topicon'> </button></router-link><br><br>
                 <h1>SPELREGLER</h1>
                 <p>Spelet går ut på att gissa vilket årtal man befinner sig i.</p>
                 <p>&bull; Varje spelrunda har 5 foton från samma årtionde.</p>
@@ -451,7 +471,7 @@ const onePlayerGame = {
                 <img v-if="points === 0" src="assets/mingcute_sad-line.svg" class="sad-symbol">
                 <img v-if="points !== 0" src="assets/oui_cheer.svg" class="cheer-symbol">
                 <button class="submitButton" @click="toHome">HUVUDMENY</button>
-                <button class="submitButton" @click="toMuseum">MER INFO OM BILDERNA</button>
+                <button class="submitButton beegSubmitButton" @click="toMuseum">MER INFO OM BILDERNA</button>
              </div>
              
              <div v-show="mainDiv" class="main-flex">
