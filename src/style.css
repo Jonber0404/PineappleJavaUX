@@ -14,21 +14,21 @@ button {
 }
 
 .startmenubutton {
-    background-color: gray;
     border-radius: 25px;
     padding: 0.5rem;
-
+    border: transparent;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
     font-size: 30px;
-    background-color: burlywood;
-    border-radius: 3px;
-    font-family: fantasy;
-    box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+    transition: filter 0.5s, box-shadow 0.5s;
+}
 
+.startmenubutton:hover {
+    filter: brightness(90%);
+    box-shadow: none;
 }
 
 .game-rules {
@@ -128,6 +128,9 @@ write more CSS or HTML to do so, so this will have to do.*/
 
 .stopButton:hover {
     cursor: pointer;
+
+    filter: brightness(90%);
+
 }
 
 
@@ -142,6 +145,10 @@ write more CSS or HTML to do so, so this will have to do.*/
     cursor: pointer;
     right: 8px;
     bottom: 8px;
+}
+
+.nextButton {
+    filter: brightness(90%);
 }
 
 .player-selection {
@@ -162,8 +169,10 @@ body {
 .difficulty-selection {
     display: flex;
     flex-direction: column;
-    /*justify-content: center;*/    /*The text below "Enkel" and "Svår" wont stay centered with these turned on*/
-    /*align-items: center;*/        /*The text below "Enkel" and "Svår" wont stay centered with these turned on*/
+    /*justify-content: center;*/
+    /*The text below "Enkel" and "Svår" wont stay centered with these turned on*/
+    /*align-items: center;*/
+    /*The text below "Enkel" and "Svår" wont stay centered with these turned on*/
     padding: 0rem;
 }
 
@@ -190,6 +199,7 @@ body.main-menu {
     flex-wrap: wrap;
 
 }
+
 .diff-select-player-box {
     display: flex;
     flex-direction: column;
@@ -197,6 +207,7 @@ body.main-menu {
     padding: 1rem;
     margin: 1rem;
 }
+
 .diff-select-player-box input {
     height: 28px;
     width: 120px;
@@ -204,6 +215,7 @@ body.main-menu {
 
     box-sizing: border-box;
 }
+
 .startmenubutton {
     display: flex;
     width: 350px;
@@ -280,7 +292,8 @@ body.main-menu {
 }
 
 .topicon {
-    /*position: fixed;*/        /*Removed to make the mobile nav-bar work.*/
+    /*position: fixed;*/
+    /*Removed to make the mobile nav-bar work.*/
     /*top: 20px;*/
     display: flex;
     padding: 10px;
@@ -338,7 +351,8 @@ body.main-menu {
 
     position: absolute;
     top: 50%;
-    /*transform: translate(-50%, 0);*/ /*It won't stay centered with this turned on*/
+    /*transform: translate(-50%, 0);*/
+    /*It won't stay centered with this turned on*/
 }
 
 .easytext {
@@ -382,8 +396,10 @@ body.main-menu {
     font-size: 70px;
     font-style: normal;
     font-weight: 900;
-    /*line-height: 1.2;*/       /*Pick which line-height you prefer*/
-    /*line-height: 40.04px;*/   /*except for this one*/
+    /*line-height: 1.2;*/
+    /*Pick which line-height you prefer*/
+    /*line-height: 40.04px;*/
+    /*except for this one*/
     line-height: 1em;
     overflow: hidden;
     /* 80.08% */
@@ -405,6 +421,7 @@ body.main-menu {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -470,6 +487,7 @@ body.main-menu {
     justify-content: center;
     margin: auto;
 }
+
 .museum-big-image-div-twoPlayer {
     aspect-ratio: 1 / 1;
     width: 80%;
@@ -586,7 +604,7 @@ body.main-menu {
 
 .navbar {
     z-index: 1000;
-   position: relative;
+    position: relative;
     display: none;
     background-color: #333;
     color: #fff;
@@ -695,6 +713,11 @@ body.main-menu {
     color: rgba(245, 223, 189, 1);
 }
 
+.submitButton:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
 .beegSubmitButton {
     height: 10%;
 }
@@ -723,7 +746,6 @@ body.main-menu {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        border: transparent;
     }
 
     .playbutton {
@@ -736,7 +758,7 @@ body.main-menu {
         background: var(--Turkos-200, #1A7475);
         box-shadow: 0px 4.571px 4.571px 0px rgba(0, 0, 0, 0.25);
 
-        
+
     }
 
     .scoreboardbutton {
@@ -785,11 +807,16 @@ body.main-menu {
         width: 25%;
     }
     */
-    .museum-big-image-div, .museum-small-images, .museum-text-container {
+    .museum-big-image-div,
+    .museum-small-images,
+    .museum-text-container {
         width: 30%;
     }
-    .museum-big-image-div-twoPlayer, .museum-small-images, .museum-text-container {
-     width:65%;
+
+    .museum-big-image-div-twoPlayer,
+    .museum-small-images,
+    .museum-text-container {
+        width: 65%;
     }
 
     .navbar {
@@ -854,8 +881,8 @@ body.main-menu {
 
     .diff-select-all-player-box {
         display: flex;
-        flex-direction: row; 
-        align-items: center;    
+        flex-direction: row;
+        align-items: center;
         justify-content: center;
     }
 
