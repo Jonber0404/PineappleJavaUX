@@ -540,7 +540,6 @@ const onePlayerGame = {
                 <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
                 <p class="timer-num">{{guessTime}}</p>
                 <p>Vilket årtionde söker vi?</p>
-                <p>{{objektDatum}}</p>
                 <select class="date" v-model="selectYear">
                 <option value="1900">1900</option>
                 <option value="1910">1910</option>
@@ -931,7 +930,6 @@ const twoPlayerGame = {
             <div class="museum-big-image-div">
             <img :src="objektBild" class="museum-big-image">
             </div>
-            <p>{{objektDatum}}</p>
             <select class="date" v-model="selectYear">
             <option value="1900">1900</option>
             <option value="1910">1910</option>
