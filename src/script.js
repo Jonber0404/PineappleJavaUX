@@ -360,7 +360,7 @@ const museum = {
                     <div class="museum-small-images">
                         <img v-for="(image, i) in images" :src="image.imgUrl" @click="selectImage(image)"
                              class="museum-small-image">
-                    </div>
+                    </div> <br>
                 </div>`
 }
 

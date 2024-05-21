@@ -160,11 +160,11 @@ body {
 }
 
 .difficulty-selection {
+    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /*justify-content: center;*/    /*The text below "Enkel" and "Svår" wont stay centered with these turned on*/
+    /*align-items: center;*/        /*The text below "Enkel" and "Svår" wont stay centered with these turned on*/
     padding: 0rem;
-    width: 100%;
 }
 
 body.difficulty-selection {
@@ -338,7 +338,7 @@ body.main-menu {
 
     position: absolute;
     top: 50%;
-    transform: translate(-50%, 0);
+    /*transform: translate(-50%, 0);*/ /*It won't stay centered with this turned on*/
 }
 
 .easytext {
@@ -382,8 +382,8 @@ body.main-menu {
     font-size: 70px;
     font-style: normal;
     font-weight: 900;
-    /*line-height: 1.2;*/
-    /*line-height: 40.04px;*/
+    /*line-height: 1.2;*/       /*Pick which line-height you prefer*/
+    /*line-height: 40.04px;*/   /*except for this one*/
     line-height: 1em;
     overflow: hidden;
     /* 80.08% */
@@ -763,8 +763,10 @@ body.main-menu {
         align-items: center;
     }
 
+    /*
     .difficulty-selection {
     }
+    */
 
     .museum-big-image-div {
         max-width: 600px;
@@ -868,6 +870,10 @@ body.main-menu {
         height: 35px;
         width: 220px;
         font-size: 20px;
+    }
+
+    .difficultytext {
+        transform: translate(-50%, 0);
     }
 
     .same-size-image {
