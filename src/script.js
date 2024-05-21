@@ -1,8 +1,5 @@
 let decadeEnd, decadeStart, currentRoundPictures
 
-
-
-
 //Introskärmen
 const introPage = {
     name: "introPage",
@@ -30,6 +27,31 @@ const introPage = {
                     <div class='bigintrotext'>Järnvägsjakten</div>
                     <div class='smallintrotext'>Tidens gåtor</div>
                 </div>`
+}
+
+const aboutGame = {
+    name: "aboutGame",
+    data() {
+        return {
+            
+        };
+    },
+    
+    template: `
+        <div class='aboutGameText'>
+            <h1>Om Spelet</h1>
+            <br>
+            <div>Detta är ett spel som spelas som "på spåret". Gissa rätt årtioende baserat på ledtrådar i form av gamla fotografier. Spela själv eller spela mot en vän.
+            <br>
+            <br>
+            <div>Version: 1.0.0</div>
+            <br>
+            <div>API: K-Samsök (https://kulturarvsdata.se/ksamsapiok/?)</div>
+            <br>
+            <div>Skapad av: Adam Pääjärvi, David Henriksson, Jonathan Bergenstein, Ludvig Ward</div>
+            <div>           Emma Lindström, Louise Alveflo, Natasha Reed, Simona Cavalieri</div>
+        </div>
+    `
 }
 
 // Main meny
@@ -326,7 +348,6 @@ const museum = {
             <router-link to="/mainMenu"><button class='backtomenu topicon'> </button></router-link>
                 </div>
                 <div class="museum-image-container">
-                    <br><br>
                     <h1>{{selectedImage.date}}</h1>
                     <div class="museum-big-image-div">
                         <img :src="selectedImage.imgUrl" class="museum-big-image">
@@ -509,6 +530,17 @@ const onePlayerGame = {
         },
         toMuseum() {
             this.$router.push("/museum")
+        },
+        playAgain() {
+            this.count = localStorage.getItem("countdownTime")
+            this.guessTime = 10
+            this.points = 10
+            this.generateDecade()
+            currentRoundPictures = []
+            this.loadNextImg();
+            this.startTimer();
+            this.gameOver = false
+            this.mainDiv = true
         }
 
     },
@@ -543,7 +575,6 @@ const onePlayerGame = {
                 <img src="assets/mingcute_exit-fill.svg" class="exit-symbol" @click="toHome">
                 <p class="timer-num">{{guessTime}}</p>
                 <p>Vilket årtionde söker vi?</p>
-                <p>{{objektDatum}}</p>
                 <select class="date" v-model="selectYear">
                 <option value="1900">1900</option>
                 <option value="1910">1910</option>
@@ -912,10 +943,11 @@ const twoPlayerGame = {
             <img src="assets/timer-symbol.svg" class="timer-symbol">
             <router-link to="/mainMenu"><img src="assets/mingcute_exit-fill.svg" class="exit-symbol"></router-link>
             <p class="timer-num" v-show="showMain">{{count}}</p>
+            <br>
             <h3 class="desktop-h2-game1-modifier">{{points}} POÄNG - RUNDA: {{rounds}}/3</h3>
             <p>Vilket årtionde söker vi</p>
             <h3 v-if="timeStop">Tid att gissa: {{guessTime}} </h3>
-            <div class="museum-big-image-div">
+            <div class="museum-big-image-div-twoPlayer">
                 <img :src="objektBild" class="museum-big-image">
             </div>
            
@@ -933,7 +965,6 @@ const twoPlayerGame = {
             <div class="museum-big-image-div">
             <img :src="objektBild" class="museum-big-image">
             </div>
-            <p>{{objektDatum}}</p>
             <select class="date" v-model="selectYear">
             <option value="1900">1900</option>
             <option value="1910">1910</option>
@@ -975,6 +1006,7 @@ const router = VueRouter.createRouter({
         { path: '/', component: introPage },
         { path: '/mainMenu', component: homePage },
         { path: '/playerSelection', component: playerSelection },
+        { path: '/aboutGame', component: aboutGame },
         { path: '/scoreboard', component: scoreboard },
         { path: '/gameRules', component: gameRules },
         { path: '/onePlayerGame', component: onePlayerGame },
@@ -994,14 +1026,15 @@ router.beforeEach((to, from, next) => {
         document.body.classList.add('count-down');
         document.body.classList.remove('difficulty-selection');
     }
-    else if (to.path === '/mainMenu' || to.path === '/') {
+    else if (to.path === '/mainMenu' || to.path === '/' || to.path === '/aboutGame') {
         document.body.classList.add('main-menu');
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
     } else {
         document.body.classList.remove('difficulty-selection');
         document.body.classList.remove('count-down');
-        document.body.classList.remove('main-menu')
+        document.body.classList.remove('main-menu');
+    
     }
     next();
 });

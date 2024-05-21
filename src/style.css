@@ -187,15 +187,22 @@ body.main-menu {
 
 .diff-select-all-player-box {
     display: flex;
-    flex-direction: column; 
-    align-items: center;    
-    justify-content: center;
+    flex-wrap: wrap;
+
+}
+.diff-select-player-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem;
 }
 .diff-select-player-box input {
-    height: 35px;
-    width: 220px;
+    height: 28px;
+    width: 120px;
     font-size: 20px;
-    
+
+    box-sizing: border-box;
 }
 .startmenubutton {
     display: flex;
@@ -375,8 +382,9 @@ body.main-menu {
     font-size: 70px;
     font-style: normal;
     font-weight: 900;
-    line-height: 1.2;
+    /*line-height: 1.2;*/
     /*line-height: 40.04px;*/
+    line-height: 1em;
     overflow: hidden;
     /* 80.08% */
 }
@@ -430,11 +438,25 @@ body.main-menu {
     line-height: normal;
 }
 
-/*html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden; DETTA TAR BORT ALLA SCROLLSBARS
-}*/
+.aboutGameText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 120vh;
+    margin-left: 1rem;
+    color: var(--Brun, #552C2D);
+    transform: translate(0rem, -16rem);
+
+    font-family: Inconsolata, sans-serif;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    margin-top: 60px;
+}
+
 
 /* MUSEUM */
 .museum-big-image-div {
@@ -446,6 +468,16 @@ body.main-menu {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: auto;
+}
+.museum-big-image-div-twoPlayer {
+    aspect-ratio: 1 / 1;
+    width: 80%;
+    border-radius: 0.5em;
+    overflow: hidden;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
     margin: auto;
 }
 
@@ -553,6 +585,8 @@ body.main-menu {
 }
 
 .navbar {
+    z-index: 1000;
+   position: relative;
     display: none;
     background-color: #333;
     color: #fff;
@@ -689,17 +723,20 @@ body.main-menu {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        border: transparent;
     }
 
     .playbutton {
         /*  font-size: 50px;
         width: 20rem;
         margin-top: 0rem; */
-
+        /*transform: translateX(20px);*/
 
         border-radius: 11.429px;
-        background: var(--Turkos-100, #1D9594);
+        background: var(--Turkos-200, #1A7475);
         box-shadow: 0px 4.571px 4.571px 0px rgba(0, 0, 0, 0.25);
+
+        
     }
 
     .scoreboardbutton {
@@ -746,8 +783,11 @@ body.main-menu {
         width: 25%;
     }
     */
-    .museum-big-image-div {
+    .museum-big-image-div, .museum-small-images, .museum-text-container {
         width: 30%;
+    }
+    .museum-big-image-div-twoPlayer, .museum-small-images, .museum-text-container {
+     width:65%;
     }
 
     .navbar {
