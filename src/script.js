@@ -486,6 +486,8 @@ const onePlayerGame = {
             if (this.points === 0) {
                 this.gameOver = true
                 this.mainDiv = false
+                clearInterval(this.timer)
+                clearInterval(this.guessTimer)
                 return
             }
             this.loadNextImg();
@@ -553,8 +555,8 @@ const onePlayerGame = {
                 <p v-if="points !== 0">Du klarade av att resa tillbaka till {{ selectYear }}</p>
                 <img v-if="points === 0" src="assets/mingcute_sad-line.svg" class="sad-symbol">
                 <img v-if="points !== 0" src="assets/oui_cheer.svg" class="cheer-symbol">
-                <button class="submitButton" @click="toHome">HUVUDMENY</button>
-                <button class="submitButton beegSubmitButton" @click="toMuseum">MER INFO OM BILDERNA</button>
+                <button class="submitButton" @click="playAgain">SPELA IGEN</button>
+                <button class="submitButton beegSubmitButton" @click="toMuseum">SAMMANFATTNING</button>
              </div>
              
              <div v-show="mainDiv" class="main-flex">
